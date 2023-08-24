@@ -1,0 +1,193 @@
+{
+  "bobotSkp": [
+    {
+      "kegiatan": "lomba karya ilmiah",
+      "tingkat": {
+        "internasional": {
+          "juara1": 120,
+          "juara2 ": 110,
+          "juara3": 100,
+          "finalis": 100,
+          "peserta": 90
+        },
+        "nasional": {
+          "juara1": 100,
+          "juara2 ": 90,
+          "juara3": 80,
+          "finalis": 70,
+          "peserta": 50
+        },
+        "regional": {
+          "juara1": 70,
+          "juara2 ": 60,
+          "juara3": 50,
+          "finalis": 40,
+          "peserta": 30
+        },
+        "universitas": {
+          "juara1": 50,
+          "juara2 ": 45,
+          "juara3": 40,
+          "finalis": 30,
+          "peserta": 20
+        },
+        "fakultas": {
+          "juara1": 30,
+          "juara2 ": 28,
+          "juara3": 25,
+          "finalis": 20,
+          "peserta": 15
+        },
+        "jurusan": {
+          "juara1": 15,
+          "juara2 ": 12,
+          "juara3": 10,
+          "finalis": 8,
+          "peserta": 5
+        }
+      }
+    },
+    {
+      "kegiatan": "kegiatan karya ilmiah",
+      "tingkat": {
+        "internasional": {
+          "pembicara": 100,
+          "moderator ": 40,
+          "peserta": 20
+        },
+        "nasional": {
+          "pembicara": 60,
+          "moderator ": 25,
+          "peserta": 15
+        },
+        "regional": {
+          "pembicara": 40,
+          "moderator ": 15,
+          "peserta": 10
+        },
+        "universitas": {
+          "pembicara": 30,
+          "moderator ": 15,
+          "peserta": 8
+        },
+        "fakultas": {
+          "pembicara": 20,
+          "moderator ": 10,
+          "peserta": 5
+        },
+        "jurusan": {
+          "pembicara": 10,
+          "moderator ": 5,
+          "peserta": 3
+        }
+      }
+    },
+    {
+      "kegiatan": "menghasilkan temuan inovasi",
+      "semuaLevel": 100
+    },
+    {
+      "kegiatan": "menghasilkan karya ilmiah",
+      "tingkat": {
+        "internasional": {
+          "ketua": 100,
+          "anggota ": 50
+        },
+        "nasional": {
+          "ketua": 75,
+          "anggota ": 35
+        },
+        "lainnya": {
+          "ketua": 15,
+          "anggota ": 10
+        }
+      }
+    },
+    {
+      "kegiatan": "kegiatan karya populer",
+      "tingkat": {
+        "internasional": {
+          "ketua": 40,
+          "anggota ": 20
+        },
+        "nasional": {
+          "ketua": 30,
+          "anggota ": 15
+        },
+        "regional": {
+          "ketua": 20,
+          "anggota ": 10
+        },
+        "universitas": {
+          "ketua": 10,
+          "anggota ": 5
+        }
+      }
+    },
+    {
+      "kegiatan": "menghasilkan karya ilmiah yang didanai",
+      "ketua": 15,
+      "anggota": 7
+    },
+    {
+      "kegiatan": "memberikan pelatihan karya tulis",
+      "semuaLevel": 15
+    },
+    {
+      "kegiatan": "kuliah umum",
+      "semuaLevel": 5
+    },
+    {
+      "kegiatan": "penelitian pihak lain",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "pilmapres",
+      "tingkat": {
+        "internasional": {
+          "juara1": 100,
+          "juara2 ": 90,
+          "juara3": 80,
+          "finalis": 70,
+          "peserta": 50
+        },
+        "nasional": {
+          "juara1": 80,
+          "juara2 ": 70,
+          "juara3": 60,
+          "finalis": 50,
+          "peserta": 30
+        },
+        "regional": {
+          "juara1": 60,
+          "juara2 ": 50,
+          "juara3": 40,
+          "finalis": 30,
+          "peserta": 10
+        },
+        "universitas": {
+          "juara1": 40,
+          "juara2 ": 30,
+          "juara3": 20,
+          "finalis": 10,
+          "peserta": 10
+        },
+        "fakultas": {
+          "juara1": 20,
+          "juara2 ": 15,
+          "juara3": 10,
+          "peserta": 5
+        }
+      }
+    },
+    {
+      "kegiatan": "pelatihan soft skill",
+      "tingkat": {
+        "internasional": 20,
+        "nasional": 15,
+        "regional": 10,
+        "daerah": 5
+      }
+    }
+  ]
+}

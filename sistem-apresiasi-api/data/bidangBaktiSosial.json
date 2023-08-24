@@ -1,0 +1,31 @@
+{
+  "bobotSKP": [
+    {
+      "kegiatan": "pelaksanaan bakti sosial",
+      "tingkat": {
+        "internasional": 30,
+        "nasional": 25,
+        "regional": 20,
+        "universitas": 15,
+        "fakultas": 10,
+        "jurusan": 5
+      }
+    },
+    {
+      "kegiatan": "penanganan bencana",
+      "semuaLevel": 20
+    },
+    {
+      "kegiatan": "bantuan pembimbingan",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "esktrakampus",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "lainnya",
+      "semuaLevel": 5
+    }
+  ]
+}

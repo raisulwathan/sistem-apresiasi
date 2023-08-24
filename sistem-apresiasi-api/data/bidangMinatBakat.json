@@ -1,0 +1,99 @@
+{
+  "bobotSkp": [
+    {
+      "kegiatan": "memperoleh prestasi",
+      "tingkat": {
+        "internasional": {
+          "juara1": 80,
+          "juara2 ": 70,
+          "juara3": 60,
+          "finalis": 50,
+          "peserta": 40
+        },
+        "nasional": {
+          "juara1": 70,
+          "juara2 ": 60,
+          "juara3": 50,
+          "finalis": 30,
+          "peserta": 20
+        },
+        "regional": {
+          "juara1": 50,
+          "juara2 ": 40,
+          "juara3": 30,
+          "finalis": 10,
+          "peserta": 5
+        },
+        "universitas": {
+          "juara1": 30,
+          "juara2 ": 20,
+          "juara3": 10,
+          "finalis": 5,
+          "peserta": 3
+        },
+        "fakultas": {
+          "juara1": 20,
+          "juara2 ": 15,
+          "juara3": 10,
+          "finalis": 5,
+          "peserta": 3
+        }
+      }
+    },
+    {
+      "kegiatan": "mengikuti kegiatan",
+      "tingkat": {
+        "internasional": {
+          "delegasi": 50,
+          "peserta undangan ": 25,
+          "peserta": 10
+        },
+        "nasional": {
+          "delegasi": 30,
+          "peserta undangan ": 15,
+          "peserta": 10
+        },
+        "regional": {
+          "delegasi": 20,
+          "peserta undangan ": 10,
+          "peserta": 7
+        },
+        "universitas": {
+          "delegasi": 15,
+          "peserta undangan ": 7,
+          "peserta": 3
+        },
+        "fakultas": {
+          "delegasi": 10,
+          "peserta undangan ": 5
+        }
+      }
+    },
+    {
+      "kegiatan": "pelatih",
+      "tingkat": {
+        "nasional": 80,
+        "regional": 60,
+        "universitas": 40,
+        "fakultas": 30,
+        "lainnya": 10
+      }
+    },
+    {
+      "kegiatan": "pembinaan khusus",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "mitra",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "karya seni",
+      "semuaLevel": 20
+    },
+    {
+      "kegiatan": "wirausaha",
+      "semuaLevel": 10
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "bobotSkp": [
+    {
+      "kegiatan": "pakarmaru universitas",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "pakarmaru lanjutan",
+      "semuaLevel": 10
+    },
+
+    {
+      "kegiatan": "pengurus organisasi intrakampus",
+      "tingkat": {
+        "internasional": {
+          "ketua": 30,
+          "wakilKetua": 25,
+          "sekretaris": 25,
+          "wakilSekretaris": 12,
+          "bendahara": 25,
+          "wakilBendahara": 12,
+          "ketuaSeksi": 12,
+          "anggota": 10
+        },
+        "nasional": {
+          "ketua": 25,
+          "wakilKetua": 20,
+          "sekretaris": 20,
+          "wakilSekretaris": 10,
+          "bendahara": 20,
+          "wakilBendahara": 10,
+          "ketuaSeksi": 10,
+          "anggota": 7
+        },
+        "regional": {
+          "ketua": 20,
+          "wakilKetua": 17,
+          "sekretaris": 17,
+          "wakilSekretaris": 8,
+          "bendahara": 17,
+          "wakilBendahara": 8,
+          "ketuaSeksi": 8,
+          "anggota": 6
+        },
+        "universitas": {
+          "ketua": 20,
+          "wakilKetua": 15,
+          "sekretaris": 15,
+          "wakilSekretaris": 7,
+          "bendahara": 15,
+          "wakilBendahara": 7,
+          "ketuaSeksi": 7,
+          "anggota": 5
+        },
+        "fakultas": {
+          "ketua": 17,
+          "wakilKetua": 12,
+          "sekretaris": 12,
+          "wakilSekretaris": 6,
+          "bendahara": 12,
+          "wakilBendahara": 6,
+          "ketuaSeksi": 6,
+          "anggota": 4
+        },
+        "jurusan": {
+          "ketua": 15,
+          "wakilKetua": 10,
+          "sekretaris": 10,
+          "wakilSekretaris": 5,
+          "bendahara": 10,
+          "wakilBendahara": 5,
+          "ketuaSeksi": 5,
+          "anggota": 3
+        }
+      }
+    },
+    {
+      "kegiatan": "pengurus organisasi ekstrakampus",
+      "semuaLevel": 5
+    },
+    {
+      "kegiatan": "mengikuti pelatihan kempemimpinan",
+      "tingkat": {
+        "lanjut": 15,
+        "menengah": 10,
+        "dasar": 5
+      }
+    },
+    {
+      "kegiatan": "pelatihan kempemimpinan lainnya",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "panitia dalam suatu kegiatan mahasiswa",
+      "tingkat": {
+        "internasional": 15,
+        "nasional": 12,
+        "regional": 10,
+        "universitas": 9,
+        "fakultas": 7,
+        "jurusan": 5
+      }
+    },
+    {
+      "kegiatan": "berpartisipasi dalam pemira",
+      "tingkat": {
+        "universitas": 5,
+        "fakultas": 5,
+        "jurusan": 5
+      }
+    }
+  ]
+}
