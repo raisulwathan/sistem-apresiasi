@@ -1,15 +1,6 @@
 {
   "bobotSkp": [
     {
-      "kegiatan": "pakarmaru universitas",
-      "semuaLevel": 10
-    },
-    {
-      "kegiatan": "pakarmaru lanjutan",
-      "semuaLevel": 10
-    },
-
-    {
       "kegiatan": "pengurus organisasi intrakampus",
       "tingkat": {
         "internasional": {

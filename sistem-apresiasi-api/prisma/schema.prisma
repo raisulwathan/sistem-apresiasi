@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(cuid())
+  npm      String @unique
+  password String
+  name     String
+  faculty  String
+  major    String
+  role     String
+
+  activities       Activity[]
+  Recognitions     Achievement[]
+  RejectedActivity RejectedActivity[]
+}
+
+model Admin {
+  id      String  @id @default(cuid())
+  nip     String  @unique
+  name    String
+  faculty String?
+  major   String?
+  role    String
+}
+
+model Activity {
+  id                      String   @id @default(cuid())
+  name                    String
+  fields_activity         String
+  activity                String
+  levels                  String?
+  possitions_achievements String?
+  years                   Int
+  points                  Int
+  fileUrl                 String
+  valid                   Boolean?
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  recognitions     Achievement[]
+  RejectedActivity RejectedActivity[]
+}
+
+model Achievement {
+  id         String  @id @default(cuid())
+  sks        String?
+  freshMoney String?
+
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+}
+
+model RejectedActivity {
+  id      String @id @default(cuid())
+  message String
+
+  activityId String
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+}
