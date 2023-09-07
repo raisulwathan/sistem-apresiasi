@@ -33,11 +33,12 @@ model Admin {
 model Activity {
   id                      String   @id @default(cuid())
   name                    String
-  fields_activity         String
+  fieldsActivity          String
   activity                String
   levels                  String?
   possitions_achievements String?
   years                   Int
+  locations               String
   points                  Int
   fileUrl                 String
   valid                   Boolean?

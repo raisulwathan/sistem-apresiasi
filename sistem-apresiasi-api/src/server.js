@@ -1,41 +1,21 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import bobotSkp from './services/bobotSkp.js';
-import { loadData } from './utils/index.js';
+import cors from 'cors';
 
-dotenv.config();
+import activityRouter from './routes/activities.js';
+import usersRouter from './routes/users.js';
+
 const app = express();
 const PORT = process.env.SERVER_PORT;
 
+dotenv.config();
+
 // middleware
 app.use(express.json());
+app.use(cors());
 
-app.get('/activities', (req, res) => {
-  const { category, activity, level, detail } = req.body;
-
-  try {
-    const path = `./src/data/${category}.json`;
-    const data = loadData(path);
-    const points = bobotSkp(data, { activity, level, detail });
-
-    res.json({
-      status: 'success',
-      data: {
-        category,
-        activity,
-        level,
-        detail,
-        points,
-      },
-    });
-  } catch (error) {
-    res.status(400);
-    res.json({
-      status: 'fail',
-      message: error,
-    });
-  }
-});
+app.use('/activities', activityRouter);
+app.use('/users', usersRouter);
 
 app.listen(PORT, () => {
   console.log(`Running on localhost:${PORT}`);
