@@ -31,22 +31,21 @@ model Admin {
 }
 
 model Activity {
-  id                      String   @id @default(cuid())
+  id                      String  @id @default(cuid())
   name                    String
   fieldsActivity          String
   activity                String
   levels                  String?
   possitions_achievements String?
-  years                   Int
   locations               String
   points                  Int
   fileUrl                 String
-  valid                   Boolean?
+  status                  String?
 
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 
-  recognitions     Achievement[]
+  achievements     Achievement[]
   RejectedActivity RejectedActivity[]
 }
 

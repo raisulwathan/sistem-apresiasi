@@ -1,8 +1,9 @@
 import express from 'express';
-import { postActivity } from '../controllers/activities.js';
+import { postActivityController } from '../controllers/activities.js';
+import { tryCatch } from '../utils/index.js';
 
 const router = express.Router();
 
-router.post('/', postActivity);
+router.post('/', tryCatch(postActivityController));
 
 export default router;

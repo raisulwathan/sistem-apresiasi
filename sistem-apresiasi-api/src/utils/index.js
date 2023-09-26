@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { NotFoundError } from '../exceptions/NotFoundError.js';
 
 export const loadData = (path) => {
   const fileBuffer = fs.readFileSync(path, 'utf-8');
@@ -15,7 +16,7 @@ export const getBobotSKP = (
   );
 
   if (!matchActivity) {
-    throw new Error('Kegiatan tidak ditemukan');
+    throw new NotFoundError('Kegiatan tidak ditemukan');
   }
 
   return matchActivity.tingkat
@@ -24,5 +25,13 @@ export const getBobotSKP = (
       : matchActivity.tingkat[level]
     : matchActivity.semuaLevel
     ? matchActivity.semuaLevel
-    : new Error('tingkat kegiatan tidak ditemukan');
+    : new NotFoundError('tingkat kegiatan tidak ditemukan');
+};
+
+export const tryCatch = (controller) => async (req, res, next) => {
+  try {
+    await controller(req, res);
+  } catch (error) {
+    return next(error);
+  }
 };

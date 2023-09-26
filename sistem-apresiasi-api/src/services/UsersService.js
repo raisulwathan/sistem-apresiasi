@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { InvariantError } from '../exceptions/InvariantError.js';
+import { NotFoundError } from '../exceptions/NotFoundError.js';
 
 class UsersService {
   constructor() {
@@ -24,10 +26,45 @@ class UsersService {
     });
 
     if (!users) {
-      throw new Error('Gagal menambahkan users');
+      throw new InvariantError('Gagal menambahkan users');
     }
 
     return users.id;
+  }
+
+  async getUser() {
+    const users = await this._prisma.user.findMany();
+
+    return users;
+  }
+
+  async getUserById(id) {
+    const user = await this._prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      throw new InvariantError('User tidak ditemukan');
+    }
+
+    return user;
+  }
+
+  async editUserById(id, { role }) {
+    const editedUser = await this._prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        role,
+      },
+    });
+
+    if (!editedUser.id) {
+      throw new NotFoundError('gagal mengubah users. id tidak ditemukan');
+    }
   }
 
   async isExist(npm) {
