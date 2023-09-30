@@ -1,6 +1,3 @@
-import airbnb from "./airbnb.png";
-
-import binance from "./binance.png";
 import card from "./card.png";
 
 import logoApresiasi from "./logoApresiasi.png";
@@ -19,4 +16,4 @@ import instagram from "./instagram.svg";
 import linkedin from "./linkedin.svg";
 import twitter from "./twitter.svg";
 
-export { airbnb, binance, card, logoApresiasi, robot, send, shield, star, menu, close, arrowUp, discount, facebook, instagram, linkedin, twitter };
+export { card, logoApresiasi, robot, send, shield, star, menu, close, arrowUp, discount, facebook, instagram, linkedin, twitter };
