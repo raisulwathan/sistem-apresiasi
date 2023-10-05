@@ -71,3 +71,8 @@ model RejectedActivity {
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 }
+
+model Authentication {
+  id    String @id @default(cuid())
+  token String
+}

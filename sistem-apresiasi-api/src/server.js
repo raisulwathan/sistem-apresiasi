@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import activityRouter from './routes/activities.js';
 import usersRouter from './routes/users.js';
+import authRouter from './routes/authentications.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -15,8 +16,10 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
-app.use('/activities', activityRouter);
-app.use('/users', usersRouter);
+// api handler
+app.use('/api/v1/activities', activityRouter);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/authentications', authRouter);
 
 // Error handler
 app.use(errorHandler);
