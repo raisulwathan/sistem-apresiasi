@@ -1,6 +1,5 @@
 import UsersService from '../services/UsersService.js';
 import { UsersValidator } from '../validations/users/index.js';
-import jwt from 'jsonwebtoken';
 
 export const postUsersController = async (req, res) => {
   UsersValidator.validatePostUsersPayload(req.body);
@@ -20,7 +19,7 @@ export const postUsersController = async (req, res) => {
   res.status(201);
   res.json({
     status: 'success',
-    message: 'user berhasil ditambahkan',
+    message: 'New user added',
     data: {
       userId,
     },
@@ -32,8 +31,6 @@ export const getUserByIdController = async (req, res) => {
 
   const usersService = new UsersService();
   const user = await usersService.getUserById(id);
-
-  console.log(user);
 
   res.json({
     status: 'success',
@@ -54,6 +51,6 @@ export const putUsersByIdController = async (req, res) => {
 
   res.json({
     status: 'success',
-    message: 'Role User berhasil diubah',
+    message: 'User role changed',
   });
 };

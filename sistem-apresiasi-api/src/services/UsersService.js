@@ -26,7 +26,7 @@ class UsersService {
     });
 
     if (!users) {
-      throw new InvariantError('Gagal menambahkan users');
+      throw new InvariantError('Failed to add users');
     }
 
     return users.id;
@@ -40,7 +40,7 @@ class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundError('User tidak ditemukan');
+      throw new NotFoundError("User's id not found");
     }
 
     return user;
@@ -57,7 +57,7 @@ class UsersService {
     });
 
     if (!editedUser.id) {
-      throw new NotFoundError('gagal mengubah users. id tidak ditemukan');
+      throw new NotFoundError('failed to edit users. id not found');
     }
   }
 
@@ -69,7 +69,9 @@ class UsersService {
     });
 
     if (!user) {
-      throw new AuthenticationError('Credential yang anda berikan salah');
+      throw new AuthenticationError(
+        'The credentials you provided are incorrect'
+      );
     }
 
     const { id, password: hashedPassword } = user;
@@ -77,7 +79,9 @@ class UsersService {
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new AuthenticationError('Credential yang anda berikan salah');
+      throw new AuthenticationError(
+        'The credentials you provided are incorrect'
+      );
     }
 
     return id;
@@ -89,7 +93,7 @@ class UsersService {
     });
 
     if (users) {
-      throw new Error('npm sudah terdaftar');
+      throw new Error('npm is exits');
     }
   }
 }

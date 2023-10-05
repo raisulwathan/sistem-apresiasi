@@ -4,8 +4,8 @@ import { ActivityValidator } from '../validations/activities/index.js';
 export const postActivityController = async (req, res) => {
   ActivityValidator.validatePostActivityPayload(req.body);
 
+  const userId = req.userId;
   const {
-    userId,
     name,
     fieldActivity,
     activity,
@@ -31,7 +31,7 @@ export const postActivityController = async (req, res) => {
   res.status(201);
   res.json({
     status: 'success',
-    message: 'kegiatan berhasil ditambahkan',
+    message: 'activity added',
     data: {
       ...newActivity,
     },

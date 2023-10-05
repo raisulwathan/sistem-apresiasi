@@ -10,8 +10,6 @@ export const postAuthentication = async (req, res) => {
   const userServices = new UsersService();
   const id = await userServices.verfyUserCredential(npm, password);
 
-  console.log(id);
-
   const token = jwt.sign({ id }, process.env.TOKEN_SECRET_KEY, {
     expiresIn: process.env.TOKEN_AGE,
   });

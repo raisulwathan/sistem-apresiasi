@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 export const PostActivityPayloadSchema = Joi.object({
-  userId: Joi.string().required(),
   name: Joi.string().required(),
   fieldActivity: Joi.string()
     .valid(

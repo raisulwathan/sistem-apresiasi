@@ -51,7 +51,7 @@ class ActivitiesService {
     });
 
     if (!newActivity) {
-      throw new InvariantError('Gagal Menambahkan kegiatan');
+      throw new InvariantError('failed to add activities');
     }
 
     return {
@@ -68,7 +68,7 @@ class ActivitiesService {
     });
 
     if (!activites) {
-      throw new NotFoundError('Kegiatan tidak ditemukan');
+      throw new NotFoundError('Activity not found');
     }
 
     return activites;
@@ -84,7 +84,7 @@ class ActivitiesService {
     });
 
     if (!activities) {
-      throw new NotFoundError('Kegiatan tidak ditemukan');
+      throw new NotFoundError('failed to get users. faculty not found');
     }
 
     return activities;
@@ -98,7 +98,7 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new NotFoundError('id kegiatan tidak ditemukan');
+      throw new NotFoundError('failed to get users. id not found');
     }
 
     return activity;
@@ -108,7 +108,7 @@ class ActivitiesService {
     const activities = await this.getActivityByFaculty(faculty);
 
     if (!activity) {
-      throw new NotFoundError('Kegiatan tidak ditemukan');
+      throw new NotFoundError('Activity not found');
     }
 
     const validActivities = activities.filter(
@@ -116,7 +116,7 @@ class ActivitiesService {
     );
 
     if (!validActivities) {
-      throw new NotFoundError('Tidak ada kegiatan yang valid');
+      throw new NotFoundError('There are no valid activities');
     }
 
     return validActivities;
@@ -135,7 +135,7 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new InvariantError('gagal validasi kegiatan');
+      throw new InvariantError('failed to edit activities');
     }
 
     if (activity.status === 'rejected') {
@@ -157,7 +157,7 @@ class ActivitiesService {
     });
 
     if (!activities) {
-      throw new NotFoundError('Kegiatan yang ditolak tidak temukan');
+      throw new NotFoundError('Activity not found');
     }
 
     return activities;
@@ -171,13 +171,13 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new NotFoundError('Kegiatan tidak ditemukan');
+      throw new NotFoundError('failed to get activity. id not found');
     }
 
     return activity;
   }
 
-  async verifyActivitiyOwner(id, owner) {
+  async verifyActivityOwner(id, owner) {
     const activity = await this._prisma.activity.findUnique({
       where: {
         id,
@@ -185,11 +185,13 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new NotFoundError('id kegiatan tidak ditemukan');
+      throw new NotFoundError("Activity's id not found");
     }
 
     if (owner !== activity.ownerId) {
-      throw new AuthorizationError('user tidak berhak mengakses resources ini');
+      throw new AuthorizationError(
+        'The user has no right to access these resources'
+      );
     }
   }
 }
