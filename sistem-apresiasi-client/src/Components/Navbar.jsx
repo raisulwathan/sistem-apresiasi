@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="hidden lg:mr-16 sm:flex">
+      <div className=" lg:mr-16 sm:flex">
         <Button text="Login" to="/login" />
       </div>
     </nav>
