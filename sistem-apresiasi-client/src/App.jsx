@@ -1,31 +1,23 @@
 import styles from "./style";
-import { Syarat, CTA, Footer, Navbar, Stats, Hero, Panduan } from "./components";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+
+import HomePage from "./pages/HomePage";
+import Students from "./pages/Dashboard/Students";
 
 const App = () => (
-  <div className="w-full overflow-hidden bg-primary">
-    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
+  <Router>
+    <div className={`bg-primary w-full overflow-hidden  `}>
       <div className={`${styles.boxWidth}`}>
-        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/mahasiswa" element={<Students />} />
+        </Routes>
       </div>
     </div>
-
-    <div className={`bg-primary ${styles.flexStart}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Hero />
-      </div>
-    </div>
-
-    <div className={`bg-primary ${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Stats />
-        <Panduan />
-        <Syarat />
-
-        <CTA />
-        <Footer />
-      </div>
-    </div>
-  </div>
+  </Router>
 );
 
 export default App;

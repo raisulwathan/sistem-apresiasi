@@ -1,5 +1,5 @@
-import { features } from "../constants";
-import styles, { layout } from "../style";
+import { features } from "../../constants";
+import styles, { layout } from "../../style";
 import Button from "./Button";
 
 const FeatureCard = ({ icon, title, content, index }) => (
@@ -15,17 +15,19 @@ const FeatureCard = ({ icon, title, content, index }) => (
 );
 
 const Panduan = () => (
-  <section id="Panduan" className={layout.section}>
+  <section id="Panduan" className={`${layout.section} ${styles.paddingX}`}>
     <div className={layout.sectionInfo}>
       <h2 className={styles.heading2}>Panduan pengguna</h2>
       <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-        anda bisa mengupload prestasi untuk menghitung point bobot skp yang telah ditentukan sesuai prestasi yang anda dapatkan selama berpendidikan di universitas syiah kuala silahkan login untuk mengupload berkas anda
+        Anda bisa mengupload prestasi untuk menghitung point bobot skp yang telah ditentukan sesuai prestasi yang anda dapatkan selama berpendidikan di universitas syiah kuala silahkan login untuk mengupload berkas anda
       </p>
 
-      <Button styles={`mt-10`} />
+      <div className="hidden mt-10 sm:flex">
+        <Button text="Login" to="/login" />
+      </div>
     </div>
 
-    <div className={`${layout.sectionImg} flex-col`}>
+    <div className={`${layout.sectionImg} ${styles.paddingX} flex-col`}>
       {features.map((feature, index) => (
         <FeatureCard key={feature.id} {...feature} index={index} />
       ))}

@@ -1,24 +1,22 @@
 import { useState } from "react";
 import { close, logoApresiasi, menu } from "../assets";
 import { navLinks } from "../constants";
-import Button from "./Button";
+import Button from "./LandingPage/Button";
 
 const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between w-full py-6 ">
+    <nav className="fixed top-0 left-0 z-50 flex items-center justify-between w-full py-6">
       <div className="flex items-center">
         {" "}
-        {/* Logo dan Teks di Tengah */}
-        <img src={logoApresiasi} alt="Apresiasi" className="w-[40px] h-[40px]" />
+        <img src={logoApresiasi} alt="Apresiasi" className="w-[40px] h-[40px] lg:ml-16" />
         <span className="ml-2 text-xl font-semibold text-white">Apresiasi</span>
       </div>
 
       <ul className="items-center justify-center flex-1 hidden list-none sm:flex">
         {" "}
-        {/* Menu Tengah */}
         {navLinks.map((nav, index) => (
           <li key={nav.id} className={`font-poppins font-normal cursor-pointer text-[16px] ${active === nav.title ? "text-white" : "text-dimWhite"} ${index === navLinks.length - 1 ? "mr-0" : "mr-28"}`} onClick={() => setActive(nav.title)}>
             <a href={`#${nav.id}`}>{nav.title}</a>
@@ -44,12 +42,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="hidden sm:flex">
-        {" "}
-        <button>
-          {" "}
-          <Button />{" "}
-        </button>
+      <div className="hidden lg:mr-16 sm:flex">
+        <Button text="Login" to="/login" />
       </div>
     </nav>
   );

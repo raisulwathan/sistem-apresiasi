@@ -40,7 +40,7 @@ export const features = [
   },
 ];
 
-export const stats = [
+export const statsBar = [
   {
     id: "stats-1",
     title: "Alumni",

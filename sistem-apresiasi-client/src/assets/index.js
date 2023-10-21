@@ -1,6 +1,7 @@
 import card from "./card.png";
 
 import logoApresiasi from "./logoApresiasi.png";
+import logoDark from "./logoDark.png";
 
 import robot from "./robot.png";
 import send from "./Send.svg";
@@ -16,4 +17,4 @@ import instagram from "./instagram.svg";
 import linkedin from "./linkedin.svg";
 import twitter from "./twitter.svg";
 
-export { card, logoApresiasi, robot, send, shield, star, menu, close, arrowUp, discount, facebook, instagram, linkedin, twitter };
+export { card, logoApresiasi, logoDark, robot, send, shield, star, menu, close, arrowUp, discount, facebook, instagram, linkedin, twitter };

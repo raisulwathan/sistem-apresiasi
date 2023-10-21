@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import Syarat from "./Syarat";
 import Panduan from "./Panduan";
 import CTA from "./CTA";
