@@ -22,9 +22,7 @@ const SideBar = () => {
     setSelectedMenu(menu);
   };
 
-  const handleLogout = () => {
-    // Tambahkan logika logout di sini
-  };
+  const handleLogout = () => {};
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);

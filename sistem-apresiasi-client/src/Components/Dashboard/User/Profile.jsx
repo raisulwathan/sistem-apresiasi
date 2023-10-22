@@ -4,9 +4,9 @@ import styles from "../../../style";
 const Profile = () => {
   return (
     <div className="max-h-[887px] h-[887px] lg:p-14 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-xl">
-      <h2 className="mb-6 text-xl font-bold mt-9 lg:mt-0 font-poppins">Profile</h2>
+      <h2 className="mb-6 text-xl text-gray-700 w-[85px] p-2 rounded-lg ml-8 font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Profile</h2>
 
-      <div className="items-start lg:flex">
+      <div className="items-start lg:mt-9 lg:flex">
         <div className="w-56 rounded-full">
           <img src="./src/assets/me.jpg" className="lg:w-[220px] lg:h-[220px] w-[180px] h-[180px] rounded-full" alt="me" />
         </div>
@@ -38,7 +38,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Tambahkan tiga kotak baru di bawah foto dengan tinggi yang lebih besar */}
       <div className="gap-6 mt-36 lg:flex lg:ml-12">
         <div className="lg:w-[400px] lg:h-[300px] w-[270px] mb-8">
           <div className="h-full px-4 py-4 bg-green-100 rounded-lg shadow-lg">
@@ -53,24 +52,22 @@ const Profile = () => {
           <div className="h-full px-4 py-4 bg-purple-100 rounded-lg shadow-lg">
             <h3 className="mb-2 text-lg font-semibold text-gray-800 underline">Syarat & Ketentuan</h3>
             <p className="text-gray-600">kegiatan-kegiatan mahasiswa yang mendapatkan prestasi dibidang seni ,bakat dan akademis anda bisa mendownload tabel panduan di bawah ini !!</p>
-            <div className="flex items-center w-[230px]  px-2 py-2 transition-transform bg-green-100 rounded-lg shadow-lg cursor-pointer mt-14 lg:w-80 hover:transform hover:scale-110">
+            <div className="flex items-center w-[230px]  px-2 py-2 transition-transform bg-yellow-100 rounded-lg shadow-lg cursor-pointer mt-14 lg:w-80 hover:transform hover:scale-110">
               <img src="./src/assets/download.png" alt="download" className="w-10" />
               <h3 className="px-3 text-base font-poppins">Unduh tabel Panduan SKPi</h3>
             </div>
           </div>
         </div>
         <div className={`${styles.flexCenter} w-[170px] h-[170px] rounded-full  p-[2px] cursor-pointer`}>
-          <div className={`${styles.flexCenter} flex-col bg-blue-100 border-[4px] border-blue-200  w-[100%] h-[100%] rounded-full`}>
+          <div className={`${styles.flexCenter} flex-col bg-blue-100 border-[4px] border-yellow-100  w-[100%] h-[100%] rounded-full`}>
             <div className={`${styles.flexStart} flex-row`}>
               <button className="font-poppins font-medium text-[18px] leading-[23.4px]">
-                <span className="text-gray-600 "> Upload Kegiatanmu Sekarang !</span>
+                <span className="text-gray-700 "> Upload Kegiatanmu Sekarang !</span>
               </button>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Tambahkan data lainnya di sini sesuai kebutuhan Anda */}
     </div>
   );
 };

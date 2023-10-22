@@ -80,7 +80,7 @@ const Upload = () => {
 
   return (
     <div className="max-h-[887px] h-[887px] lg:p-14 pb-3  overflow-y-auto lg:w-[90%] rounded-lg lg:shadow-xl  ">
-      <h2 className="text-xl font-bold mt-9 lg:mt-0 font-poppins">Upload Kegiatan</h2>
+      <h2 className="mb-6 text-xl ml-8 text-gray-700 w-[195px] p-2 rounded-lg font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Upload Kegiatan</h2>
       <div className=" mt-11 lg:mt-20 lg:flex">
         <label className="block text-lg font-poppins" htmlFor="category">
           Kategori :
@@ -175,7 +175,7 @@ const Upload = () => {
       </div>
 
       <div className="mt-16">
-        <button className="lg:ml-[580px] bg-secondary px-7 py-3 font-serif rounded-lg text-base hover:text-black text-white hover:bg-teal-500 " onClick={handleUpload}>
+        <button className="lg:ml-[580px] shadow-md transition-transform hover:transform hover:scale-110 bg-secondary px-7 py-3 font-serif rounded-lg text-base hover:text-white " onClick={handleUpload}>
           Submit
         </button>
       </div>
