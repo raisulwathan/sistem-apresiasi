@@ -80,7 +80,7 @@ const Upload = () => {
 
   return (
     <div className="max-h-[887px] h-[887px] lg:p-14 pb-3  overflow-y-auto lg:w-[90%] rounded-lg lg:shadow-xl  ">
-      <h2 className="text-xl font-bold font-poppins">Upload Kegiatan</h2>
+      <h2 className="text-xl font-bold mt-9 lg:mt-0 font-poppins">Upload Kegiatan</h2>
       <div className=" mt-11 lg:mt-20 lg:flex">
         <label className="block text-lg font-poppins" htmlFor="category">
           Kategori :
