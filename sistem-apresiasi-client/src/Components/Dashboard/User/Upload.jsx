@@ -79,7 +79,7 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-h-[887px] h-[887px] lg:p-14 pb-3  overflow-y-auto lg:w-[90%] rounded-lg lg:shadow-xl  ">
+    <div className="max-h-[887px]  h-[870px] lg:mt-4 lg:p-14 pb-3  overflow-y-auto lg:w-[90%] rounded-lg lg:shadow-Shadow  ">
       <h2 className="mb-6 text-xl ml-8 text-gray-700 w-[195px] p-2 rounded-lg font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Upload Kegiatan</h2>
       <div className=" mt-11 lg:mt-20 lg:flex">
         <label className="block text-lg font-poppins" htmlFor="category">

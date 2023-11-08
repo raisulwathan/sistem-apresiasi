@@ -22,7 +22,7 @@ const History = () => {
   };
 
   return (
-    <div className="max-h-[887px] h-[887px] lg:p-14 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-xl">
+    <div className="max-h-[887px]  h-[870px] lg:mt-4 lg:p-16 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow">
       <h2 className="mb-6 text-xl text-gray-700 w-[104px] p-2 rounded-lg ml-8 font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Riwayat</h2>
 
       <div className="flex mt-20">
