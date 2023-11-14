@@ -27,6 +27,7 @@ class ActivitiesService {
     level,
     possitionAchievement,
     location,
+    years,
     fileUrl,
     owner,
   }) {
@@ -45,6 +46,7 @@ class ActivitiesService {
         possitions_achievements: possitionAchievement,
         locations: location,
         points: point,
+        years,
         fileUrl,
         ownerId: owner,
       },
@@ -84,7 +86,7 @@ class ActivitiesService {
     });
 
     if (!activities) {
-      throw new NotFoundError('failed to get users. faculty not found');
+      throw new NotFoundError('activities not found');
     }
 
     return activities;
@@ -105,7 +107,7 @@ class ActivitiesService {
   }
 
   async getValidActivityByFaculty(faculty, status) {
-    const activities = await this.getActivityByFaculty(faculty);
+    const activities = await this.getActivitiesByFaculty(faculty);
 
     if (!activity) {
       throw new NotFoundError('Activity not found');
@@ -147,6 +149,28 @@ class ActivitiesService {
         },
       });
     }
+  }
+
+  async getActivityPoints(owner) {
+    const activities = await this._prisma.activity.findMany({
+      where: {
+        ownerId: owner,
+        status: 'valid',
+      },
+    });
+
+    if (!activities) {
+      return (points = 0);
+    }
+
+    const pointsByFieldActivity = activities.reduce((acc, activity) => {
+      const { fieldsActivity, points } = activity;
+
+      acc[fieldsActivity] = (acc[fieldsActivity] || 0) + points;
+      return acc;
+    }, {});
+
+    return pointsByFieldActivity;
   }
 
   async getRejectedActivities(owner) {
@@ -192,6 +216,26 @@ class ActivitiesService {
       throw new AuthorizationError(
         'The user has no right to access these resources'
       );
+    }
+  }
+
+  async verifyActivityAccess(userId, activityId) {
+    const users = await this._prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    const activity = await this._prisma.activity.findUnique({
+      where: {
+        id: activityId,
+      },
+      include: {
+        owner: true,
+      },
+    });
+
+    if (users.faculty !== activity.owner.faculty) {
+      throw new AuthorizationError('anda tidak berhak mengakses resource ini');
     }
   }
 }

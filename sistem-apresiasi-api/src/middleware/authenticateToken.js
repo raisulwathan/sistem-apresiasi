@@ -12,6 +12,7 @@ export function authenticateToken(req, res, next) {
     if (err) throw new AuthenticationError('Invalid token');
 
     req.userId = user.id;
+    req.userRole = user.role;
     next();
   });
 }

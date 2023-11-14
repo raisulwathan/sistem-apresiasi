@@ -16,6 +16,7 @@ export const PostActivityPayloadSchema = Joi.object({
   level: Joi.string().required(),
   possitionAchievement: Joi.string().required(),
   location: Joi.string().required(),
+  years: Joi.string().required(),
   fileUrl: Joi.string().required(),
 });
 

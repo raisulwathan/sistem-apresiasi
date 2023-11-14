@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  npm      String @unique
+  id       String  @id @default(cuid())
+  npm      String  @unique
   password String
   name     String
-  faculty  String
-  major    String
+  faculty  String?
+  major    String?
   role     String
 
   activities       Activity[]
   Recognitions     Achievement[]
   RejectedActivity RejectedActivity[]
+  Skpi             Skpi[]
 }
 
 model Admin {
@@ -38,6 +39,7 @@ model Activity {
   levels                  String?
   possitions_achievements String?
   locations               String
+  years                   String
   points                  Int
   fileUrl                 String
   status                  String?
@@ -58,6 +60,20 @@ model Achievement {
   activity   Activity @relation(fields: [activityId], references: [id])
 
   ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+}
+
+model Skpi {
+  id                 String @id @default(cuid())
+  mandatoryPoints    Int
+  charityPoints      Int
+  scientificPoints   Int
+  talentPoints       Int
+  organizationPoints Int
+  otherPoints        Int
+  status             String
+
+  ownerId String @unique
   owner   User   @relation(fields: [ownerId], references: [id])
 }
 

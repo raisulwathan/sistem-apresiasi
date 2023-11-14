@@ -74,7 +74,7 @@ class UsersService {
       );
     }
 
-    const { id, password: hashedPassword } = user;
+    const { id, role, password: hashedPassword } = user;
 
     const match = await bcrypt.compare(password, hashedPassword);
 
@@ -84,7 +84,7 @@ class UsersService {
       );
     }
 
-    return id;
+    return { id, role };
   }
 
   async isExist(npm) {

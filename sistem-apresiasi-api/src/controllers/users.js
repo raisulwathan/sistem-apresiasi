@@ -4,7 +4,7 @@ import { UsersValidator } from '../validations/users/index.js';
 export const postUsersController = async (req, res) => {
   UsersValidator.validatePostUsersPayload(req.body);
 
-  const { npm, name, password, faculty, major } = req.body;
+  const { npm, name, password, faculty, major, role } = req.body;
 
   const usersService = new UsersService();
 
@@ -14,6 +14,7 @@ export const postUsersController = async (req, res) => {
     password,
     faculty,
     major,
+    role,
   });
 
   res.status(201);

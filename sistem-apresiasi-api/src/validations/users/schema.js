@@ -7,8 +7,8 @@ export const PostUsersPayloadSchema = Joi.object({
     .required(),
   name: Joi.string().required(),
   password: Joi.string().min(8).required(),
-  faculty: Joi.string().required(),
-  major: Joi.string().required(),
+  faculty: Joi.string(),
+  major: Joi.string(),
   role: Joi.string().valid('BASIC', 'OPERATOR', 'ADMIN', 'WD', 'WR'),
 });
 
