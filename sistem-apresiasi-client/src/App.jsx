@@ -5,6 +5,8 @@ import LoginPage from "./pages/LoginPage";
 
 import HomePage from "./pages/HomePage";
 import Students from "./pages/Dashboard/Students";
+import AdminFakultas from "./pages/Dashboard/Admin/AdminFakultas";
+import AdminWd3 from "./pages/Dashboard/Admin/AdminWd3";
 
 const App = () => (
   <Router>
@@ -14,6 +16,8 @@ const App = () => (
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mahasiswa" element={<Students />} />
+          <Route path="/adminfakultas" element={<AdminFakultas />} />
+          <Route path="/wd3" element={<AdminWd3 />} />
         </Routes>
       </div>
     </div>

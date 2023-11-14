@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { logoDark } from "../../../assets";
-import Profile from "./Profile";
-import Upload from "./Upload";
-import Transkrip from "./Transkrip";
-import History from "./History";
+import { logoDark } from "../../../../assets";
 
-const SideBar = () => {
+const SideBarAdminFakultas = () => {
   const [open, setOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const Menus = [
-    { title: "Profile", src: "Profile", content: <Profile /> },
-    { title: "Upload Kegiatan", src: "Upload", content: <Upload /> },
-    { title: "Transkrip SKPI", src: "Transkrip", content: <Transkrip /> },
-    { title: "Riwayat", src: "History", content: <History /> },
+    { title: "Profile", src: "Profile" },
+    { title: "Upload Kegiatan", src: "Upload" },
+    { title: "Transkrip SKPI", src: "Transkrip" },
+    { title: "Riwayat", src: "History" },
   ];
 
   const [selectedMenu, setSelectedMenu] = useState(Menus[0]);
@@ -77,4 +73,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default SideBarAdminFakultas;
