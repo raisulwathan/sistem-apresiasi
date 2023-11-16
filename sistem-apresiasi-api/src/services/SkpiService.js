@@ -1,23 +1,31 @@
 import { PrismaClient } from '@prisma/client';
-import { InvariantError } from '../exceptions/InvariantError';
-import { NotFoundError } from '../exceptions/NotFoundError';
+import { InvariantError } from '../exceptions/InvariantError.js';
+import { NotFoundError } from '../exceptions/NotFoundError.js';
+import { verifyMinimumPoints } from '../utils/index.js';
 
 class SkpiService {
   constructor() {
     this._prisma = new PrismaClient();
   }
 
-  async addSkpi(
-    {
+  async addSkpi({
+    mandatoryPoints,
+    organizationPoints,
+    scientificPoints,
+    charityPoints,
+    talentPoints,
+    otherPoints,
+    owner,
+  }) {
+    verifyMinimumPoints({
       mandatoryPoints,
       organizationPoints,
       scientificPoints,
-      charityPoints,
       talentPoints,
+      charityPoints,
       otherPoints,
-    },
-    owner
-  ) {
+    });
+
     const newSkpi = await this._prisma.skpi.create({
       data: {
         mandatoryPoints,
@@ -62,21 +70,20 @@ class SkpiService {
 
   async getSkpiByFaculty(faculty) {
     const skpi = await this._prisma.skpi.findMany({
+      select: {
+        id: true,
+        status: true,
+        owner: {
+          select: {
+            name: true,
+            npm: true,
+            faculty: true,
+          },
+        },
+      },
       where: {
         owner: {
           faculty,
-        },
-      },
-      select: {
-        id,
-        status,
-      },
-      include: {
-        owner: {
-          select: {
-            npm,
-            name,
-          },
         },
       },
     });

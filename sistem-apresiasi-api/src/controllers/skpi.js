@@ -1,104 +1,136 @@
-import { AuthorizationError } from '../exceptions/AuthorizationError';
+import { AuthorizationError } from '../exceptions/AuthorizationError.js';
+import { InvariantError } from '../exceptions/InvariantError.js';
+import ActivitiesService from '../services/ActivitiesService.js';
+import SkpiService from '../services/SkpiService.js';
+import UsersService from '../services/UsersService.js';
 
-class SkpiControllers {
-  constructor({ skpiService, usersService, validator }) {
-    this._skpiService = skpiService;
-    this._usersService = usersService;
-    this._validator = validator;
-  }
+export const postSkpiController = async (req, res) => {
+  const userId = req.userId;
+  const activitiesService = new ActivitiesService();
+  const skpiService = new SkpiService();
 
-  async postSkpiController(req, res) {
-    this._validator.validatePostSkpiPayload(req.body);
+  const activityPoints = await activitiesService.getActivityPoints(userId);
 
-    const userId = req.userId;
-    const payload = req.body;
+  const mandatoryPoints = activityPoints['Kegiatan Wajib'];
+  const organizationPoints =
+    activityPoints['Bidang Organisasi Kemahasiswaan dan Kepemimpinan'] || 0;
+  const talentPoints =
+    activityPoints[
+      'Bidang Minat, Bakat, Mental Spritiual Kebangsaan dan Kewirausahaan'
+    ] || 0;
+  const scientificPoints =
+    activityPoints[
+      'Bidang Penalaran dan Keilmuan, Penyelarasan dan Pengembangan Karir'
+    ] || 0;
+  const charityPoints = activityPoints['Bidang Kepedulian Sosial'] || 0;
+  const otherPoints = activityPoints['Bidang Lainnya'] || 0;
 
-    await this._skpiService.isExistSkpiByOwner(userId);
-    const newSkpi = await this._skpiService.addSkpi(payload, userId);
+  await skpiService.isExistSkpiByOwner(userId);
+  const newSkpi = await skpiService.addSkpi({
+    mandatoryPoints,
+    organizationPoints,
+    scientificPoints,
+    talentPoints,
+    charityPoints,
+    otherPoints,
+    owner: userId,
+  });
 
-    res.status(201);
-    res.json({
+  res.status(201);
+  res.json({
+    status: 'success',
+    message: 'SKPI added',
+    data: {
+      skpiId: newSkpi.id,
+      userId: newSkpi.ownerId,
+    },
+  });
+};
+
+export const getSkpiController = async (req, res) => {
+  const { userId, userRole } = req;
+  const usersService = new UsersService();
+  const skpiService = new SkpiService();
+
+  if (userRole === 'WD' || userRole === 'OPERATOR') {
+    const users = await usersService.getUserById(userId);
+    const skpi = await skpiService.getSkpiByFaculty(users.faculty);
+
+    return res.json({
       status: 'success',
-      message: 'SKPI added',
       data: {
-        skpiId: newSkpi.id,
-        userId: newSkpi.ownerId,
+        skpi,
       },
     });
   }
 
-  async getSkpiController(req, res) {
-    const { userId, userRole } = req;
+  if (userRole === 'WR') {
+    const skpi = await skpiService.getSkpi();
 
-    if (userRole === 'WD') {
-      const users = await this._usersService.getUserById(userId);
-
-      const skpi = await this._skpiService.getSkpiByFaculty(users.faculty);
-
-      res.json({
-        status: 'success',
-        data: {
-          skpi,
-        },
-      });
-    }
-
-    if (userRole === 'WR') {
-      const skpi = await this._skpiService.getSkpi();
-
-      res.json({
-        status: 'success',
-        data: {
-          skpi,
-        },
-      });
-    }
-
-    const skpi = await this._skpiService.getSkpiByOwner(userId);
-
-    res.json({
+    return res.json({
       status: 'success',
       data: {
-        ...skpi,
+        skpi,
       },
     });
   }
 
-  async getSkpiByIdController(req, res) {
-    const { id } = req.params;
+  const skpi = await skpiService.getSkpiByOwner(userId);
 
-    const skpi = await this._skpiService.getSkpiById(id);
+  res.json({
+    status: 'success',
+    data: {
+      ...skpi,
+    },
+  });
+};
 
-    res.json({
-      status: 'success',
-      data: {
-        ...skpi,
-      },
-    });
+export const getSkpiByIdController = async (req, res) => {
+  const { id } = req.params;
+  const skpiService = new SkpiService();
+
+  const skpi = await skpiService.getSkpiById(id);
+
+  res.json({
+    status: 'success',
+    data: {
+      ...skpi,
+    },
+  });
+};
+
+export const putStatusSkpiByIdController = async (req, res) => {
+  const { id } = req.params;
+  const skpiService = new SkpiService();
+  const { userRole } = req;
+  let status;
+
+  if (userRole !== 'WD' && userRole !== 'WR') {
+    throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
   }
 
-  async putStatusSkpiByIdController(req, res) {
-    const { id } = req.params;
-    const userRole = req.userRole;
-    let status;
+  if (userRole === 'WD') {
+    const skpi = await skpiService.getSkpiById(id);
 
-    if (userRole !== 'WD' || userRole !== 'WR') {
-      throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+    if (skpi.status !== 'pending') {
+      throw new InvariantError('SKPI sudah divalidasi atau sudah selesai');
     }
 
-    if (userRole === 'WD') {
-      status = 'accepted';
-    } else {
-      status = 'completed';
+    status = 'accepted';
+  } else {
+    const skpi = await skpiService.getSkpiById(id);
+
+    if (skpi.status !== 'accepted') {
+      throw new InvariantError('SKPI belum divalidasi oleh pihak Fakultas');
     }
 
-    await this._skpiService.editStatusSkpiById({ status, id });
-
-    res.json({
-      status: 'success',
-      message: 'skpi berhasil divalidasi',
-    });
+    status = 'completed';
   }
-}
 
-export default SkpiControllers;
+  await skpiService.editStatusSkpiById({ status, id });
+
+  res.json({
+    status: 'success',
+    message: 'skpi berhasil divalidasi',
+  });
+};

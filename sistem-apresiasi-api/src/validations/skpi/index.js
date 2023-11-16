@@ -1,5 +1,5 @@
-import { InvariantError } from '../../exceptions/InvariantError';
-import { PostSkpiPayloadSchema } from './schema';
+import { InvariantError } from '../../exceptions/InvariantError.js';
+import { PostSkpiPayloadSchema } from './schema.js';
 
 export const SkpiValidator = {
   validatePostSkpiPayload: (payload) => {

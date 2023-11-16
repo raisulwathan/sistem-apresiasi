@@ -31,10 +31,16 @@ class ActivitiesService {
     fileUrl,
     owner,
   }) {
-    const path = `./src/data/${fieldActivity}.json`;
-    const data = loadData(path);
+    let point;
 
-    const point = getBobotSKP(data, { activity, level, possitionAchievement });
+    if (fieldActivity === 'kegiatanWajib') {
+      point = 10;
+    } else {
+      const path = `./src/data/${fieldActivity}.json`;
+      const data = loadData(path);
+
+      point = getBobotSKP(data, { activity, level, possitionAchievement });
+    }
     const newFieldActivity = _FIELD_ACTIVITY[fieldActivity];
 
     const newActivity = await this._prisma.activity.create({

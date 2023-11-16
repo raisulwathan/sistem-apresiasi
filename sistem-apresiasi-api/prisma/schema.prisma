@@ -52,11 +52,9 @@ model Activity {
 }
 
 model Achievement {
-  id         String  @id @default(cuid())
-  sks        String?
-  freshMoney String?
+  id String @id @default(cuid())
 
-  activityId String
+  activityId String   @unique
   activity   Activity @relation(fields: [activityId], references: [id])
 
   ownerId String

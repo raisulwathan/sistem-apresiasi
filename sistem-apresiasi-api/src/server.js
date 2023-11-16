@@ -6,6 +6,7 @@ import activityRouter from './routes/activities.js';
 import usersRouter from './routes/users.js';
 import authRouter from './routes/authentications.js';
 import skpiRouter from './routes/skpi.js';
+import achievementRouter from './routes/achievements.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -21,7 +22,8 @@ app.use(cors());
 app.use('/api/v1/activities', activityRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/authentications', authRouter);
-app.user('api/v1/skpi', skpiRouter);
+app.use('/api/v1/skpi', skpiRouter);
+app.use('/api/v1/achievements', achievementRouter);
 
 // Error handler
 app.use(errorHandler);
