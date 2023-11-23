@@ -1,0 +1,1775 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ApresiasiUSK Restful API",
+    "version": "1",
+    "description": "Documentation API with OpenAPI for ApresiasiUSK Restful API",
+    "contact": {
+      "name": "M.Khawaril Putra",
+      "email": "m.khawarilputra24@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1",
+      "description": "ApresiasiUSK Restful API Server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create new User",
+        "description": "Creating new User to database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "npm": {
+                    "type": "string",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 13,
+                    "pattern": "^[0-9]+$"
+                  },
+                  "name": {
+                    "type": "string",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "password": {
+                    "type": "string",
+                    "required": true,
+                    "minLength": 8
+                  },
+                  "faculty": {
+                    "type": "string",
+                    "required": false
+                  },
+                  "major": {
+                    "type": "string",
+                    "required": false
+                  },
+                  "role": {
+                    "type": "string",
+                    "required": true,
+                    "enum": ["BASIC", "OPERATOR", "WD", "WR", "ADMIN"]
+                  }
+                }
+              },
+              "examples": {
+                "BASIC": {
+                  "description": "for BASIC role, property faculty and major is required",
+                  "value": {
+                    "npm": "2008107010038",
+                    "name": "M.Khawaril Putra",
+                    "password": "Khawaril123",
+                    "faculty": "FMIPA",
+                    "major": "Informatika",
+                    "role": "BASIC"
+                  }
+                },
+                "OPERATOR AND WD": {
+                  "description": "for BASIC role, property faculty and major is required",
+                  "value": {
+                    "npm": "2008107010038",
+                    "name": "M.Khawaril Putra",
+                    "password": "Khawaril123",
+                    "faculty": "FMIPA",
+                    "role": "OPERATOR"
+                  }
+                },
+                "ADMIN AND WR": {
+                  "description": "for BASIC role, property faculty and major is required",
+                  "value": {
+                    "npm": "2008107010038",
+                    "name": "M.Khawaril Putra",
+                    "password": "Khawaril123",
+                    "role": "ADMIN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Succeed creating new User",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "default": "success"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get details User's data",
+        "description": "Return details data for User, only Admin, Operator role or User itseft can access this path ",
+        "parameters": [{ "$ref": "#/components/parameters/UserId" }],
+        "responses": {
+          "200": {
+            "description": "Success get User by Id",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "default": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "npm": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "faculty": {
+                          "type": "string"
+                        },
+                        "major": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update existing User",
+        "description": "Update existing User in database",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UserId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "required": true,
+                    "enum": ["BASIC", "OPERATOR", "WD", "WR", "ADMIN"]
+                  }
+                }
+              },
+              "example": {
+                "role": "OPERATOR"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succeed updated User role",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "default": "success"
+                    },
+                    "meessage": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/authentications": {
+      "post": {
+        "tags": ["Authentications"],
+        "summary": "Authentication user credential",
+        "description": "Authentication user credential with npm and password. Returning Access Token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "npm": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "npm": "2008107010028",
+                "password": "secret00776"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success authenticate user credential",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "token": "sfsbjnkm1kn2ju3y7389fji"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "description": "NPM or password is not valid",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "fail",
+                  "message": "NPM and Password not match"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities": {
+      "post": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Create new activity",
+        "description": "Creating new user's activity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "fieldActivity": {
+                    "type": "string",
+                    "enum": [
+                      "kegiatanWajib",
+                      "bidangOrganisasi",
+                      "bidangKeilmuan",
+                      "bidangBaktiSosial",
+                      "bidangMinatBakat",
+                      "bidangLainnya"
+                    ],
+                    "required": true
+                  },
+                  "activity": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "possitionAchievement": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "years": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "fileUrl": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              },
+              "example": {
+                "name": "IT Mengapdi - Pulo Aceh",
+                "fieldActivity": "bidangBaktiSosial",
+                "activity": "pelaksanaan bakti sosial",
+                "level": "jurusan",
+                "location": "Pulo Aceh, Aceh Besar",
+                "years": "2022",
+                "fileUrl": "file/dsdnsndknksn.jpg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success creating new activity",
+            "content": {
+              "/appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "activityId": {
+                          "type": "string"
+                        },
+                        "ownerId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "message": "new activity added",
+                  "data": {
+                    "activityId": "sbfnoknjbry1ur8374",
+                    "ownerId": "djbfu124i8hfnj3u21"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get Activities",
+        "description": "Get all activity that user owned",
+        "responses": {
+          "200": {
+            "description": "Success get activities",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivities"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities/faculty": {
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get all activity by faculty",
+        "description": "Get all activity by owner faculty and user faculty",
+        "responses": {
+          "200": {
+            "description": "Success get all activity by faculty",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetActivities"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities/reject": {
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get rejected activities",
+        "description": "Get all rejected activity that user owned",
+        "responses": {
+          "200": {
+            "description": "Success get rejected activities",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "string"
+                          },
+                          "activity": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "fieldActivity": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities/points": {
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get activity points",
+        "description": "Get activity points. Only count activity that already validate by Operator",
+        "responses": {
+          "200": {
+            "description": "Success get activities points",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "object",
+                      "properties": {
+                        "Kegiatan Wajib": {
+                          "type": "integer"
+                        },
+                        "Bidang Organisasi Kemahasiswaan dan Kepemimpinan": {
+                          "type": "integer"
+                        },
+                        "Bidang Penalaran dan Keilmuan, Penyelarasan dan Pengembangan Karir": {
+                          "type": "integer"
+                        },
+                        "Bidang Minat, Bakat, Mental Spritiual Kebangsaan dan Kewirausahaan": {
+                          "type": "integer"
+                        },
+                        "Bidang Kepedulian Sosial": {
+                          "type": "integer"
+                        },
+                        "Bidang Lainnya": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities/{activityId}": {
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [{ "$ref": "#/components/parameters/ActivityId" }],
+        "responses": {
+          "200": {
+            "description": "Success get activity by activity id",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDetailActivity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activities/{activityId}/validate": {
+      "put": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Validate activity status",
+        "description": "Validate activity status. Only Operator can use this path",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ActivityId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["accepted", "rejected"]
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "accepted": {
+                  "description": "accepted activity",
+                  "value": {
+                    "status": "accepted"
+                  }
+                },
+                "rejected": {
+                  "description": "reject activity",
+                  "value": {
+                    "status": "rejected",
+                    "message": "sertifikat tidak sesuai dengan detail kegiatan"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success validate activity",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/activities/{activityId}/rejects": {
+      "get": {
+        "tags": ["Activities"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get rejected activity",
+        "description": "Get detail activity where status is rejected",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ActivityId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get detail rejected activities",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "activityId": {
+                          "type": "string"
+                        },
+                        "ownerId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements": {
+      "post": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Post achievement data",
+        "description": "Post achievement data base on data from activities",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "appliication/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "activityId": {
+                    "type": "string"
+                  },
+                  "ownerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success post activity to achievements data",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievementId": {
+                          "type": "string"
+                        },
+                        "ownerId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get achievements data",
+        "description": "Get achievements data. if user role is operator, achievement data will filtered by faculty",
+        "responses": {
+          "200": {
+            "description": "Success get Achievements data",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "activity": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "fieldActivity": {
+                                "type": "string"
+                              },
+                              "levels": {
+                                "type": "string"
+                              },
+                              "years": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "owner": {
+                            "type": "object",
+                            "properties": {
+                              "npm": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "achievements": [
+                      {
+                        "id": "clp1cq7me00015caopyfepxkq",
+                        "activity": {
+                          "name": "infest",
+                          "fieldsActivity": "Bidang Organisasi Kemahasiswaan dan Kepemimpinan",
+                          "levels": "fakultas",
+                          "years": "2023"
+                        },
+                        "owner": {
+                          "npm": "2008107010038",
+                          "name": "M. Khawaril Putra"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievements/{achievementId}": {
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get achievement by id",
+        "description": "Get detail achievement data",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get detail achievement data",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievement": {
+                          "type": "object",
+                          "properties": {
+                            "activity": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "fieldActivity": {
+                                  "type": "string"
+                                },
+                                "activity": {
+                                  "type": "string"
+                                },
+                                "levels": {
+                                  "type": "string"
+                                },
+                                "possitions_achievements": {
+                                  "type": "string"
+                                },
+                                "locations": {
+                                  "type": "string"
+                                },
+                                "years": {
+                                  "type": "string"
+                                },
+                                "points": {
+                                  "type": "integer"
+                                },
+                                "fileUrl": {
+                                  "type": "string"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": ["pending", "accepted", "rejected"]
+                                },
+                                "ownerId": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "owner": {
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "npm": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "password": {
+                                  "type": "string"
+                                },
+                                "faculty": {
+                                  "type": "string"
+                                },
+                                "major": {
+                                  "type": "string"
+                                },
+                                "role": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "achievement": {
+                      "activity": {
+                        "id": "clohj0had00045ccc1xldpe81",
+                        "name": "infest",
+                        "fieldsActivity": "Bidang Organisasi Kemahasiswaan dan Kepemimpinan",
+                        "activity": "pengurus organisasi intrakampus",
+                        "levels": "fakultas",
+                        "possitions_achievements": "wakilKetua",
+                        "locations": "banda aceh",
+                        "years": "2023",
+                        "points": 12,
+                        "fileUrl": "file/sertifikat.pdf",
+                        "status": "reject",
+                        "ownerId": "clohiwg2j00005cccexrgri6a"
+                      },
+                      "owner": {
+                        "id": "clohiwg2j00005cccexrgri6a",
+                        "npm": "2008107010038",
+                        "password": "$2b$10$SNPzn7eWgnuT2ESmTWZRI.lvLizbs/CiVSVjM5CSfY5iAfq1wyWZu",
+                        "name": "M. Khawaril Putra",
+                        "faculty": "MIPA",
+                        "major": "Informatika",
+                        "role": "BASIC"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skpi": {
+      "post": {
+        "tags": ["Skpi"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Post activity data to skpi",
+        "description": "Post acitivity data to skpi. activity came from acitivities database that user owned. Only can post when having 20 point of Kegiatan Wajib and having minimum 1 (one) activity of other fields",
+        "responses": {
+          "201": {
+            "description": "Success post Skpi",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "skpiId": {
+                          "type": "string"
+                        },
+                        "ownerId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Activity Points no enough. Need 20 point of Kegiatan Wajib and have minimum 1 (one) activity of other fields",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "default": "fail"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Skpi"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get SKPI",
+        "description": "Get Skpi. if users role is BASIC will return skpi by owner id. if users role is WD skpi will filtered by operator's faculty. if users role is WR skpi will filtered by status is accepted",
+        "responses": {
+          "200": {
+            "description": "Success get skpi",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "skpi": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "owner": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "npm": {
+                                    "type": "string"
+                                  },
+                                  "faculty": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "WD": {
+                    "description": "User role is WD",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "skpi": [
+                          {
+                            "id": "cloyi6b3s00015c84kkee7z6c",
+                            "status": "pending",
+                            "owner": {
+                              "name": "M. Khawaril Putra",
+                              "npm": "2008107010038",
+                              "faculty": "MIPA"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "WR": {
+                    "description": "User role is WD",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "skpi": [
+                          {
+                            "id": "cloyi6b3s00015c84kkee7z6c",
+                            "status": "accepted",
+                            "owner": {
+                              "name": "M. Khawaril Putra",
+                              "npm": "2008107010038",
+                              "faculty": "MIPA"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "BASIC": {
+                    "description": "User role is WD",
+                    "value": {
+                      "status": "success",
+                      "data": {
+                        "id": "cloyi6b3s00015c84kkee7z6c",
+                        "mandatoryPoints": 20,
+                        "charityPoints": 0,
+                        "scientificPoints": 0,
+                        "talentPoints": 0,
+                        "organizationPoints": 6,
+                        "otherPoints": 0,
+                        "status": "completed",
+                        "ownerId": "clohiwg2j00005cccexrgri6a"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skpi/{skpiId}": {
+      "get": {
+        "tags": ["Skpi"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get detail Skpi by Id",
+        "description": "Get detail skpi by skpi Id",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SkpiId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get detail skpi",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "mandatoryPoints": {
+                          "type": "integer"
+                        },
+                        "charityPoints": {
+                          "type": "integer"
+                        },
+                        "scientificPoints": {
+                          "type": "integer"
+                        },
+                        "talentPoints": {
+                          "type": "integer"
+                        },
+                        "organizationPoints": {
+                          "type": "integer"
+                        },
+                        "otherPoints": {
+                          "type": "integer"
+                        },
+                        "ownerId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": "cloyi6b3s00015c84kkee7z6c",
+                    "mandatoryPoints": 20,
+                    "charityPoints": 0,
+                    "scientificPoints": 0,
+                    "talentPoints": 0,
+                    "organizationPoints": 6,
+                    "otherPoints": 0,
+                    "status": "completed",
+                    "ownerId": "clohiwg2j00005cccexrgri6a"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/skpi/{skpiId}/validate": {
+      "put": {
+        "tags": ["Skpi"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Put status skpi",
+        "description": "Validate skpi by skpi id with users with role WD and WR",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SkpiId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success put skpi status",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "WD try to validate skpi that already validated",
+            "content": {
+              "appliication/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "default": "fail"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "GetActivities": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "activity": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fieldActivity": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetDetailActivity": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "activity": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "fieldActivity": {
+                    "type": "string"
+                  },
+                  "activity": {
+                    "type": "string"
+                  },
+                  "levels": {
+                    "type": "string"
+                  },
+                  "possitions_achievements": {
+                    "type": "string"
+                  },
+                  "locations": {
+                    "type": "string"
+                  },
+                  "years": {
+                    "type": "string"
+                  },
+                  "points": {
+                    "type": "integer"
+                  },
+                  "fileUrl": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["pending", "accepted", "rejected"]
+                  },
+                  "ownerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "UserId": {
+        "name": "userId",
+        "description": "User's Id for get User data",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "khawaril": {
+            "description": "Sample user id for user Khawaril",
+            "value": "jsdvhhh32fiqubcq24"
+          },
+          "wathan": {
+            "description": "Sample user id for user Wathan",
+            "value": "ksfhvvyubin343y28hcb"
+          }
+        }
+      },
+      "ActivityId": {
+        "name": "activityId",
+        "description": "Activity Id for get activity data",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "pakarmaru fakultas": {
+            "description": "Sample activity id",
+            "value": "jsdvhhh32fiqubcq24"
+          },
+          "panitia IT-Mengapdi": {
+            "description": "Sample activity id",
+            "value": "ksfhvvyubin343y28hcb"
+          }
+        }
+      },
+      "AchievementId": {
+        "name": "achievementId",
+        "description": "Achievement Id for get achievement data",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "pakarmaru fakultas": {
+            "description": "Sample activity id",
+            "value": "jsdvhhh32fiqubcq24"
+          },
+          "panitia IT-Mengapdi": {
+            "description": "Sample activity id",
+            "value": "ksfhvvyubin343y28hcb"
+          }
+        }
+      },
+      "SkpiId": {
+        "name": "skpiId",
+        "description": "Skpi Id for get skpi data",
+        "required": true,
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "examples": {
+          "khawarilSkpi": {
+            "description": "Sample skpi id",
+            "value": "jsdvhhh32fiqubcq24"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Payload not containt needed property and not meet data type specification",
+        "content": {
+          "appliication/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "fail"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "message": "property A is required"
+            }
+          }
+        }
+      },
+      "Unauthenticated": {
+        "description": "Unauthenticated or token not valid",
+        "content": {
+          "appliication/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "fail"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "message": "Unauthenticated or token is not valid"
+            }
+          }
+        }
+      },
+      "Unauthorization": {
+        "description": "Unauthorization, forbiden resources",
+        "content": {
+          "appliication/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "fail"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "message": "User id is not have right to access this resources"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "User Id not found",
+        "content": {
+          "appliication/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "fail"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "status": "fail",
+              "message": "fail to get/add/edit/delete data. id is not valid"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server Error",
+        "content": {
+          "appliication/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "default": "error"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "status": "error",
+              "message": "Something wrong in our servers"
+            }
+          }
+        }
+      }
+    }
+  }
+}

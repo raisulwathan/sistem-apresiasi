@@ -28,7 +28,8 @@ export const postAchievementController = async (req, res) => {
 
   res.status(201);
   res.json({
-    status: 'Achievement added',
+    status: 'success',
+    message: 'Achievement added',
     data: {
       achievement,
     },

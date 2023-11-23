@@ -24,7 +24,7 @@ class AchievementsService {
 
     return {
       achievementId: addedAchievement.id,
-      userId: addedAchievement.ownerId,
+      ownerId: addedAchievement.ownerId,
     };
   }
 

@@ -85,6 +85,8 @@ export const getActivitiesPointsController = async (req, res) => {
 };
 
 export const putStatusActivityController = async (req, res) => {
+  ActivityValidator.validatePutActivityPayload(req.body);
+
   const { userId, userRole } = req;
   const { id } = req.params;
   const { status, message } = req.body;

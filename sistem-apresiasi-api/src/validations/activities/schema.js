@@ -22,4 +22,9 @@ export const PostActivityPayloadSchema = Joi.object({
 
 export const PutActivityPayloadSchema = Joi.object({
   status: Joi.string().valid('accepted', 'rejected').required(),
+  message: Joi.when('status', {
+    is: 'rejected',
+    then: Joi.string().required(),
+    otherwise: Joi.optional(),
+  }),
 });

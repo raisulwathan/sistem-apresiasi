@@ -70,6 +70,12 @@ class ActivitiesService {
 
   async getActivities(owner) {
     const activites = await this._prisma.activity.findMany({
+      select: {
+        id: true,
+        name: true,
+        fieldsActivity: true,
+        points: true,
+      },
       where: {
         ownerId: owner,
       },
