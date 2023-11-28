@@ -187,6 +187,17 @@ class ActivitiesService {
 
   async getRejectedActivities(owner) {
     const activities = await this._prisma.rejectedActivity.findMany({
+      select: {
+        id: true,
+        message: true,
+        activity: {
+          select: {
+            id: true,
+            name: true,
+            fieldsActivity: true,
+          },
+        },
+      },
       where: {
         ownerId: owner,
       },
