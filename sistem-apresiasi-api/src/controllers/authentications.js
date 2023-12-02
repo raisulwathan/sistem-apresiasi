@@ -19,6 +19,7 @@ export const postAuthentication = async (req, res) => {
     status: 'success',
     data: {
       token,
+      role,
     },
   });
 };
