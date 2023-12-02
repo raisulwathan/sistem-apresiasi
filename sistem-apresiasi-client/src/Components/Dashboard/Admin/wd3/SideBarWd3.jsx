@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { logoDark } from "../../../../assets";
 import KegiatanMahasiswa from "./KegiatanMahasiswa";
 import Prestasi from "./Prestasi";
+import axios from "axios";
 
 const SideBarWd3 = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const Menus = [
     { title: "Kegiatan Mahasiswa", src: "Upload", content: <KegiatanMahasiswa /> },
@@ -12,6 +14,23 @@ const SideBarWd3 = () => {
   ];
 
   const [selectedMenu, setSelectedMenu] = useState(Menus[0]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("URL_GET_USER_DATA");
+      if (response.status === 200) {
+        setUserData(response.data);
+      } else {
+        console.error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -44,8 +63,8 @@ const SideBarWd3 = () => {
           ))}
           <li className="relative mx-1 mt-64 rounded-lg hover:bg-dimBlue ">
             <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-              <img src="./src/assets/userSet.png" className="w-8 lg:w-10" />
-              <span className={` pl-4 pt-2 duration-400`}>Ilham Maulana</span>
+              <img src={userData.profilePicture || "./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
+              <span className={` pl-4 pt-2 duration-400`}>{userData.username || "Ilham Maulana"}</span>
               <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[180px] bg-white border w-40 border-secondary rounded-lg`}>
                 <li className="cursor-pointer " onClick={handleLogout}>
                   <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">

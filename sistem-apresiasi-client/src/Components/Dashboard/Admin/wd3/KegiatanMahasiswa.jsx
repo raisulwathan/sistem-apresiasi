@@ -21,7 +21,7 @@ const KegiatanMahasiswa = () => {
       <h2 className="pl-6 font-semibold text-gray-700 font-poppins">Kegiatan Mahasiswa</h2>
 
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        <table className="w-full">
+        <table className="w-full ">
           <thead>
             <tr>
               <th className="text-base font-normal">Npm</th>
