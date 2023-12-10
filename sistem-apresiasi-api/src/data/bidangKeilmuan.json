@@ -4,46 +4,46 @@
       "kegiatan": "lomba karya ilmiah",
       "tingkat": {
         "internasional": {
-          "juara1": 120,
-          "juara2 ": 110,
-          "juara3": 100,
-          "finalis": 100,
-          "peserta": 90
+          "Juara 1": 120,
+          "Juara 2 ": 110,
+          "Juara 3": 100,
+          "Finalis": 100,
+          "Peserta": 90
         },
         "nasional": {
-          "juara1": 100,
-          "juara2 ": 90,
-          "juara3": 80,
-          "finalis": 70,
-          "peserta": 50
+          "Juara 1": 100,
+          "Juara 2 ": 90,
+          "Juara 3": 80,
+          "Finalis": 70,
+          "Peserta": 50
         },
         "regional": {
-          "juara1": 70,
-          "juara2 ": 60,
-          "juara3": 50,
-          "finalis": 40,
-          "peserta": 30
+          "Juara 1": 70,
+          "Juara 2 ": 60,
+          "Juara 3": 50,
+          "Finalis": 40,
+          "Peserta": 30
         },
         "universitas": {
-          "juara1": 50,
-          "juara2 ": 45,
-          "juara3": 40,
-          "finalis": 30,
-          "peserta": 20
+          "Juara 1": 50,
+          "Juara 2 ": 45,
+          "Juara 3": 40,
+          "Finalis": 30,
+          "Peserta": 20
         },
         "fakultas": {
-          "juara1": 30,
-          "juara2 ": 28,
-          "juara3": 25,
-          "finalis": 20,
-          "peserta": 15
+          "Juara 1": 30,
+          "Juara 2 ": 28,
+          "Juara 3": 25,
+          "Finalis": 20,
+          "Peserta": 15
         },
         "jurusan": {
-          "juara1": 15,
-          "juara2 ": 12,
-          "juara3": 10,
-          "finalis": 8,
-          "peserta": 5
+          "Juara 1": 15,
+          "Juara 2 ": 12,
+          "Juara 3": 10,
+          "Finalis": 8,
+          "Peserta": 5
         }
       }
     },
@@ -51,34 +51,34 @@
       "kegiatan": "kegiatan karya ilmiah",
       "tingkat": {
         "internasional": {
-          "pembicara": 100,
-          "moderator ": 40,
-          "peserta": 20
+          "Pembicara": 100,
+          "Moderator ": 40,
+          "Peserta": 20
         },
         "nasional": {
-          "pembicara": 60,
-          "moderator ": 25,
-          "peserta": 15
+          "Pembicara": 60,
+          "Moderator ": 25,
+          "Peserta": 15
         },
         "regional": {
-          "pembicara": 40,
-          "moderator ": 15,
-          "peserta": 10
+          "Pembicara": 40,
+          "Moderator ": 15,
+          "Peserta": 10
         },
         "universitas": {
-          "pembicara": 30,
-          "moderator ": 15,
-          "peserta": 8
+          "Pembicara": 30,
+          "Moderator ": 15,
+          "Peserta": 8
         },
         "fakultas": {
-          "pembicara": 20,
-          "moderator ": 10,
-          "peserta": 5
+          "Pembicara": 20,
+          "Moderator ": 10,
+          "Peserta": 5
         },
         "jurusan": {
-          "pembicara": 10,
-          "moderator ": 5,
-          "peserta": 3
+          "Pembicara": 10,
+          "Moderator ": 5,
+          "Peserta": 3
         }
       }
     },
@@ -90,16 +90,16 @@
       "kegiatan": "menghasilkan karya ilmiah",
       "tingkat": {
         "internasional": {
-          "ketua": 100,
-          "anggota ": 50
+          "Ketua": 100,
+          "Anggota ": 50
         },
         "nasional": {
-          "ketua": 75,
-          "anggota ": 35
+          "Ketua": 75,
+          "Anggota ": 35
         },
         "lainnya": {
-          "ketua": 15,
-          "anggota ": 10
+          "Ketua": 15,
+          "Anggota ": 10
         }
       }
     },
@@ -107,27 +107,27 @@
       "kegiatan": "kegiatan karya populer",
       "tingkat": {
         "internasional": {
-          "ketua": 40,
-          "anggota ": 20
+          "Ketua": 40,
+          "Anggota ": 20
         },
         "nasional": {
-          "ketua": 30,
-          "anggota ": 15
+          "Ketua": 30,
+          "Anggota ": 15
         },
         "regional": {
-          "ketua": 20,
-          "anggota ": 10
+          "Ketua": 20,
+          "Anggota ": 10
         },
         "universitas": {
-          "ketua": 10,
-          "anggota ": 5
+          "Ketua": 10,
+          "Anggota ": 5
         }
       }
     },
     {
       "kegiatan": "menghasilkan karya ilmiah yang didanai",
-      "ketua": 15,
-      "anggota": 7
+      "Ketua": 15,
+      "Anggota": 7
     },
     {
       "kegiatan": "memberikan pelatihan karya tulis",
@@ -145,38 +145,38 @@
       "kegiatan": "pilmapres",
       "tingkat": {
         "internasional": {
-          "juara1": 100,
-          "juara2 ": 90,
-          "juara3": 80,
-          "finalis": 70,
-          "peserta": 50
+          "Juara 1": 100,
+          "Juara 2 ": 90,
+          "Juara 3": 80,
+          "Finalis": 70,
+          "Peserta": 50
         },
         "nasional": {
-          "juara1": 80,
-          "juara2 ": 70,
-          "juara3": 60,
-          "finalis": 50,
-          "peserta": 30
+          "Juara 1": 80,
+          "Juara 2 ": 70,
+          "Juara 3": 60,
+          "Finalis": 50,
+          "Peserta": 30
         },
         "regional": {
-          "juara1": 60,
-          "juara2 ": 50,
-          "juara3": 40,
-          "finalis": 30,
-          "peserta": 10
+          "Juara 1": 60,
+          "Juara 2 ": 50,
+          "Juara 3": 40,
+          "Finalis": 30,
+          "Peserta": 10
         },
         "universitas": {
-          "juara1": 40,
-          "juara2 ": 30,
-          "juara3": 20,
-          "finalis": 10,
-          "peserta": 10
+          "Juara 1": 40,
+          "Juara 2 ": 30,
+          "Juara 3": 20,
+          "Finalis": 10,
+          "Peserta": 10
         },
         "fakultas": {
-          "juara1": 20,
-          "juara2 ": 15,
-          "juara3": 10,
-          "peserta": 5
+          "Juara 1": 20,
+          "Juara 2 ": 15,
+          "Juara 3": 10,
+          "Peserta": 5
         }
       }
     },

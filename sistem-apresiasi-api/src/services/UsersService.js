@@ -1,15 +1,15 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
-import { InvariantError } from '../exceptions/InvariantError.js';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
-import { AuthenticationError } from '../exceptions/AuthenticationError.js';
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+import { InvariantError } from "../exceptions/InvariantError.js";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { AuthenticationError } from "../exceptions/AuthenticationError.js";
 
 class UsersService {
   constructor() {
     this._prisma = new PrismaClient();
   }
 
-  async addUser({ npm, name, password, faculty, major, role = 'BASIC' }) {
+  async addUser({ npm, name, password, faculty, major, role = "BASIC" }) {
     await this.isExist(npm);
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,7 +26,7 @@ class UsersService {
     });
 
     if (!users) {
-      throw new InvariantError('Failed to add users');
+      throw new InvariantError("Failed to add users");
     }
 
     return users.id;
@@ -57,7 +57,7 @@ class UsersService {
     });
 
     if (!editedUser.id) {
-      throw new NotFoundError('failed to edit users. id not found');
+      throw new NotFoundError("failed to edit users. id not found");
     }
   }
 
@@ -69,9 +69,7 @@ class UsersService {
     });
 
     if (!user) {
-      throw new AuthenticationError(
-        'The credentials you provided are incorrect'
-      );
+      throw new AuthenticationError("The credentials you provided are incorrect");
     }
 
     const { id, role, password: hashedPassword } = user;
@@ -79,9 +77,7 @@ class UsersService {
     const match = await bcrypt.compare(password, hashedPassword);
 
     if (!match) {
-      throw new AuthenticationError(
-        'The credentials you provided are incorrect'
-      );
+      throw new AuthenticationError("The credentials you provided are incorrect");
     }
 
     return { id, role };
@@ -93,7 +89,7 @@ class UsersService {
     });
 
     if (users) {
-      throw new Error('npm is exits');
+      throw new Error("npm is exits");
     }
   }
 }

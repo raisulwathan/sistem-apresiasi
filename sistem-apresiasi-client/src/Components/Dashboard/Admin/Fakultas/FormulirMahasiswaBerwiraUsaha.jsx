@@ -44,7 +44,7 @@ function FormulirMahasiswaBerwiraUsaha() {
 
   return (
     <div className="w-[1130px] h-[700px] p-6 ">
-      <h1 className="text-2xl font-semibold mb-11">Formulir Pertukaran Mahasiswa</h1>
+      <h1 className="text-2xl font-semibold mb-11">Formulir Mahasiswa Berwira Usaha</h1>
       <form onSubmit={handleSubmit} className=" space-y-14">
         <div className="flex items-center">
           <label htmlFor="fakultas" className="w-36">

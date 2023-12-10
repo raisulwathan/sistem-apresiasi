@@ -1,18 +1,78 @@
 import React, { useState } from "react";
 import styles from "../../../style";
+import axios from "axios";
+import { getToken, refreshToken } from "../../../utils/Config";
+import { useEffect } from "react";
 
 const Upload = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedActivity, setSelectedActivity] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("");
   const [selectedParticipation, setSelectedParticipation] = useState("");
+  const [token, setToken] = useState("");
+  const [level, setLevel] = useState("");
+  const [name, setName] = useState("");
+
+  const updateToken = async () => {
+    try {
+      await refreshToken();
+      const newToken = getToken();
+      setToken(newToken);
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        let storedToken = getToken();
+        if (!storedToken) {
+          await updateToken();
+          storedToken = getToken();
+        }
+        setToken(storedToken);
+      } catch (error) {
+        console.error("Error fetching or refreshing token:", error);
+      }
+    };
+
+    fetchToken();
+  }, []);
+
+  const data = {
+    name: name,
+    fieldActivity: selectedCategory,
+    activity: selectedActivity,
+    level: level,
+    possitionAchievement: selectedParticipation,
+    years: selectedYear,
+    fileUrl: filename,
+  };
+
+  const handleUpload = async () => {
+    try {
+      const response = await axios.post("http://localhost:5001/api/v1/activities", data, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
     setSelectedParticipation("");
     setSelectedActivity("");
     setSelectedYear("");
+    setName("");
+    setLevel("");
     setFile("");
   };
 
@@ -29,53 +89,46 @@ const Upload = () => {
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const uploadedFile = e.target.files[0];
+    setFile(uploadedFile);
+    setFilename(uploadedFile.name);
   };
 
-  const handleUpload = () => {
-    console.log("Kategori:", selectedCategory);
-    console.log("Kegiatan:", selectedActivity);
-    console.log("Nama Kegiatan:", selectedParticipation);
-    console.log("Tahun Sertifikat:", selectedYear);
-    console.log("Partisipasi:", selectedParticipation);
-    console.log("File:", file);
+  const handleName = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleLevel = (e) => {
+    setLevel(e.target.value);
   };
 
   const participationOptionsForSelectedCategory = {
-    "Kategori 2": ["Ketua", "Wakil Ketua", "Sekretaris", "Wakil Sekretaris", "Bendahara", "Wakil Bendahara", "Ketua Seksi", "Anggota Pengurus"],
-    "Kategori 3": ["Juara 1", "Juara 2", "Juara 3", "Finalis", "Peserta terpilih"],
-    "Kategori 4": ["Juara 1", "Juara 2", "Juara 3", "Finalis", "Peserta terpilih"],
-    "Kategori 5": ["Tidak Ada"],
-    "Kategori 6": ["Tidak Ada"],
-    "Kategori 7": ["Tidak Ada"],
+    bidangOrganisasi: ["Ketua", "Wakil Ketua", "Sekretaris", "Wakil Sekretaris", "Bendahara", "Wakil Bendahara", "Ketua Seksi", "Anggota Pengurus"],
+    bidangKeilmuan: ["Juara 1", "Juara 2", "Juara 3", "Finalis", "Peserta terpilih"],
+    bidangMinat: ["Juara 1", "Juara 2", "Juara 3", "Finalis", "Peserta terpilih"],
+    bidangSosial: ["Tidak Ada"],
+    bidangLainnya: ["Tidak Ada"],
   };
 
   const kegiatanOptions = {
-    "Kategori 1": ["Pakarmaru Universitas", "Pakarmaru Fakultas"],
-    "Kategori 2": ["Pengurus organisasi interakampus", "pengurus organisasi extrakampus", "mengikuti pelatihan kepemimpinan", "latihan kepemimpinan lain", "panitia dalam suatu kegiatan mahasiswa", "partisipasi dalam pemira"],
-    "Kategori 3": [
-      "Memperoleh Prestasi dalam lomba karya ilmiah/lingkungan hidup/kreativitas/inovatif/pemikiran kritis dll",
-      "mengikuti kegiatan/forum ilmiah(seminar lokakarya,workshop,pameran)",
-      "menghaslkan temuan inovasi yang dipatenkan",
-      "menghasilkan karya yang dipublikasikan dalam majalah ilmiah",
-      "menghasilkan karya populer/yang diterbitkan disurat kabar/majalah /media lainnya",
-      "menghasilkan karya yang didanai oleh pemerintah atau pihak lain",
-      "Memberikan pelatihan atau bimbingan atau penyusunan karya tulis",
-      "mengikuti kuliah tamu/umum",
-      "terlibat dalam penelitian pihak lain",
-      "pilmapres, debat bahasa inggris, dan ON MIPA ,PT,KDMI,PKM,PIMnas,KRI,KRTI dll",
-      "Pelatihan/pembinaan soft skill/keterampilan",
-      "mengikuti program pertukaran mahasiswa",
+    kegiatanWajib: ["Pakarmaru Universitas", "Pakarmaru Fakultas"],
+    bidangOrganisasi: ["pengurus organisasi intrakampus", "pengurus organisasi ekstrakampus", "mengikuti pelatihan kempemimpinan", "pelatihan kempemimpinan lainnya", "panitia dalam suatu kegiatan mahasiswa", "berpartisipasi dalam pemira"],
+    bidangKeilmuan: [
+      "lomba karya ilmiah",
+      "kegiatan karya ilmiah",
+      "menghasilkan temuan inovasi",
+      "menghasilkan karya ilmiah",
+      "kegiatan karya populer",
+      "menghasilkan karya ilmiah yang didanai",
+      "memberikan pelatihan karya tulis",
+      "kuliah umum",
+      "penelitian pihak lain",
+      "pilmapres",
+      "pelatihan soft skill",
     ],
-    "Kategori 4": [
-      "memperoleh prestasi dalam kegiatan minat dan bakat",
-      "mengikuti kegiatan minat dan bakat",
-      "menjadi pelatih/pembimbing kegiatan minat dan bakat",
-      "melaksanakan aktivitas pembinaan khusus berkaitan dengan kegiatan minat dan bakat",
-      "menjadi mitra tanding pada kegiatan minat dan bakat",
-    ],
-    "Kategori 5": ["mengikuti pelaksanaan bakti sosial", "penangaanan bencana", "bantuan pembimbingan rutin (LBB ,pengajian TPA< PAUD)", "kegiatan lain induvidual sosial"],
-    "Kategori 6": ["upacara/apel", "berpartisipasi dalam kegiatan organisasi alumni", "melakukan kunjungan /studi banding", "magang kerja non akademi"],
+    bidangMinat: ["memperoleh prestasi", "mengikuti kegiatan", "pelatih", "pembinaan khusus", "mitra", "karya seni", "wirausaha"],
+    bidangSosial: ["pelaksanaan bakti sosial", "penanganan bencana", "bantuan pembimbingan", "esktrakampus", "lainnya"],
+    bidangLainnya: ["upacara/apel", "berpartisipasi dalam kegiatan organisasi alumni", "melakukan kunjungan/studi banding", "magang kerja non akademik", "mengikuti lomba mewakili institusi luar kampus atau individu"],
   };
 
   return (
@@ -89,12 +142,12 @@ const Upload = () => {
           <option className="text-center " value="">
             -- Pilih Kategori --
           </option>
-          <option value="Kategori 1">Kegiatan Wajib</option>
-          <option value="Kategori 2">Organisasi dan Kepemimpinan </option>
-          <option value="Kategori 3">Penalaran dan Keilmuan</option>
-          <option value="Kategori 4">Minat Bakat</option>
-          <option value="Kategori 5">Kepedulian Sosial</option>
-          <option value="Kategori 6">Kegiatan Lainnya</option>
+          <option value="kegiatanWajib">Kegiatan Wajib</option>
+          <option value="bidangOrganisasi">Organisasi dan Kepemimpinan </option>
+          <option value="bidangKeilmuan">Penalaran dan Keilmuan</option>
+          <option value="bidangMinat">Minat Bakat</option>
+          <option value="bidangSosial">Kepedulian Sosial</option>
+          <option value="bidangLainnya">Kegiatan Lainnya</option>
         </select>
       </div>
 
@@ -115,22 +168,16 @@ const Upload = () => {
         </select>
       </div>
 
-      {selectedCategory === "Kategori 2" || selectedCategory === "Kategori 3" || selectedCategory === "Kategori 4" || selectedCategory === "Kategori 5" || selectedCategory === "Kategori 6" ? (
+      {selectedCategory === "bidangOrganisasi" || selectedCategory === "bidangKeilmuan" || selectedCategory === "bidangMinat" || selectedCategory === "bidangSosial" || selectedCategory === "bidangLainnya" ? (
         <div className="lg:flex lg:mt-8">
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Nama Kegiatan :
           </label>
-          <input
-            type="text"
-            id="participation"
-            className="w-64 px-6 py-2 mt-4 lg:ml-[158px] text-sm text-center text-gray-500 border rounded-lg lg:w-96 font-poppins border-secondary"
-            onChange={handleParticipationChange}
-            placeholder="Nama Kegiatan"
-          />
+          <input type="text" id="participation" className="w-64 px-6 py-2 mt-4 lg:ml-[158px] text-sm text-center text-gray-500 border rounded-lg lg:w-96 font-poppins border-secondary" onChange={handleName} placeholder="Nama Kegiatan" />
         </div>
       ) : null}
 
-      {selectedCategory === "Kategori 2" || selectedCategory === "Kategori 3" || selectedCategory === "Kategori 4" ? (
+      {selectedCategory === "bidangOrganisasi" || selectedCategory === "bidangKeilmuan" || selectedCategory === "bidangMinat" ? (
         <div className="lg:flex lg:mt-8">
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Partisipasi :
@@ -147,12 +194,12 @@ const Upload = () => {
         </div>
       ) : null}
 
-      {selectedCategory !== "Kategori 1" && selectedCategory !== "Kategori 6" ? (
+      {selectedCategory !== "kegiatanWajib" && selectedCategory !== "bidangLainnya" ? (
         <div className="lg:flex lg:mt-8">
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Tingkat :
           </label>
-          <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+          <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
             <option value="">-- Tingkat --</option>
             <option value="Nasional">Nasional</option>
             <option value="Internasional">Internasional</option>

@@ -4,39 +4,39 @@
       "kegiatan": "memperoleh prestasi",
       "tingkat": {
         "internasional": {
-          "juara1": 80,
-          "juara2 ": 70,
-          "juara3": 60,
-          "finalis": 50,
-          "peserta": 40
+          "Juara 1": 80,
+          "Juara 2 ": 70,
+          "Juara 3": 60,
+          "Finalis": 50,
+          "Peserta terpilih": 40
         },
         "nasional": {
-          "juara1": 70,
-          "juara2 ": 60,
-          "juara3": 50,
-          "finalis": 30,
-          "peserta": 20
+          "Juara 1": 70,
+          "Juara 2 ": 60,
+          "Juara 3": 50,
+          "Finalis": 30,
+          "Peserta terpilih": 20
         },
         "regional": {
-          "juara1": 50,
-          "juara2 ": 40,
-          "juara3": 30,
-          "finalis": 10,
-          "peserta": 5
+          "Juara 1": 50,
+          "Juara 2 ": 40,
+          "Juara 3": 30,
+          "Finalis": 10,
+          "Peserta terpilih": 5
         },
         "universitas": {
-          "juara1": 30,
-          "juara2 ": 20,
-          "juara3": 10,
-          "finalis": 5,
-          "peserta": 3
+          "Juara 1": 30,
+          "Juara 2 ": 20,
+          "Juara 3": 10,
+          "Finalis": 5,
+          "Peserta terpilih": 3
         },
         "fakultas": {
-          "juara1": 20,
-          "juara2 ": 15,
-          "juara3": 10,
-          "finalis": 5,
-          "peserta": 3
+          "Juara 1": 20,
+          "Juara 2 ": 15,
+          "Juara 3": 10,
+          "Finalis": 5,
+          "Peserta terpilih": 3
         }
       }
     },
@@ -44,28 +44,28 @@
       "kegiatan": "mengikuti kegiatan",
       "tingkat": {
         "internasional": {
-          "delegasi": 50,
-          "peserta undangan ": 25,
-          "peserta": 10
+          "Delegasi": 50,
+          "Peserta undangan ": 25,
+          "Peserta": 10
         },
         "nasional": {
-          "delegasi": 30,
-          "peserta undangan ": 15,
-          "peserta": 10
+          "Delegasi": 30,
+          "Peserta undangan ": 15,
+          "Peserta": 10
         },
         "regional": {
-          "delegasi": 20,
-          "peserta undangan ": 10,
-          "peserta": 7
+          "Delegasi": 20,
+          "Peserta undangan ": 10,
+          "Peserta": 7
         },
         "universitas": {
-          "delegasi": 15,
-          "peserta undangan ": 7,
-          "peserta": 3
+          "Delegasi": 15,
+          "Peserta undangan ": 7,
+          "Peserta": 3
         },
         "fakultas": {
-          "delegasi": 10,
-          "peserta undangan ": 5
+          "Delegasi": 10,
+          "Peserta undangan ": 5
         }
       }
     },

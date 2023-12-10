@@ -4,64 +4,64 @@
       "kegiatan": "pengurus organisasi intrakampus",
       "tingkat": {
         "internasional": {
-          "ketua": 30,
-          "wakilKetua": 25,
-          "sekretaris": 25,
-          "wakilSekretaris": 12,
-          "bendahara": 25,
-          "wakilBendahara": 12,
-          "ketuaSeksi": 12,
-          "anggota": 10
+          "Ketua": 30,
+          "Wakil Ketua": 25,
+          "Sekretaris": 25,
+          "Wakil Sekretaris": 12,
+          "Bendahara": 25,
+          "Wakil Bendahara": 12,
+          "Ketua Seksi": 12,
+          "Anggota": 10
         },
         "nasional": {
-          "ketua": 25,
-          "wakilKetua": 20,
-          "sekretaris": 20,
-          "wakilSekretaris": 10,
-          "bendahara": 20,
-          "wakilBendahara": 10,
-          "ketuaSeksi": 10,
-          "anggota": 7
+          "Ketua": 25,
+          "Wakil Ketua": 20,
+          "Sekretaris": 20,
+          "Wakil Sekretaris": 10,
+          "Bendahara": 20,
+          "Wakil Bendahara": 10,
+          "Ketua Seksi": 10,
+          "Anggota": 7
         },
         "regional": {
-          "ketua": 20,
-          "wakilKetua": 17,
-          "sekretaris": 17,
-          "wakilSekretaris": 8,
-          "bendahara": 17,
-          "wakilBendahara": 8,
-          "ketuaSeksi": 8,
-          "anggota": 6
+          "Ketua": 20,
+          "Wakil Ketua": 17,
+          "Sekretaris": 17,
+          "Wakil Sekretaris": 8,
+          "Bendahara": 17,
+          "Wakil Bendahara": 8,
+          "Ketua Seksi": 8,
+          "Anggota": 6
         },
         "universitas": {
-          "ketua": 20,
-          "wakilKetua": 15,
-          "sekretaris": 15,
-          "wakilSekretaris": 7,
-          "bendahara": 15,
-          "wakilBendahara": 7,
-          "ketuaSeksi": 7,
-          "anggota": 5
+          "Ketua": 20,
+          "Wakil Ketua": 15,
+          "Sekretaris": 15,
+          "Wakil Sekretaris": 7,
+          "Bendahara": 15,
+          "Wakil Bendahara": 7,
+          "Ketua Seksi": 7,
+          "Anggota": 5
         },
         "fakultas": {
-          "ketua": 17,
-          "wakilKetua": 12,
-          "sekretaris": 12,
-          "wakilSekretaris": 6,
-          "bendahara": 12,
-          "wakilBendahara": 6,
-          "ketuaSeksi": 6,
-          "anggota": 4
+          "Ketua": 17,
+          "Wakil Ketua": 12,
+          "Sekretaris": 12,
+          "Wakil Sekretaris": 6,
+          "Bendahara": 12,
+          "Wakil Bendahara": 6,
+          "Ketua Seksi": 6,
+          "Anggota": 4
         },
         "jurusan": {
-          "ketua": 15,
-          "wakilKetua": 10,
-          "sekretaris": 10,
-          "wakilSekretaris": 5,
-          "bendahara": 10,
-          "wakilBendahara": 5,
-          "ketuaSeksi": 5,
-          "anggota": 3
+          "Ketua": 15,
+          "Wakil Ketua": 10,
+          "Sekretaris": 10,
+          "Wakil Sekretaris": 5,
+          "Bendahara": 10,
+          "Wakil Bendahara": 5,
+          "Ketua Seksi": 5,
+          "Anggota": 3
         }
       }
     },

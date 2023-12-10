@@ -1,22 +1,13 @@
-import { AuthorizationError } from '../exceptions/AuthorizationError.js';
-import ActivitiesService from '../services/ActivitiesService.js';
-import UsersService from '../services/UsersService.js';
-import { ActivityValidator } from '../validations/activities/index.js';
+import { AuthorizationError } from "../exceptions/AuthorizationError.js";
+import ActivitiesService from "../services/ActivitiesService.js";
+import UsersService from "../services/UsersService.js";
+import { ActivityValidator } from "../validations/activities/index.js";
 
 export const postActivityController = async (req, res) => {
   ActivityValidator.validatePostActivityPayload(req.body);
 
   const userId = req.userId;
-  const {
-    name,
-    fieldActivity,
-    activity,
-    level,
-    possitionAchievement,
-    location,
-    years,
-    fileUrl,
-  } = req.body;
+  const { name, fieldActivity, activity, level, possitionAchievement, location, years, fileUrl } = req.body;
 
   const activitiesService = new ActivitiesService();
 
@@ -34,8 +25,8 @@ export const postActivityController = async (req, res) => {
 
   res.status(201);
   res.json({
-    status: 'success',
-    message: 'activity added',
+    status: "success",
+    message: "activity added",
     data: {
       ...newActivity,
     },
@@ -49,7 +40,7 @@ export const getActivitiesController = async (req, res) => {
   const activities = await activitiesService.getActivities(userId);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       activities,
     },
@@ -63,7 +54,7 @@ export const getActivityByIdController = async (req, res) => {
   const activity = await activitiesService.getActivityById(id);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       activity,
     },
@@ -77,7 +68,7 @@ export const getActivitiesPointsController = async (req, res) => {
   const points = await activitiesService.getActivityPoints(userId);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       points,
     },
@@ -92,8 +83,8 @@ export const putStatusActivityController = async (req, res) => {
   const { status, message } = req.body;
 
   const activitiesService = new ActivitiesService();
-  if (userRole === 'BASIC') {
-    throw new AuthorizationError('anda tidak berhak mengakses resources ini');
+  if (userRole === "BASIC") {
+    throw new AuthorizationError("anda tidak berhak mengakses resources ini");
   }
 
   await activitiesService.verifyActivityAccess(userId, id);
@@ -101,8 +92,8 @@ export const putStatusActivityController = async (req, res) => {
   await activitiesService.editStatusActivityById(id, { status, message });
 
   res.json({
-    status: 'success',
-    message: 'kegiatan berhasil divalidasi',
+    status: "success",
+    message: "kegiatan berhasil divalidasi",
   });
 };
 
@@ -111,12 +102,10 @@ export const getRejectActivitiesController = async (req, res) => {
 
   const activitiesService = new ActivitiesService();
 
-  const rejectedActivities = await activitiesService.getRejectedActivities(
-    userId
-  );
+  const rejectedActivities = await activitiesService.getRejectedActivities(userId);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       rejectedActivities,
     },
@@ -131,7 +120,7 @@ export const getRejectActivityByIdController = async (req, res) => {
   const rejectedActivity = await activitiesService.getRejectedActivityById(id);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       rejectedActivity,
     },
@@ -143,18 +132,16 @@ export const getActivitiesByFacultyController = async (req, res) => {
   const usersService = new UsersService();
   const activitiesService = new ActivitiesService();
 
-  if (userRole === 'BASIC') {
-    throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+  if (userRole === "BASIC") {
+    throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
   }
 
   const users = await usersService.getUserById(userId);
 
-  const activites = await activitiesService.getActivitiesByFaculty(
-    users.faculty
-  );
+  const activites = await activitiesService.getActivitiesByFaculty(users.faculty);
 
   res.json({
-    status: 'success',
+    status: "success",
     data: {
       activites,
     },

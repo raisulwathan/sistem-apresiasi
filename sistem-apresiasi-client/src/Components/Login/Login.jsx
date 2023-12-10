@@ -1,31 +1,48 @@
 import React, { useState } from "react";
 import styles from "../../style";
 import { logoApresiasi, robot } from "../../assets";
-import Button from "../LandingPage/Button";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [npm, setNpm] = useState(""); // State for username
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("URL_LOGIN_API", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axios.post("http://localhost:5001/api/v1/authentications", {
+        npm,
+        password,
       });
 
-      if (response.ok) {
-        console.log("Login successful");
-      } else {
-        console.error("Login failed");
+      localStorage.setItem("token", response.data.data.token);
+      localStorage.setItem("userId", response.data.data.userId);
+      const role = response.data.data.role;
+
+      if (role === "BASIC") {
+        navigate("/mahasiswa");
+      }
+
+      if (role === "OPERATOR") {
+        navigate("/adminfakultas");
+      }
+
+      if (role === "WD") {
+        navigate("/wd3");
+      }
+
+      if (role === "WR") {
+        navigate("/biro");
+      }
+
+      if (role === "ADMIN") {
+        navigate("/biro");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response.data);
     }
   };
 
@@ -46,9 +63,9 @@ const Login = () => {
                 type="text"
                 id="username"
                 placeholder="NPM/NIP"
-                className="p-2 ml-6 bg-transparent border rounded-lg lg:ml-1 w-80 lg:w-full border-x-secondary focus:ring focus:ring-primary"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                className="p-2 ml-6 text-white bg-transparent border rounded-lg lg:ml-1 w-80 lg:w-full border-x-secondary focus:ring focus:ring-primary"
+                value={npm}
+                onChange={(e) => setNpm(e.target.value)}
               />
             </div>
             <div className="mb-4">
@@ -59,13 +76,15 @@ const Login = () => {
                 type="password"
                 id="password"
                 placeholder="Password"
-                className="p-2 ml-6 bg-transparent border rounded-lg lg:ml-1 w-80 lg:w-full border-x-secondary focus:ring focus:ring-primary"
+                className="p-2 ml-6 text-white bg-transparent border rounded-lg lg:ml-1 w-80 lg:w-full border-x-secondary focus:ring focus:ring-primary"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="px-[140px] py-7 lg:mr-16 sm:flex">
-              <Button text="Login" type="submit" />
+              <button className="text-white " type="submit">
+                Login
+              </button>
             </div>
           </form>
         </div>

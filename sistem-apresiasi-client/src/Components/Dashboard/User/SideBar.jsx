@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { logoDark } from "../../../assets";
 import Profile from "./Profile";
 import Upload from "./Upload";
 import Transkrip from "./Transkrip";
 import History from "./History";
+import { useNavigate } from "react-router-dom";
+import { getToken } from "../../../utils/Config";
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const Menus = [
     { title: "Profile", src: "Profile", content: <Profile /> },
@@ -18,11 +22,24 @@ const SideBar = () => {
 
   const [selectedMenu, setSelectedMenu] = useState(Menus[0]);
 
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);
@@ -30,7 +47,7 @@ const SideBar = () => {
 
   return (
     <div className="flex h-screen p-4 bg-white">
-      <div className={`${open ? "w-80" : "w-28"} lg:m-4 lg:shadow-Shadow rounded-lg  lg:p-8 pt-8 relative duration-300`}>
+      <div className={`${open ? "w-80" : "w-28"} lg:m-4 lg:shadow-Shadow rounded-lg lg:p-8 pt-8 relative duration-300`}>
         <img src="./src/assets/control.png" className={`absolute cursor-pointer -right-2 top-9 w-8 border-dark-purple border-2 rounded-full ${!open && "rotate-180"}`} onClick={() => setOpen(!open)} />
         <div className="flex items-center gap-x-4">
           <img src={logoDark} className={`cursor-pointer ml-3 duration-500 ${open && "rotate-[360deg]"}`} />
@@ -48,10 +65,10 @@ const SideBar = () => {
               <span className={`${!open && "hidden"} origin-left duration-200`}>{Menu.title}</span>
             </li>
           ))}
-          <li className="relative mx-1 mt-64 rounded-lg hover:bg-dimBlue ">
+          <li className="relative mx-1 mt-64 rounded-lg hover:bg-dimBlue">
             <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
               <img src="./src/assets/userSet.png" className="w-8 lg:w-10" />
-              <span className={`${!open && "hidden"} origin-left pl-4 pt-2 duration-400`}>Raisulwathan</span>
+              <span className={`${!open && "hidden"} origin-left pl-4 pt-2 duration-400`}>{isLoggedIn ? "Nama Pengguna" : "Guest"}</span>
               <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[180px] bg-white border w-40 border-secondary rounded-lg`}>
                 <li className="cursor-pointer " onClick={() => handleMenuClick(Menus[0])}>
                   <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">

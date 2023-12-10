@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../style";
+import axios from "axios";
+import { getUserId } from "../../../utils/Config";
 
 const Profile = () => {
+  const [data, setData] = useState({});
+  const userId = getUserId();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5001/api/v1/users/${userId}`)
+      .then((response) => {
+        setData(response.data.data.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <div className="max-h-[887px] h-[870px] lg:mt-4 lg:p-14 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow">
       <h2 className="mb-6 text-xl text-gray-700 w-[85px] p-2 rounded-lg ml-8 font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Profile</h2>
@@ -15,24 +30,24 @@ const Profile = () => {
           <div className="w-1/2">
             <div className="px-3 py-3 mb-4  shadow-lg w-[270px]  rounded-lg lg:w-[300px]">
               <h3 className="mb-1 font-semibold underline text-secondary ">Nama</h3>
-              <p className="text-gray-600">Raisulwathan</p>
+              <p className="text-gray-600">{data.name}</p>
             </div>
 
             <div className="px-3 py-3 rounded-lg shadow-lg w-[270px]  lg:w-[300px]">
               <h3 className="mb-1 font-semibold underline text-secondary">NPM</h3>
-              <p className="text-gray-600">2008107010081</p>
+              <p className="text-gray-600">{data.npm}</p>
             </div>
           </div>
 
           <div className="w-1/2">
             <div className="px-3 py-3 mb-4 lg:ml-6 shadow-lg w-[270px]  rounded-lg lg:w-[300px]">
-              <h3 className="mb-1 font-semibold underline text-secondary">Email</h3>
-              <p className="text-gray-600">raisulwathan07@gmail.com</p>
+              <h3 className="mb-1 font-semibold underline text-secondary">Fakultas</h3>
+              <p className="text-gray-600">{data.faculty}</p>
             </div>
 
             <div className="px-3 py-3  shadow-lg lg:ml-6 w-[270px]  rounded-lg lg:w-[300px]">
-              <h3 className="mb-1 font-semibold underline text-secondary text-secondaryunderline">No Hp</h3>
-              <p className="text-gray-600">085376435160</p>
+              <h3 className="mb-1 font-semibold underline text-secondary text-secondaryunderline">Prodi</h3>
+              <p className="text-gray-600">{data.major}</p>
             </div>
           </div>
         </div>

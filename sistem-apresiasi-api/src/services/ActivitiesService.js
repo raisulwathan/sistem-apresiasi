@@ -1,18 +1,16 @@
-import { PrismaClient } from '@prisma/client';
-import { getBobotSKP, loadData } from '../utils/index.js';
-import { InvariantError } from '../exceptions/InvariantError.js';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
-import { AuthorizationError } from '../exceptions/AuthorizationError.js';
+import { PrismaClient } from "@prisma/client";
+import { getBobotSKP, loadData } from "../utils/index.js";
+import { InvariantError } from "../exceptions/InvariantError.js";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { AuthorizationError } from "../exceptions/AuthorizationError.js";
 
 const _FIELD_ACTIVITY = {
-  kegiatanWajib: 'Kegiatan Wajib',
-  bidangOrganisasi: 'Bidang Organisasi Kemahasiswaan dan Kepemimpinan',
-  bidangKeilmuan:
-    'Bidang Penalaran dan Keilmuan, Penyelarasan dan Pengembangan Karir',
-  bidangMinatBakat:
-    'Bidang Minat, Bakat, Mental Spritiual Kebangsaan dan Kewirausahaan',
-  bidangBaktiSosial: 'Bidang Kepedulian Sosial',
-  bidangLainnya: 'Bidang Lainnya',
+  kegiatanWajib: "Kegiatan Wajib",
+  bidangOrganisasi: "Bidang Organisasi Kemahasiswaan dan Kepemimpinan",
+  bidangKeilmuan: "Bidang Penalaran dan Keilmuan, Penyelarasan dan Pengembangan Karir",
+  bidangMinatBakat: "Bidang Minat, Bakat, Mental Spritiual Kebangsaan dan Kewirausahaan",
+  bidangBaktiSosial: "Bidang Kepedulian Sosial",
+  bidangLainnya: "Bidang Lainnya",
 };
 
 class ActivitiesService {
@@ -20,20 +18,10 @@ class ActivitiesService {
     this._prisma = new PrismaClient();
   }
 
-  async addActivity({
-    name,
-    fieldActivity,
-    activity,
-    level,
-    possitionAchievement,
-    location,
-    years,
-    fileUrl,
-    owner,
-  }) {
+  async addActivity({ name, fieldActivity, activity, level, possitionAchievement, location, years, fileUrl, owner }) {
     let point;
 
-    if (fieldActivity === 'kegiatanWajib') {
+    if (fieldActivity === "kegiatanWajib") {
       point = 10;
     } else {
       const path = `./src/data/${fieldActivity}.json`;
@@ -59,7 +47,7 @@ class ActivitiesService {
     });
 
     if (!newActivity) {
-      throw new InvariantError('failed to add activities');
+      throw new InvariantError("failed to add activities");
     }
 
     return {
@@ -74,7 +62,9 @@ class ActivitiesService {
         id: true,
         name: true,
         fieldsActivity: true,
+        activity: true,
         points: true,
+        status: true,
       },
       where: {
         ownerId: owner,
@@ -82,7 +72,7 @@ class ActivitiesService {
     });
 
     if (!activites) {
-      throw new NotFoundError('Activity not found');
+      throw new NotFoundError("Activity not found");
     }
 
     return activites;
@@ -98,7 +88,7 @@ class ActivitiesService {
     });
 
     if (!activities) {
-      throw new NotFoundError('activities not found');
+      throw new NotFoundError("activities not found");
     }
 
     return activities;
@@ -112,7 +102,7 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new NotFoundError('failed to get users. id not found');
+      throw new NotFoundError("failed to get users. id not found");
     }
 
     return activity;
@@ -122,15 +112,13 @@ class ActivitiesService {
     const activities = await this.getActivitiesByFaculty(faculty);
 
     if (!activity) {
-      throw new NotFoundError('Activity not found');
+      throw new NotFoundError("Activity not found");
     }
 
-    const validActivities = activities.filter(
-      (activity) => activity.status === status
-    );
+    const validActivities = activities.filter((activity) => activity.status === status);
 
     if (!validActivities) {
-      throw new NotFoundError('There are no valid activities');
+      throw new NotFoundError("There are no valid activities");
     }
 
     return validActivities;
@@ -149,10 +137,10 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new InvariantError('failed to edit activities');
+      throw new InvariantError("failed to edit activities");
     }
 
-    if (activity.status === 'rejected') {
+    if (activity.status === "rejected") {
       await this._prisma.rejectedActivity.create({
         data: {
           message,
@@ -167,7 +155,7 @@ class ActivitiesService {
     const activities = await this._prisma.activity.findMany({
       where: {
         ownerId: owner,
-        status: 'valid',
+        status: "valid",
       },
     });
 
@@ -204,7 +192,7 @@ class ActivitiesService {
     });
 
     if (!activities) {
-      throw new NotFoundError('Activity not found');
+      throw new NotFoundError("Activity not found");
     }
 
     return activities;
@@ -218,7 +206,7 @@ class ActivitiesService {
     });
 
     if (!activity) {
-      throw new NotFoundError('failed to get activity. id not found');
+      throw new NotFoundError("failed to get activity. id not found");
     }
 
     return activity;
@@ -236,9 +224,7 @@ class ActivitiesService {
     }
 
     if (owner !== activity.ownerId) {
-      throw new AuthorizationError(
-        'The user has no right to access these resources'
-      );
+      throw new AuthorizationError("The user has no right to access these resources");
     }
   }
 
@@ -258,7 +244,7 @@ class ActivitiesService {
     });
 
     if (users.faculty !== activity.owner.faculty) {
-      throw new AuthorizationError('anda tidak berhak mengakses resource ini');
+      throw new AuthorizationError("anda tidak berhak mengakses resource ini");
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "bobotSKP": [
+    {
+      "kegiatan": "upacara/apel",
+      "semuaLevel": 5
+    },
+    {
+      "kegiatan": "berpartisipasi dalam kegiatan organisasi alumni",
+      "semuaLevel": 5
+    },
+    {
+      "kegiatan": "melakukan kunjungan/studi banding",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "magang kerja non akademik",
+      "semuaLevel": 10
+    },
+    {
+      "kegiatan": "mengikuti lomba mewakili institusi luar kampus atau individu",
+      "semuaLevel": 10
+    }
+  ]
+}
