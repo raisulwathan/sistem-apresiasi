@@ -42,6 +42,7 @@ class ActivitiesService {
         points: point,
         years,
         fileUrl,
+        status: "pending",
         ownerId: owner,
       },
     });

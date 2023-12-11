@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
-import KegiatanMahasiswa from "./KegiatanMahasiswa";
+import KegiatanMahasiswa from "./KegiatanMahasiswaOnbiro";
 import PertukaranMahasiswa from "./PertukaranMahasiswa";
 import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";

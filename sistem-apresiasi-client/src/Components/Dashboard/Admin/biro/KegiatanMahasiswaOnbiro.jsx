@@ -7,7 +7,7 @@ const KegiatanMahasiswa = () => {
 
   useEffect(() => {
     axios
-      .get("URL_API")
+      .get("http://localhost:5001/api/v1/activities")
       .then((response) => {
         setMahasiswaData(response.data);
       })

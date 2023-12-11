@@ -1,7 +1,12 @@
 import React from "react";
+import SideBarBiro from "../../../components/Dashboard/Admin/biro/SideBarBiro";
 
 function AdminBiro() {
-  return <div>halo biro</div>;
+  return (
+    <div>
+      <SideBarBiro />
+    </div>
+  );
 }
 
 export default AdminBiro;

@@ -45,7 +45,7 @@ const History = () => {
   };
 
   // data activities
-  const pendingActivities = activities.filter((activity) => activity.status === null);
+  const pendingActivities = activities.filter((activity) => activity.status === "pending");
   const acceptedActivities = activities.filter((activity) => activity.status === "accepted");
   const rejectedActivities = activities.filter((activity) => activity.status === "accepted");
   console.log(pendingActivities);
