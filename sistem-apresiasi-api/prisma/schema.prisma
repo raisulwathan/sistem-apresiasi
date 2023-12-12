@@ -93,30 +93,34 @@ model Authentication {
 
 // File: schema.prisma
 
-model AchievementGroup {
-  id             String   @id @default(cuid())
-  name           String
-  level_activity String
-  participant    String[]
-  achievement    String
-  mentor         String
-  year           Int
-  file_url       String
+model AchievementIndependent {
+  id                 String    @id @default(cuid())
+  name               String
+  level_activity     String
+  participant_type   String
+  total_participants Int?
+  participants       Json[]
+  faculty            String
+  major              String
+  achievement        String
+  mentor             String?
+  year               Int
+  start_date         DateTime?
+  end_date           DateTime?
+  file_url           String[]
 
-  // ... (Tambahkan field lainnya sesuai kebutuhan)
-
-  @@map("achievement_group")
+  @@map("achievement_independent")
 }
 
 model AchievementNonCompetition {
-  id                String  @id @default(cuid())
-  name              String
-  category          String
-  faculty           String
-  activity          String?
-  total_participant Int
-  year              Int
-  file_url          String
+  id                 String   @id @default(cuid())
+  name               String
+  category           String
+  faculty            String
+  activity           String?
+  number_of_students Int
+  year               Int
+  file_url           String[]
 
   @@map("achievement_non_competition")
 }
