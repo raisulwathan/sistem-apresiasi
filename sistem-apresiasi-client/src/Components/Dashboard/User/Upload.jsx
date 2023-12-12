@@ -92,7 +92,6 @@ const Upload = () => {
       });
 
       const statusCode = response.status; // Mendapatkan statusCode dari respons API
-      console.log(statusCode);
 
       if (statusCode === 201) {
         setShowPopup(true);

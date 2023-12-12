@@ -137,13 +137,14 @@ export const getActivitiesByFacultyController = async (req, res) => {
   }
 
   const users = await usersService.getUserById(userId);
+  console.log(users);
 
-  const activites = await activitiesService.getActivitiesByFaculty(users.faculty);
+  const activities = await activitiesService.getActivitiesByFaculty(users.faculty);
 
   res.json({
     status: "success",
     data: {
-      activites,
+      activities,
     },
   });
 };

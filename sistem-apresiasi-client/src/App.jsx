@@ -8,6 +8,7 @@ import Students from "./pages/Dashboard/Students";
 import AdminFakultas from "./pages/Dashboard/Admin/AdminFakultas";
 import AdminWd3 from "./pages/Dashboard/Admin/AdminWd3";
 import AdminBiro from "./pages/Dashboard/Admin/AdminBiro";
+import ErrorPage from "./ErrorPage";
 
 const App = () => (
   <Router>
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/adminfakultas" element={<AdminFakultas />} />
           <Route path="/wd3" element={<AdminWd3 />} />
           <Route path="/biro" element={<AdminBiro />} />
+          <Route path="/forbidden" element={<ErrorPage />} />
         </Routes>
       </div>
     </div>

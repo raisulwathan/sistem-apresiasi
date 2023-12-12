@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
 import KegiatanMahasiswa from "./KegiatanMahasiswa";
@@ -8,17 +9,28 @@ import Formulir from "./Formulir";
 import PembinaanMental from "./PembinaanMental";
 import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
 import axios from "axios";
+import { getToken, getUserId } from "../../../../utils/Config";
 
 const SideBarAdminFakultas = () => {
   const [selectedMenu, setSelectedMenu] = useState("Kegiatan Mahasiswa");
   const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
   const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedMenu("Kegiatan Mahasiswa");
-    fetchUserData();
+    const token = getToken();
+    const userId = getUserId();
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      navigate("/login");
+    }
+    fetchUserData(userId);
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -32,22 +44,29 @@ const SideBarAdminFakultas = () => {
       setSubMenuOpenNonLomba(false);
     }
   };
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);
   };
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (userId) => {
     try {
-      const response = await axios.get("URL_GET_USER_DATA");
-      if (response.status === 200) {
-        setUserData(response.data);
-      } else {
-        console.error("Failed to fetch user data");
+      const response = await axios.get(`http://localhost:5001/api/v1/users/${userId}`);
+
+      const userRole = response.data.data.user.role;
+
+      if (userRole !== "OPERATOR") {
+        navigate("/forbidden");
       }
+      setUsername(response.data.data.user.name);
     } catch (error) {
-      console.error("Error:", error);
+      setIsLoggedIn(false);
+      navigate("/login");
     }
   };
 
@@ -142,11 +161,12 @@ const SideBarAdminFakultas = () => {
           {renderSubMenuNonLomba()}
           <li className="relative mx-1 mt-64 rounded-lg">
             <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-              <img src={userData.profilePicture || "./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
-              <span className={`pl-4 pt-2 duration-400`}>{userData.username || "Pak Herry"}</span>
+              <img src={"./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
+              <span className={`pl-4 pt-2 duration-400`}>{username}</span>
               <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-2 bg-white border w-40 border-secondary rounded-lg z-10`}>
-                <li className="cursor-pointer" onClick={handleLogout}>
+                <li className="cursor-pointer " onClick={handleLogout}>
                   <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
+                    {" "}
                     <img src="./src/assets/logout.png" alt="" className="w-8 lg:w-8" />
                     <h1 className="lg:pl-3">Log Out</h1>
                   </div>

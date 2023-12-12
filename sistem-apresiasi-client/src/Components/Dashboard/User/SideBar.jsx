@@ -5,12 +5,14 @@ import Upload from "./Upload";
 import Transkrip from "./Transkrip";
 import History from "./History";
 import { useNavigate } from "react-router-dom";
-import { getToken } from "../../../utils/Config";
+import { getToken, getUserId } from "../../../utils/Config";
+import axios from "axios";
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   const Menus = [
@@ -24,11 +26,31 @@ const SideBar = () => {
 
   useEffect(() => {
     const token = getToken();
+    const userId = getUserId();
     if (token) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
+      navigate("/login");
     }
+
+    const fetchDataUser = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5001/api/v1/users/${userId}`);
+
+        const userRole = response.data.data.user.role;
+
+        if (userRole !== "BASIC") {
+          navigate("/forbidden");
+        }
+        setUsername(response.data.data.user.name);
+      } catch (error) {
+        setIsLoggedIn(false);
+        navigate("/login");
+      }
+    };
+
+    fetchDataUser();
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -68,7 +90,7 @@ const SideBar = () => {
           <li className="relative mx-1 mt-64 rounded-lg hover:bg-dimBlue">
             <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
               <img src="./src/assets/userSet.png" className="w-8 lg:w-10" />
-              <span className={`${!open && "hidden"} origin-left pl-4 pt-2 duration-400`}>{isLoggedIn ? "Nama Pengguna" : "Guest"}</span>
+              <span className={`${!open && "hidden"} origin-left pl-4 pt-2 duration-400`}>{username}</span>
               <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[180px] bg-white border w-40 border-secondary rounded-lg`}>
                 <li className="cursor-pointer " onClick={() => handleMenuClick(Menus[0])}>
                   <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">

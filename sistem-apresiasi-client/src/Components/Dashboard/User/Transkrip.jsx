@@ -9,6 +9,8 @@ const Transkrip = () => {
   const [showModal, setShowModal] = useState(false);
   const token = getToken();
   const [showPopup, setShowPopup] = useState(false);
+  const [showInsufficientPointsPopup, setShowInsufficientPointsPopup] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +38,6 @@ const Transkrip = () => {
   useEffect(() => {
     let timeout;
     if (showPopup) {
-      // Setelah 5 detik, tutup pop-up
       timeout = setTimeout(() => {
         setShowPopup(false);
       }, 5000);
@@ -45,6 +46,17 @@ const Transkrip = () => {
     return () => clearTimeout(timeout);
   }, [showPopup]);
 
+  useEffect(() => {
+    let timeout;
+    if (showInsufficientPointsPopup) {
+      timeout = setTimeout(() => {
+        setShowInsufficientPointsPopup(false);
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [showInsufficientPointsPopup]);
+
   const handleLihatDetail = async (id) => {
     try {
       const response = await axios.get(`http://localhost:5001/api/v1/activities/${id}`, {
@@ -52,15 +64,18 @@ const Transkrip = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data.data);
       setDetailKegiatan(response.data.data);
       setShowModal(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
-
   const handleAjukanSkpi = async () => {
+    setShowConfirmation(true);
+  };
+
+  const confirmAjukanSkpi = async () => {
+    setShowConfirmation(false);
     try {
       const response = await axios.post(
         "http://localhost:5001/api/v1/skpi",
@@ -80,7 +95,7 @@ const Transkrip = () => {
     } catch (error) {
       console.log(error);
       if (error.response.status === 400) {
-        console.log("points tidak cukup");
+        setShowInsufficientPointsPopup(true);
       } else {
         console.error("Error:", error.response ? error.response.data : error.message);
       }
@@ -114,16 +129,16 @@ const Transkrip = () => {
         </div>
         <table className="w-full mt-6">
           <thead>
-            <tr className="border-b-2 border-secondary ">
-              <th className="py-2 text-left">Kegiatan</th>
+            <tr className="lg:border-b-2 lg:border-secondary">
+              <th className="py-2 text-left ">Kegiatan</th>
               <th className="py-2 text-left">Point</th>
             </tr>
           </thead>
           <tbody>
             {kegiatanWajib.map((activity, index) => (
               <tr key={index}>
-                <td className="py-2">{activity.activity}</td>
-                <td className="py-2">{activity.points}</td>
+                <td className="py-2 ">{activity.activity}</td>
+                <td className="py-2 ">{activity.points}</td>
               </tr>
             ))}
           </tbody>
@@ -135,32 +150,35 @@ const Transkrip = () => {
           <img src="./src/assets/choise.png" className="w-5 h-5 mr-2" alt="choise" />
           <h2 className="text-lg font-bold font-poppins">Kegiatan Pilihan</h2>
         </div>
-        <table className="w-full mt-6">
-          <thead>
-            <tr className="border-b-2 border-secondary">
-              <th className="py-2 text-left">Kegiatan</th>
-              <th className="py-2 text-left">Nama Kegiatan</th>
-              <th className="py-2 text-left">Point</th>
-              <th className="py-2 text-left">Status</th>
-              <th className="py-2 text-left">Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-            {kegiatanPilihan.map((activity, index) => (
-              <tr key={index}>
-                <td className="py-2">{activity.activity}</td>
-                <td className="py-2">{activity.name}</td>
-                <td className="py-2">{activity.points}</td>
-                <td className="py-2">{activity.status}</td>
-                <td className="py-2">
-                  <button onClick={() => handleLihatDetail(activity.id)} className=" text-secondary hover:underline focus:outline-none">
-                    Detail
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full mt-6">
+            <thead className="lg:border-b-2 lg:border-secondary">
+              <tr>
+                <th className="py-2 text-left">Kegiatan</th>
+                <th className="hidden py-2 text-left lg:table-cell">Nama Kegiatan</th>
+                <th className="hidden py-2 text-left lg:table-cell">Point</th>
+                <th className="hidden py-2 text-left lg:table-cell">Status</th>
+                <th className="py-2 text-left">Detail</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {kegiatanPilihan.map((activity, index) => (
+                <tr key={index}>
+                  <td className="py-2">{activity.activity}</td>
+                  <td className="hidden py-2 lg:table-cell">{activity.name}</td>
+                  <td className="hidden py-2 lg:table-cell">{activity.points}</td>
+                  <td className="hidden py-2 lg:table-cell">{activity.status}</td>
+                  <td className="py-2">
+                    <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary hover:underline focus:outline-none">
+                      Detail
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         {showModal && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
             <div className="p-4 bg-white rounded-lg w-[1200px] h-[800px] ">
@@ -196,6 +214,16 @@ const Transkrip = () => {
             Ajukan
           </button>
         </div>
+        {showInsufficientPointsPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+              <p>Point Anda belum mencukupi!</p>
+              <button onClick={() => setShowInsufficientPointsPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-secondary">
+                Tutup
+              </button>
+            </div>
+          </div>
+        )}
         {showPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-[400px] p-8 rounded-lg text-center">
@@ -203,6 +231,22 @@ const Transkrip = () => {
               <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-secondary">
                 Tutup
               </button>
+            </div>
+          </div>
+        )}
+
+        {showConfirmation && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+              <p>Anda yakin ingin mengajukan SKPI?</p>
+              <div className="mt-4 space-x-4">
+                <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-secondary">
+                  Ya
+                </button>
+                <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-white bg-gray-400 rounded-lg">
+                  Tidak
+                </button>
+              </div>
             </div>
           </div>
         )}

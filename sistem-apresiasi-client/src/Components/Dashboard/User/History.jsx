@@ -62,7 +62,7 @@ const History = () => {
             {pendingActivities.length > 0 ? (
               <ul className="">
                 {pendingActivities.map((activity) => (
-                  <li key={activity.id} className="p-3 mt-3 bg-pink-100 lg:w-[600px] rounded-lg ">
+                  <li key={activity.id} className="p-3 mt-3 bg-dimBlue lg:w-[600px] rounded-lg ">
                     {activity.activity}
                   </li>
                 ))}
@@ -78,7 +78,7 @@ const History = () => {
         <img src="./src/assets/approved.png" alt="" className="w-6 h-6 mt-[3px]" />
         <div className="pl-2">
           <p className="text-gray-600">Diterima</p>
-          <h3 className="p-3 lg:w-[600px] mt-4 bg-pink-100 rounded-md">
+          <h3 className="p-3 lg:w-[600px] mt-4 bg-dimBlue rounded-md">
             <div>
               {acceptedActivities.length > 0 ? (
                 <ul>
@@ -98,7 +98,7 @@ const History = () => {
         <img src="./src/assets/rejected.png" alt="" className="w-6 h-6 mt-[3px]" />
         <div className="pl-2">
           <p className="text-gray-600">Ditolak</p>
-          <h3 className="flex lg:w-[600px] px-5 py-4 mt-4 bg-pink-100 rounded-md ">
+          <h3 className="flex lg:w-[600px] px-5 py-4 mt-4 bg-dimBlue rounded-md ">
             <div>
               {rejectedActivities.length > 0 ? (
                 <table>
