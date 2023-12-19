@@ -52,6 +52,7 @@ export const postAchievementIndependentController = async (req, res) => {
 
   res.status(201).json({
     status: 'success',
+    message: 'independent achievement added',
     data: {
       achievementId: newAchievement.id,
     },
@@ -59,7 +60,7 @@ export const postAchievementIndependentController = async (req, res) => {
 };
 
 export const getAchievementIndependentController = async (req, res) => {
-  if (req.userRole !== 'ADMIN') {
+  if (req.userRole !== 'ADMIN' && req.userRole !== 'WR') {
     throw new AuthorizationError('Doesnt have right to access this resources');
   }
   const achievements =

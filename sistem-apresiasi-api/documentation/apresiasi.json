@@ -1139,6 +1139,993 @@
         }
       }
     },
+    "/achievement/independents": {
+      "post": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Post independents achievements",
+        "description": "Post Idependent Achievement by Operator and Admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "levelActivity": {
+                    "type": "string"
+                  },
+                  "participantType": {
+                    "type": "string"
+                  },
+                  "totalParticipants": {
+                    "type": "number"
+                  },
+                  "participants": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "npm": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "faculty": {
+                    "type": "string"
+                  },
+                  "major": {
+                    "type": "string"
+                  },
+                  "achievement": {
+                    "type": "string"
+                  },
+                  "mentor": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "string"
+                  },
+                  "startDate": {
+                    "type": "string"
+                  },
+                  "endDate": {
+                    "type": "string"
+                  },
+                  "fileUrl": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success post independent achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievementId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get Independent Achievements",
+        "description": "Get Independent Achievement data",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "level_activity": {
+                                "type": "string"
+                              },
+                              "participant_type": {
+                                "type": "string"
+                              },
+                              "achievement": {
+                                "type": "string"
+                              },
+                              "participants": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "string"
+                              },
+                              "faculty": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements/independents/faculty": {
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get Independent Achievements by Operator Faculty",
+        "description": "Get Independent Achievement data by faculty",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "level_activity": {
+                                "type": "string"
+                              },
+                              "participant_type": {
+                                "type": "string"
+                              },
+                              "achievement": {
+                                "type": "string"
+                              },
+                              "participants": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "string"
+                              },
+                              "faculty": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements/independents/{id}": {
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Get Independent Achievements Detail",
+        "description": "Get Independent Achievement detail data by achievement id",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "level_activity": {
+                              "type": "string"
+                            },
+                            "participant_type": {
+                              "type": "string"
+                            },
+                            "achievement": {
+                              "type": "string"
+                            },
+                            "participants": {
+                              "type": "string"
+                            },
+                            "year": {
+                              "type": "string"
+                            },
+                            "faculty": {
+                              "type": "string"
+                            },
+                            "major": {
+                              "type": "string"
+                            },
+                            "mentor": {
+                              "type": "string"
+                            },
+                            "start_date": {
+                              "type": "string"
+                            },
+                            "end_date": {
+                              "type": "string"
+                            },
+                            "file_ulr": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Edit Independent Achievement",
+        "description": "Edit independents achievement by achievement id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "levelActivity": {
+                    "type": "string"
+                  },
+                  "participantType": {
+                    "type": "string"
+                  },
+                  "totalParticipants": {
+                    "type": "number"
+                  },
+                  "participants": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "npm": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "faculty": {
+                    "type": "string"
+                  },
+                  "major": {
+                    "type": "string"
+                  },
+                  "achievement": {
+                    "type": "string"
+                  },
+                  "mentor": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "string"
+                  },
+                  "startDate": {
+                    "type": "string"
+                  },
+                  "endDate": {
+                    "type": "string"
+                  },
+                  "fileUrl": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success edit independent achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievementId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Delete Independent Achievement",
+        "description": "Delete independents achievement by achievement id",
+        "responses": {
+          "200": {
+            "description": "success post independent achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements/noncompetitions": {
+      "post": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Post Non-Competition achievements",
+        "description": "Post Non-Competition Achievement by Operator and Admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "type": "string"
+                  },
+                  "activity": {
+                    "type": "string"
+                  },
+                  "numberOfStudents": {
+                    "type": "number"
+                  },
+                  "year": {
+                    "type": "string"
+                  },
+                  "fileUrl": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success post independent achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievementId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get Non-Competition Achievements",
+        "description": "Get Non-Competition Achievement data",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "activity": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "string"
+                              },
+                              "faculty": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements/noncompetitions/faculty": {
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get Independent Achievements by Operator Faculty",
+        "description": "Get Independent Achievement data by faculty",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "activity": {
+                                "type": "string"
+                              },
+                              "year": {
+                                "type": "string"
+                              },
+                              "faculty": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/achievements/noncompetitions/{id}": {
+      "get": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Get Non-Competition Achievements Detail",
+        "description": "Get Non-Competition Achievement detail data by achievement id",
+        "responses": {
+          "200": {
+            "description": "Success get achievements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievements": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "category": {
+                              "type": "string"
+                            },
+                            "faculty": {
+                              "type": "string"
+                            },
+                            "activity": {
+                              "type": "string"
+                            },
+                            "number_of_students": {
+                              "type": "string"
+                            },
+                            "year": {
+                              "type": "string"
+                            },
+                            "file_ulr": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Edit Non-Competition Achievement",
+        "description": "Edit Non-Competitions achievement by achievement id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "type": "string"
+                  },
+                  "activity": {
+                    "type": "string"
+                  },
+                  "numberOfStudents": {
+                    "type": "number"
+                  },
+                  "year": {
+                    "type": "string"
+                  },
+                  "fileUrl": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success edit Non-Competition achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "achievementId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Achievements"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AchievementId"
+          }
+        ],
+        "summary": "Delete Non-Competition Achievement",
+        "description": "Delete Non-Competitions achievement by achievement id",
+        "responses": {
+          "200": {
+            "description": "success post Non-Competition achievement data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorization"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/skpi": {
       "post": {
         "tags": ["Skpi"],
