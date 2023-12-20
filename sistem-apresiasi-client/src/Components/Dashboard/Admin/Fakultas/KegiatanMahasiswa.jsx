@@ -11,6 +11,8 @@ const KegiatanMahasiswa = () => {
   const [confirmValidation, setConfirmValidation] = useState(false);
   const [confirmRejection, setConfirmRejection] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [validationSuccess, setValidationSuccess] = useState(false);
+  const [validatedData, setValidatedData] = useState([]);
 
   const handleConfirmValidation = (id) => {
     setSelectedItemId(id);
@@ -27,9 +29,7 @@ const KegiatanMahasiswa = () => {
     try {
       await axios.put(
         `http://localhost:5001/api/v1/activities/${id}/validate`,
-
         { status: "accepted" },
-
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,6 +38,19 @@ const KegiatanMahasiswa = () => {
       );
 
       console.log("Kegiatan berhasil divalidasi!");
+      setShowModal(false);
+      setConfirmValidation(false);
+      setValidationSuccess(true);
+
+      // Dapatkan kegiatan yang divalidasi dari data yang sebelumnya sudah di-filter
+      const validatedActivity = data.find((activity) => activity.id === id);
+
+      // Update state 'validatedData' dengan menambahkan kegiatan yang divalidasi
+      setValidatedData((prevData) => [...prevData, validatedActivity]);
+
+      // Perbarui state 'data' untuk menghilangkan kegiatan yang sudah divalidasi
+      const updatedData = data.filter((activity) => activity.id !== id);
+      setData(updatedData);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -46,10 +59,9 @@ const KegiatanMahasiswa = () => {
   const handleRejection = async (id) => {
     try {
       const reason = prompt("Masukkan alasan penolakan:");
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:5001/api/v1/activities/${id}/validate`,
         { status: "rejected", message: reason },
-
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +69,9 @@ const KegiatanMahasiswa = () => {
         }
       );
 
+      console.log(response.data);
       console.log("Kegiatan berhasil ditolak!");
+      setConfirmRejection(false); // Menutup pop-up konfirmasi penolakan
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -73,7 +87,6 @@ const KegiatanMahasiswa = () => {
         });
 
         setData(response.data.data.activities);
-        console.log(response.data.data);
       } catch (error) {
         setError(error.message);
       }
@@ -99,27 +112,76 @@ const KegiatanMahasiswa = () => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setValidatedData([]); // Menghapus data yang sudah divalidasi setelah 24 jam
+    }, 24 * 60 * 60 * 1000); // 24 jam dalam milidetik
+
+    return () => clearTimeout(timer);
+  }, [validatedData]);
+
   return (
-    <div className="pt-3">
+    <div className="h-screen pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Mahasiswa</h2>
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
-          <table className="w-full ">
+          <table className="w-full">
             <thead>
-              <tr className="border-b-2 border-secondary ">
+              <tr className="border-b-2 border-secondary">
                 <th className="px-4 py-2 text-left">Kategori</th>
                 <th className="px-4 py-2 text-left">Nama Kegiatan</th>
-                <th className="px-4 py-2 text-left">Tingkat</th>
+                <th className="px-4 py-2 text-left">Mahasiswa</th>
                 <th className="px-4 py-2 text-left">Point</th>
                 <th className="px-4 py-2 text-left">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((activity, index) => (
+              {data
+                .filter((activity) => activity.status !== "accepted")
+                .map((activity, index) => (
+                  <tr key={index} className="">
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.activity}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.fieldsActivity}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.owner.name}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.points}</td>
+                    <td className="py-2">
+                      <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary hover:underline focus:outline-none">
+                        Detail
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              {data.filter((activity) => activity.status !== "accepted").length === 0 && (
+                <tr>
+                  <td colSpan="5" className="px-4 py-2 text-center">
+                    Data tidak tersedia.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <div className="h-screen p-10 mt-9 shadow-boxShadow">
+        <h2 className="font-semibold text-gray-700 font-poppins">Sudah Divalidasi</h2>
+        <table className="w-full">
+          <thead>
+            <tr className="border-b-2 border-secondary">
+              <th className="px-4 py-2 text-left">Kategori</th>
+              <th className="px-4 py-2 text-left">Nama Kegiatan</th>
+              <th className="px-4 py-2 text-left">Tingkat</th>
+              <th className="px-4 py-2 text-left">Point</th>
+              <th className="px-4 py-2 text-left">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data
+              .filter((activity) => activity.status === "accepted")
+              .map((activity, index) => (
                 <tr key={index} className="">
-                  <td className="px-4 py-2 border-b-2 border-gray-300 ">{activity.activity}</td>
+                  <td className="px-4 py-2 border-b-2 border-gray-300">{activity.activity}</td>
                   <td className="px-4 py-2 border-b-2 border-gray-300">{activity.fieldsActivity}</td>
                   <td className="px-4 py-2 border-b-2 border-gray-300">{activity.levels}</td>
                   <td className="px-4 py-2 border-b-2 border-gray-300">{activity.points}</td>
@@ -130,16 +192,15 @@ const KegiatanMahasiswa = () => {
                   </td>
                 </tr>
               ))}
-              {data.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="px-4 py-2 text-center">
-                    Data tidak tersedia.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
+            {data.filter((activity) => activity.status === "accepted").length === 0 && (
+              <tr>
+                <td colSpan="5" className="px-4 py-2 text-center">
+                  Data tidak tersedia.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
       {showModal && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
@@ -152,6 +213,10 @@ const KegiatanMahasiswa = () => {
               <p>tingkat : {detailKegiatan.levels}</p>
               <p>Nama Kegiatan : {detailKegiatan.name}</p>
               <p>Point : {detailKegiatan.points} </p>
+              <p>Mahasiswa: </p>
+              <p>Nama : {detailKegiatan.owner.name}</p>
+              <p>NPM : {detailKegiatan.owner.npm}</p>
+              <p>Prodi : {detailKegiatan.owner.major}</p>
               <p>Harapan : {detailKegiatan.possitions_achievements} </p>
               <p> Status: {detailKegiatan.status} </p>
               <p> Tahun: {detailKegiatan.years} </p>
@@ -199,6 +264,17 @@ const KegiatanMahasiswa = () => {
                 Tidak
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {validationSuccess && (
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+          <div className="p-4 bg-white rounded-lg">
+            <p>Kegiatan berhasil divalidasi!</p>
+            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-secondary">
+              Tutup
+            </button>
           </div>
         </div>
       )}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
-import KegiatanMahasiswa from "./KegiatanMahasiswa";
+
 import PertukaranMahasiswa from "./PertukaranMahasiswa";
 import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";
@@ -12,7 +12,7 @@ import axios from "axios";
 import { getToken, getUserId } from "../../../../utils/Config";
 import Skpi from "./Skpi";
 
-const SideBarWd3 = () => {
+const SideBarWr3 = () => {
   const [selectedMenu, setSelectedMenu] = useState("Kegiatan Mahasiswa");
   const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
   const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
@@ -22,7 +22,7 @@ const SideBarWd3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedMenu("Kegiatan Mahasiswa");
+    setSelectedMenu("Kegiatan Mandiri");
     const token = getToken();
     const userId = getUserId();
     if (token) {
@@ -61,7 +61,7 @@ const SideBarWd3 = () => {
 
       const userRole = response.data.data.user.role;
 
-      if (userRole !== "WD") {
+      if (userRole !== "WR") {
         navigate("/forbidden");
       }
       setUsername(response.data.data.user.name);
@@ -119,8 +119,6 @@ const SideBarWd3 = () => {
     switch (selectedMenu) {
       case "SKPI":
         return <Skpi />;
-      case "Kegiatan Mahasiswa":
-        return <KegiatanMahasiswa />;
       case "Kegiatan Lomba":
         return <KegiatanLomba />;
       case "Formulir":
@@ -146,10 +144,6 @@ const SideBarWd3 = () => {
           <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
         </div>
         <ul className="pt-10">
-          <li onClick={() => handleMenuClick("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
-            <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
-            Kegiatan Mahasiswa
-          </li>
           <li onClick={() => handleMenuClick("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
             <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
             SKPI
@@ -189,4 +183,4 @@ const SideBarWd3 = () => {
   );
 };
 
-export default SideBarWd3;
+export default SideBarWr3;

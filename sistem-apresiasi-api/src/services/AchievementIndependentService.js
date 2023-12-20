@@ -1,27 +1,13 @@
 // achievementIndependentService.js
 
-import { PrismaClient } from '@prisma/client';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
-import { InvariantError } from '../exceptions/InvariantError.js';
+import { PrismaClient } from "@prisma/client";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { InvariantError } from "../exceptions/InvariantError.js";
 
 const prisma = new PrismaClient();
 
 class AchievementIndependentService {
-  async addAchievementIndependent({
-    name,
-    levelActivity,
-    participantType,
-    totalParticipants,
-    participants,
-    faculty,
-    major,
-    achievement,
-    mentor,
-    year,
-    startDate,
-    endDate,
-    fileUrl,
-  }) {
+  async addAchievementIndependent({ name, levelActivity, participantType, totalParticipants, participants, faculty, major, achievement, mentor, year, startDate, endDate, fileUrl }) {
     const newAchievement = await prisma.achievementIndependent.create({
       data: {
         name,
@@ -41,7 +27,7 @@ class AchievementIndependentService {
     });
 
     if (!achievement) {
-      throw new InvariantError('fail to create achievement');
+      throw new InvariantError("fail to create achievement");
     }
 
     return newAchievement;
@@ -63,24 +49,7 @@ class AchievementIndependentService {
     return achievements;
   }
 
-  async putAchievementIndependent(
-    id,
-    {
-      name,
-      levelActivity,
-      participantType,
-      totalParticipants,
-      participants,
-      faculty,
-      major,
-      achievement,
-      mentor,
-      year,
-      startDate,
-      endDate,
-      fileUrl,
-    }
-  ) {
+  async putAchievementIndependent(id, { name, levelActivity, participantType, totalParticipants, participants, faculty, major, achievement, mentor, year, startDate, endDate, fileUrl }) {
     const updatedAchievement = await prisma.achievementIndependent.update({
       where: { id },
       data: {
@@ -109,7 +78,7 @@ class AchievementIndependentService {
     });
 
     if (!achievement) {
-      throw new NotFoundError('fail to get Achievement. id not found');
+      throw new NotFoundError("fail to get Achievement. id not found");
     }
 
     return achievement;
@@ -131,7 +100,7 @@ class AchievementIndependentService {
     });
 
     if (!achievements) {
-      throw new NotFoundError('achievements not found');
+      throw new NotFoundError("achievements not found");
     }
 
     return achievements;
@@ -143,7 +112,7 @@ class AchievementIndependentService {
     });
 
     if (!deletedAchievement) {
-      throw new InvariantError('failed to delete achievement');
+      throw new InvariantError("failed to delete achievement");
     }
 
     return deletedAchievement;

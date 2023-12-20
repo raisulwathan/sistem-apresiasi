@@ -104,9 +104,9 @@ model AchievementIndependent {
   major              String
   achievement        String
   mentor             String?
-  year               Int
-  start_date         DateTime?
-  end_date           DateTime?
+  year               String
+  start_date         String?
+  end_date           String?
   file_url           String[]
 
   @@map("achievement_independent")
@@ -119,7 +119,7 @@ model AchievementNonCompetition {
   faculty            String
   activity           String?
   number_of_students Int
-  year               Int
+  year               String
   file_url           String[]
 
   @@map("achievement_non_competition")

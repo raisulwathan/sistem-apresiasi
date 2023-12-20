@@ -35,7 +35,7 @@ const Login = () => {
       }
 
       if (role === "WR") {
-        navigate("/biro");
+        navigate("/wr3");
       }
 
       if (role === "ADMIN") {

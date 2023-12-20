@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
-import KegiatanMahasiswa from "./KegiatanMahasiswaOnbiro";
+
 import PertukaranMahasiswa from "./PertukaranMahasiswa";
 import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";
 import PembinaanMental from "./PembinaanMental";
 import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
 import axios from "axios";
+import Dashboard from "./Dashboard";
 
 const SideBarBiro = () => {
-  const [selectedMenu, setSelectedMenu] = useState("Kegiatan Mahasiswa");
+  const [selectedMenu, setSelectedMenu] = useState("Dashboard");
   const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
   const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    setSelectedMenu("Kegiatan Mahasiswa");
-    fetchUserData();
+    setSelectedMenu("Dashboard");
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -36,19 +36,6 @@ const SideBarBiro = () => {
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);
-  };
-
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get("URL_GET_USER_DATA");
-      if (response.status === 200) {
-        setUserData(response.data);
-      } else {
-        console.error("Failed to fetch user data");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   const renderSubMenuMandiri = () => {
@@ -97,8 +84,8 @@ const SideBarBiro = () => {
 
   const renderContent = () => {
     switch (selectedMenu) {
-      case "Kegiatan Mahasiswa":
-        return <KegiatanMahasiswa />;
+      case "Dashboard":
+        return <Dashboard />;
       case "Kegiatan Lomba":
         return <KegiatanLomba />;
       case "Formulir":
@@ -124,9 +111,9 @@ const SideBarBiro = () => {
           <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
         </div>
         <ul className="pt-10">
-          <li onClick={() => handleMenuClick("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
+          <li onClick={() => handleMenuClick("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
             <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
-            Kegiatan Mahasiswa
+            Dashboard
           </li>
           <li onClick={() => handleMenuClick("Kegiatan Mandiri")} className={`cursor-pointer mb-7 gap-3  flex items-center`}>
             <img src={nonlomba} alt="Icon2" className=" menu-icon w-7" />

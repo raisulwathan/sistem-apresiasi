@@ -86,6 +86,13 @@ class ActivitiesService {
           faculty,
         },
       },
+      include: {
+        owner: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     if (!activities) {
@@ -99,6 +106,15 @@ class ActivitiesService {
     const activity = await this._prisma.activity.findUnique({
       where: {
         id,
+      },
+      include: {
+        owner: {
+          select: {
+            npm: true,
+            name: true,
+            major: true,
+          },
+        },
       },
     });
 
@@ -156,7 +172,7 @@ class ActivitiesService {
     const activities = await this._prisma.activity.findMany({
       where: {
         ownerId: owner,
-        status: "valid",
+        status: "accepted",
       },
     });
 
@@ -200,9 +216,9 @@ class ActivitiesService {
   }
 
   async getRejectedActivityById(id) {
-    const activity = await this._prisma.rejectedActivity.findUnique({
+    const activity = await this._prisma.rejectedActivity.findFirst({
       where: {
-        id,
+        activityId: id,
       },
     });
 

@@ -10,7 +10,7 @@ const KegiatanLomba = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/v1/achievements/independents/faculties", {
+        const response = await axios.get("http://localhost:5001/api/v1/achievements/independents", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

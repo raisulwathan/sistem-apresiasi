@@ -1,19 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
-import { InvariantError } from '../exceptions/InvariantError.js';
+import { PrismaClient } from "@prisma/client";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { InvariantError } from "../exceptions/InvariantError.js";
 
 const prisma = new PrismaClient();
 
 class AchievementNonCompetitionService {
-  async addAchievementNonCompetition({
-    name,
-    category,
-    faculty,
-    activity,
-    numberOfStudents,
-    year,
-    fileUrl,
-  }) {
+  async addAchievementNonCompetition({ name, category, faculty, activity, numberOfStudents, year, fileUrl }) {
     const newAchievement = await prisma.achievementNonCompetition.create({
       data: {
         name,
@@ -27,7 +19,7 @@ class AchievementNonCompetitionService {
     });
 
     if (!newAchievement) {
-      throw new InvariantError('failed to add achievement');
+      throw new InvariantError("failed to add achievement");
     }
 
     return newAchievement;
@@ -55,7 +47,7 @@ class AchievementNonCompetitionService {
     });
 
     if (!achievement) {
-      throw new NotFoundError('failed to get achievement. id not found');
+      throw new NotFoundError("failed to get achievement. id not found");
     }
 
     return achievement;
@@ -76,16 +68,13 @@ class AchievementNonCompetitionService {
     });
 
     if (!faculty) {
-      throw new InvariantError('achievement no found. faculty invalid');
+      throw new InvariantError("achievement no found. faculty invalid");
     }
 
     return achievements;
   }
 
-  async editAchievementNonCompetitionById(
-    id,
-    { name, category, faculty, activity, numberOfStudents, year, fileUrl }
-  ) {
+  async editAchievementNonCompetitionById(id, { name, category, faculty, activity, numberOfStudents, year, fileUrl }) {
     const updatedAchievement = await prisma.achievementNonCompetition.update({
       data: {
         name,
@@ -102,7 +91,7 @@ class AchievementNonCompetitionService {
     });
 
     if (!updatedAchievement) {
-      throw new InvariantError('failed to edit data');
+      throw new InvariantError("failed to edit data");
     }
 
     return updatedAchievement;
@@ -116,7 +105,7 @@ class AchievementNonCompetitionService {
     });
 
     if (!deletedAchievement) {
-      throw new InvariantError('failed to delete Achievement');
+      throw new InvariantError("failed to delete Achievement");
     }
 
     return deletedAchievement;
@@ -130,7 +119,7 @@ class AchievementNonCompetitionService {
     });
 
     if (!achievement) {
-      throw new InvariantError('failed to get Achievement. id not found');
+      throw new InvariantError("failed to get Achievement. id not found");
     }
   }
 }

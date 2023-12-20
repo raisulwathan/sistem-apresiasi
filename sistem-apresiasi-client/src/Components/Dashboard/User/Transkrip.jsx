@@ -11,6 +11,7 @@ const Transkrip = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showInsufficientPointsPopup, setShowInsufficientPointsPopup] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [skpiProcessed, setSkpiProcessed] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,24 +78,23 @@ const Transkrip = () => {
   const confirmAjukanSkpi = async () => {
     setShowConfirmation(false);
     try {
-      const response = await axios.post(
-        "http://localhost:5001/api/v1/skpi",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post("http://localhost:5001/api/v1/skpi", null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const statusCode = response.status;
 
       if (statusCode === 201) {
         setShowPopup(true);
+        setSkpiProcessed(true); // Mengganti status tombol saat data berhasil terkirim
       }
     } catch (error) {
-      console.log(error);
-      if (error.response.status === 400) {
+      console.error(error);
+      if (error.response && error.response.status === 400 && error.response.data.message === "this users already have skpi data") {
+        setSkpiProcessed(true);
+      } else if (error.response && error.response.status === 400) {
         setShowInsufficientPointsPopup(true);
       } else {
         console.error("Error:", error.response ? error.response.data : error.message);
@@ -210,9 +210,13 @@ const Transkrip = () => {
         </div>
         <div className="flex mt-6">
           <img src="./src/assets/print.png" alt="print" className="mt-2 mr-2 w-7 h-7" />
-          <button onClick={handleAjukanSkpi} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
-            Ajukan
-          </button>
+          {skpiProcessed ? (
+            <p>SKPI Sedang Diproses</p>
+          ) : (
+            <button onClick={handleAjukanSkpi} disabled={skpiProcessed} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
+              Ajukan
+            </button>
+          )}
         </div>
         {showInsufficientPointsPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -238,7 +242,7 @@ const Transkrip = () => {
         {showConfirmation && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-              <p>Anda yakin ingin mengajukan SKPI?</p>
+              <p>Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
               <div className="mt-4 space-x-4">
                 <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-secondary">
                   Ya

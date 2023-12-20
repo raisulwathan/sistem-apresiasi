@@ -356,30 +356,21 @@ const Upload = () => {
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Partisipasi :
           </label>
-          {
-            //selectedActivity === "pengurus organisasi ekstrakampus" ? (
-            //   <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
-            //     <option value="" key="">
-            //       Semua Level
-            //     </option>
-            //   </select>
-            // ) :
-            selectedActivity === "pengurus organisasi intrakampus" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
-                <option value="">Pilih Partisipasi</option>
-                {participationOptionsForSelectedCategory[selectedCategory] &&
-                  participationOptionsForSelectedCategory[selectedCategory].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )
-          }
+          {selectedActivity === "pengurus organisasi intrakampus" ? (
+            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+              <option value="">Pilih Partisipasi</option>
+              {participationOptionsForSelectedCategory[selectedCategory] &&
+                participationOptionsForSelectedCategory[selectedCategory].map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+            </select>
+          ) : (
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+              <option value="">Tidak Ada</option>
+            </select>
+          )}
         </div>
       ) : selectedCategory === "bidangKeilmuan" ? (
         <div className="lg:flex lg:mt-8">

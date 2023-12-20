@@ -1,22 +1,14 @@
-import { PrismaClient } from '@prisma/client';
-import { InvariantError } from '../exceptions/InvariantError.js';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
-import { verifyMinimumPoints } from '../utils/index.js';
+import { PrismaClient } from "@prisma/client";
+import { InvariantError } from "../exceptions/InvariantError.js";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { verifyMinimumPoints } from "../utils/index.js";
 
 class SkpiService {
   constructor() {
     this._prisma = new PrismaClient();
   }
 
-  async addSkpi({
-    mandatoryPoints,
-    organizationPoints,
-    scientificPoints,
-    charityPoints,
-    talentPoints,
-    otherPoints,
-    owner,
-  }) {
+  async addSkpi({ mandatoryPoints, organizationPoints, scientificPoints, charityPoints, talentPoints, otherPoints, owner }) {
     verifyMinimumPoints({
       mandatoryPoints,
       organizationPoints,
@@ -34,13 +26,13 @@ class SkpiService {
         scientificPoints,
         talentPoints,
         otherPoints,
-        status: 'pending',
+        status: "pending",
         ownerId: owner,
       },
     });
 
     if (!newSkpi) {
-      throw new InvariantError('failed to add SKPI');
+      throw new InvariantError("failed to add SKPI");
     }
 
     return {
@@ -52,14 +44,14 @@ class SkpiService {
   async getSkpi() {
     const skpi = await this._prisma.skpi.findMany({
       select: {
-        id,
-        status,
-      },
-      include: {
+        id: true,
+        status: true,
         owner: {
           select: {
-            npm,
-            name,
+            npm: true,
+            name: true,
+            faculty: true,
+            major: true,
           },
         },
       },
@@ -78,6 +70,7 @@ class SkpiService {
             name: true,
             npm: true,
             faculty: true,
+            major: true,
           },
         },
       },
@@ -89,7 +82,7 @@ class SkpiService {
     });
 
     if (!skpi) {
-      throw new NotFoundError('skpi not found');
+      throw new NotFoundError("skpi not found");
     }
 
     return skpi;
@@ -103,7 +96,7 @@ class SkpiService {
     });
 
     if (!skpi) {
-      throw new NotFoundError('skpi not found');
+      throw new NotFoundError("skpi not found");
     }
 
     return skpi;
@@ -114,10 +107,20 @@ class SkpiService {
       where: {
         id,
       },
+      include: {
+        owner: {
+          select: {
+            name: true,
+            npm: true,
+            faculty: true,
+            major: true,
+          },
+        },
+      },
     });
 
     if (!skpi) {
-      throw new NotFoundError('skpi not found');
+      throw new NotFoundError("skpi not found");
     }
 
     return skpi;
@@ -136,7 +139,7 @@ class SkpiService {
     });
 
     if (!editedSkpi) {
-      throw new InvariantError('failed to edit skpi status');
+      throw new InvariantError("failed to edit skpi status");
     }
   }
 
@@ -148,7 +151,7 @@ class SkpiService {
     });
 
     if (skpi) {
-      throw new InvariantError('this users already have skpi data');
+      throw new InvariantError("this users already have skpi data");
     }
   }
 }

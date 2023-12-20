@@ -27,13 +27,14 @@ const History = () => {
 
   const handleLihatDetail = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5001/api/v1/activities/${id}/rejects`, null, {
+      const response = await axios.get(`http://localhost:5001/api/v1/activities/${id}/rejects`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       });
 
-      setAlasanDitolak(response.data.data.message); // Pastikan struktur responsenya sesuai
+      console.log(response.data);
+      setAlasanDitolak(response.data.data.rejectedActivity.message);
       setShowModal(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
@@ -47,8 +48,7 @@ const History = () => {
   // data activities
   const pendingActivities = activities.filter((activity) => activity.status === "pending");
   const acceptedActivities = activities.filter((activity) => activity.status === "accepted");
-  const rejectedActivities = activities.filter((activity) => activity.status === "accepted");
-  console.log(pendingActivities);
+  const rejectedActivities = activities.filter((activity) => activity.status === "rejected");
 
   return (
     <div className="max-h-[887px]  h-[870px] lg:mt-4 lg:p-16 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow">

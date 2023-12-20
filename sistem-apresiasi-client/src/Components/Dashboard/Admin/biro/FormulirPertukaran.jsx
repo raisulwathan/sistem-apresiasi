@@ -1,45 +1,62 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { getToken } from "../../../../utils/Config";
 
 function FormulirPertukaran() {
-  const [fakultas, setFakultas] = useState("");
-  const [program, setProgram] = useState("");
-  const [jumlahPeserta, setJumlahPeserta] = useState("");
-  const [tahunKegiatan, setTahunKegiatan] = useState("");
-  const [file, setFile] = useState(null);
+  const [formData, setFormData] = useState({
+    eventName: "",
+    categoryName: "Pertukaran Mahasiswa Nasional dan Internasional",
+    facultyName: "",
+    activityName: "",
+    numberOfStudent: null,
+    years: "",
+    file: null,
+    uploadedFiles: [],
+  });
+  const token = getToken();
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
+    const file = e.target.files[0];
+    setFormData((prevData) => ({
+      ...prevData,
+      file,
+      uploadedFiles: [...prevData.uploadedFiles, file.name],
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const dataToSend = {
+    name: formData.eventName,
+    category: formData.categoryName,
+    faculty: formData.facultyName,
+    numberOfStudents: Number(formData.numberOfStudent),
+    year: formData.years,
+    fileUrl: formData.uploadedFiles,
+  };
+
+  const handleUpload = async () => {
+    try {
+      const response = await axios.post("http://localhost:5001/api/v1/achievements/noncompetitions", dataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const formData = new FormData();
-      formData.append("fakultas", fakultas);
-      formData.append("program", program);
-      formData.append("jumlahPeserta", jumlahPeserta);
-      formData.append("tahunKegiatan", tahunKegiatan);
-      formData.append("file", file);
-
-      await axios.post("URL_API", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log("Data berhasil dikirim ke server");
-
-      setFakultas("");
-      setProgram("");
-      setJumlahPeserta("");
-      setTahunKegiatan("");
-      setFile(null);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await handleUpload();
   };
 
   return (
@@ -50,30 +67,40 @@ function FormulirPertukaran() {
           <label htmlFor="fakultas" className="w-36">
             Fakultas:
           </label>
-          <select id="fakultas" value={fakultas} onChange={(e) => setFakultas(e.target.value)} className="flex-grow p-2 ml-32 text-center border rounded ">
+          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 ml-32 text-center border rounded ">
             <option value="">Pilih Fakultas</option>
             <option value="Fakultas Mipa">Fakultas Mipa</option>
             <option value="Fakultas teknik">Fakultas teknik</option>
-            <option value="Fakultas ekonomi">Fakultas ekonomi</option>
+            <option value="Fakultas Kedokteran Hewan">Fakultas Kedokteran Hewan</option>
+            <option value="Fakultas kedokteran">Fakultas Kedokteran</option>
+            <option value="Fakultas Pertanian">Fakultas Pertanian</option>
+            <option value="Fakultas FISIP">Fakultas Ilmu Sosial dan Ilmu Politik</option>
+            <option value="Fakultas KIP">FKIP</option>
+            <option value="Fakultas Keperawatan">Fakultas Keperawatan</option>
+            <option value="Fakultas Pasca Sarjana">Fakultas Pasca Sarjana</option>
+            <option value="Fakultas Ekonomi">Fakultas Ekonomi dan Bisnis</option>
+            <option value="Fakultas Hukum">Fakultas Hukum</option>
+            <option value="Fakultas Kelautan">Fakultas Kelautan dan perikanan</option>
+            <option value="Fakultas Dokter gigi">Fakultas Kedokteran Gigi</option>
           </select>
         </div>
         <div className="flex items-center">
           <label htmlFor="program" className="w-39">
             Program Pertukaran:
           </label>
-          <input type="text" id="program" value={program} onChange={(e) => setProgram(e.target.value)} className="flex-grow p-2 border rounded ml-[88px]" />
+          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className="flex-grow p-2 border rounded ml-[88px]" />
         </div>
         <div className="flex items-center">
           <label htmlFor="jumlahPeserta" className="w-36">
             Jumlah Peserta:
           </label>
-          <input type="number" id="jumlahPeserta" value={jumlahPeserta} onChange={(e) => setJumlahPeserta(e.target.value)} className="flex-grow ml-[129px] p-2 border rounded" />
+          <input type="number" id="numberOfStudent" value={formData.numberOfStudent} onChange={handleInputChange} className="flex-grow ml-[129px] p-2 border rounded" />
         </div>
         <div className="flex items-center">
           <label htmlFor="tahunKegiatan" className="w-39">
             Tahun Kegiatan:
           </label>
-          <input type="text" id="tahunKegiatan" value={tahunKegiatan} onChange={(e) => setTahunKegiatan(e.target.value)} className="flex-grow ml-[128px] p-2 border rounded" />
+          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow ml-[128px] p-2 border rounded" />
         </div>
         <div className="flex items-center">
           <label htmlFor="file" className="w-36">
@@ -81,7 +108,7 @@ function FormulirPertukaran() {
           </label>
           <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 ml-[129px] border rounded" />
         </div>
-        <button type="submit" className="px-4 py-2 text-base transition-transform hover:text-secondary rounded-lg w-[150px] bg-yellow-200 font-poppins hover:transform hover:scale-110 ml-[270px] ">
+        <button type="submit" onClick={handleUpload} className="px-4 py-2 text-base transition-transform hover:text-secondary rounded-lg w-[150px] bg-yellow-200 font-poppins hover:transform hover:scale-110 ml-[270px] ">
           Submit
         </button>
       </form>
