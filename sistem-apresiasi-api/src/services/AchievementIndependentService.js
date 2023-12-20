@@ -117,6 +117,25 @@ class AchievementIndependentService {
 
     return deletedAchievement;
   }
+
+  async getAchievementIndependentForExport() {
+    const achievements = await prisma.achievementIndependent.findMany();
+    return achievements;
+  }
+
+  async getAchievementIndependentByFacultyForExport(faculty) {
+    const achievements = await prisma.achievementIndependent.findMany({
+      where: {
+        faculty,
+      },
+    });
+
+    if (!achievements) {
+      throw new NotFoundError('achievements not found');
+    }
+
+    return achievements;
+  }
 }
 
 export default AchievementIndependentService;

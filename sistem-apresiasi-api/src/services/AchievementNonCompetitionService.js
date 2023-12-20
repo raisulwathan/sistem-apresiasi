@@ -26,15 +26,7 @@ class AchievementNonCompetitionService {
   }
 
   async getAchievementNonCompetitions() {
-    const achievements = await prisma.achievementNonCompetition.findMany({
-      select: {
-        id: true,
-        name: true,
-        activity: true,
-        year: true,
-        faculty: true,
-      },
-    });
+    const achievements = await prisma.achievementNonCompetition.findMany();
 
     return achievements;
   }
@@ -57,13 +49,6 @@ class AchievementNonCompetitionService {
     const achievements = await prisma.achievementNonCompetition.findMany({
       where: {
         faculty,
-      },
-      select: {
-        id: true,
-        name: true,
-        activity: true,
-        year: true,
-        faculty: true,
       },
     });
 
