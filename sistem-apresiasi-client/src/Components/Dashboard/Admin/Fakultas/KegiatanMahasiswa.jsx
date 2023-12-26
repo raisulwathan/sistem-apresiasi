@@ -123,7 +123,7 @@ const KegiatanMahasiswa = () => {
   return (
     <div className="h-screen pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Mahasiswa</h2>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
@@ -163,63 +163,68 @@ const KegiatanMahasiswa = () => {
             </tbody>
           </table>
         )}
-      </div>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        <h2 className="font-semibold text-gray-700 font-poppins">Sudah Divalidasi</h2>
-        <table className="w-full">
-          <thead>
-            <tr className="border-b-2 border-secondary">
-              <th className="px-4 py-2 text-left">Kategori</th>
-              <th className="px-4 py-2 text-left">Nama Kegiatan</th>
-              <th className="px-4 py-2 text-left">Tingkat</th>
-              <th className="px-4 py-2 text-left">Point</th>
-              <th className="px-4 py-2 text-left">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data
-              .filter((activity) => activity.status === "accepted")
-              .map((activity, index) => (
-                <tr key={index} className="">
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{activity.activity}</td>
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{activity.fieldsActivity}</td>
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{activity.levels}</td>
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{activity.points}</td>
-                  <td className="py-2">
-                    <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary hover:underline focus:outline-none">
-                      Detail
-                    </button>
+        <div className="h-screen py-10 mt-9 ">
+          <h2 className="font-semibold text-gray-700 font-poppins">Sudah Divalidasi</h2>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b-2 border-secondary">
+                <th className="px-4 py-2 text-left">Kategori</th>
+                <th className="px-4 py-2 text-left">Nama Kegiatan</th>
+                <th className="px-4 py-2 text-left">Tingkat</th>
+                <th className="px-4 py-2 text-left">Point</th>
+                <th className="px-4 py-2 text-left">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data
+                .filter((activity) => activity.status === "accepted")
+                .map((activity, index) => (
+                  <tr key={index} className="">
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.activity}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.fieldsActivity}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.levels}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{activity.points}</td>
+                    <td className="py-2">
+                      <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary hover:underline focus:outline-none">
+                        Detail
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              {data.filter((activity) => activity.status === "accepted").length === 0 && (
+                <tr>
+                  <td colSpan="5" className="px-4 py-2 text-center">
+                    Data tidak tersedia.
                   </td>
                 </tr>
-              ))}
-            {data.filter((activity) => activity.status === "accepted").length === 0 && (
-              <tr>
-                <td colSpan="5" className="px-4 py-2 text-center">
-                  Data tidak tersedia.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
+
       {showModal && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
-          <div className="p-4 bg-white rounded-lg w-[1200px] h-[800px] ">
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+          <div className="p-4 bg-white rounded-lg w-[1200px] h-[800px]">
             <h3 className="mb-2 text-lg font-semibold">Detail Data:</h3>
             <div>
               <p>Kegiatan : {detailKegiatan.activity}</p>
               <p>Kategori Kegiatan : {detailKegiatan.fieldsActivity}</p>
-              <p>Sertifikat : {detailKegiatan.fileUrl}</p>
-              <p>tingkat : {detailKegiatan.levels}</p>
+              <p>
+                <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer">
+                  Lihat Sertifikat
+                </a>
+              </p>
+              <p>Tingkat : {detailKegiatan.levels}</p>
               <p>Nama Kegiatan : {detailKegiatan.name}</p>
-              <p>Point : {detailKegiatan.points} </p>
-              <p>Mahasiswa: </p>
+              <p>Point : {detailKegiatan.points}</p>
+              <p>Mahasiswa:</p>
               <p>Nama : {detailKegiatan.owner.name}</p>
               <p>NPM : {detailKegiatan.owner.npm}</p>
               <p>Prodi : {detailKegiatan.owner.major}</p>
-              <p>Harapan : {detailKegiatan.possitions_achievements} </p>
-              <p> Status: {detailKegiatan.status} </p>
-              <p> Tahun: {detailKegiatan.years} </p>
+              <p>Harapan : {detailKegiatan.possitions_achievements}</p>
+              <p>Status: {detailKegiatan.status}</p>
+              <p>Tahun: {detailKegiatan.years}</p>
             </div>
             <div className="flex justify-around mt-4">
               <button onClick={() => handleConfirmValidation(detailKegiatan.id)} className="px-3 py-1 text-white bg-green-500 rounded-md">
@@ -229,13 +234,13 @@ const KegiatanMahasiswa = () => {
                 Tolak
               </button>
             </div>
-
             <button onClick={() => setShowModal(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-secondary">
               Tutup
             </button>
           </div>
         </div>
       )}
+
       {confirmValidation && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">

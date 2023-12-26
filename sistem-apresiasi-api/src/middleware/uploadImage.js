@@ -1,14 +1,26 @@
-import multer from 'multer';
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+
+const createUploadsFolder = () => {
+  const uploadsFolder = "./public/uploads";
+  if (!fs.existsSync(uploadsFolder)) {
+    fs.mkdirSync(uploadsFolder, { recursive: true });
+  }
+};
+
+// Membuat direktori penyimpanan jika belum ada
+createUploadsFolder();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './upload');
+    cb(null, "./public/uploads");
   },
-
   filename: (req, file, cb) => {
-    const fileName = new Date().toString() + '-' + file.originalname;
-    cb(null, fileName);
+    cb(null, `${path.parse(file.originalname).name}-${Date.now()}${path.extname(file.originalname)}`);
   },
 });
 
-export default upload = multer({ storage });
+const upload = multer({ storage });
+
+export default upload;

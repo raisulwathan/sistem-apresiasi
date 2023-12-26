@@ -30,21 +30,25 @@ const KegiatanLomba = () => {
   }, [token]);
 
   return (
-    <div className="pt-3">
+    <div className="h-screen pt-3 overflow-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Lomba</h2>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        {data.map((item) => (
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
+        {data.map((item, index) => (
           <div key={item.id} className="p-4 mb-6 border rounded-md">
             <p className="text-lg font-semibold">Nama Kegiatan: {item.name}</p>
             <p>Bidang Kegiatan: {item.level_activity}</p>
             <p>Tingkat: {item.participant_type}</p>
             <p>Tahun: {item.year}</p>
             <p>Pemilik:</p>
-            <p className="pl-4">Nama: {item.participants}</p>
-            <p className="pl-4">Fakultas: {item.faculty}</p>
+            {item.participants.map((participant, idx) => (
+              <div key={idx} className="pl-4">
+                <p>Nama: {participant.name}</p>
+                <p>NPM: {participant.npm}</p>
+              </div>
+            ))}
           </div>
         ))}
-        {error && <p>{error}</p>} {/* Tampilkan pesan error jika ada kesalahan */}
+        {error && <p>{error}</p>}
       </div>
     </div>
   );

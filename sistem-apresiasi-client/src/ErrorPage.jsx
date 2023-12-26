@@ -3,7 +3,7 @@ import React from "react";
 function ErrorPage() {
   return (
     <div>
-      <h1 className=" text-secondary">tolol kau kontol </h1>
+      <h1 className=" text-secondary">Di harapkan login terlebih dahulu </h1>
     </div>
   );
 }

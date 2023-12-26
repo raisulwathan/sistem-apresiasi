@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
-
 import PertukaranMahasiswa from "./PertukaranMahasiswa";
 import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";
@@ -22,7 +21,7 @@ const SideBarWr3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedMenu("Kegiatan Mandiri");
+    setSelectedMenu("SKPI");
     const token = getToken();
     const userId = getUserId();
     if (token) {

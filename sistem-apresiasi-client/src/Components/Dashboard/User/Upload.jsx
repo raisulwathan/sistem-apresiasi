@@ -10,8 +10,7 @@ const Upload = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedActivity, setSelectedActivity] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
-  const [file, setFile] = useState("");
-  const [filename, setFilename] = useState("");
+  const [file, setFile] = useState(null);
   const [selectedParticipation, setSelectedParticipation] = useState("");
   const [token, setToken] = useState("");
   const [level, setLevel] = useState("");
@@ -36,7 +35,6 @@ const Upload = () => {
       setSelectedActivity("");
       setSelectedYear("");
       setFile("");
-      setFilename("");
       setSelectedParticipation("");
       setLevel("");
       setName("");
@@ -73,24 +71,31 @@ const Upload = () => {
     fetchToken();
   }, []);
 
-  const data = {
-    name: name,
-    fieldActivity: selectedCategory,
-    activity: selectedActivity,
-    level: level,
-    possitionAchievement: selectedParticipation,
-    years: selectedYear,
-    fileUrl: filename,
-  };
+  const formData = new FormData();
+  formData.append("file", file); // T
 
   const handleUpload = async () => {
     try {
+      const uploadFile = await axios.post("http://localhost:5001/api/v1/uploads", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const data = {
+        name: name,
+        fieldActivity: selectedCategory,
+        activity: selectedActivity,
+        level: level,
+        possitionAchievement: selectedParticipation,
+        years: selectedYear,
+        fileUrl: uploadFile.data.data.fileUrl,
+      };
+
       const response = await axios.post("http://localhost:5001/api/v1/activities", data, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-
       const statusCode = response.status; // Mendapatkan statusCode dari respons API
 
       if (statusCode === 201) {
@@ -126,7 +131,6 @@ const Upload = () => {
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     setFile(uploadedFile);
-    setFilename(uploadedFile.name);
   };
 
   const handleName = (e) => {

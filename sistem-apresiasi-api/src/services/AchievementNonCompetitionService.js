@@ -5,13 +5,14 @@ import { InvariantError } from "../exceptions/InvariantError.js";
 const prisma = new PrismaClient();
 
 class AchievementNonCompetitionService {
-  async addAchievementNonCompetition({ name, category, faculty, activity, numberOfStudents, year, fileUrl }) {
+  async addAchievementNonCompetition({ name, category, faculty, activity, levelActivity, numberOfStudents, year, fileUrl }) {
     const newAchievement = await prisma.achievementNonCompetition.create({
       data: {
         name,
         category,
         faculty,
         activity,
+        level_activity: levelActivity,
         number_of_students: numberOfStudents,
         year,
         file_url: fileUrl,
@@ -59,13 +60,14 @@ class AchievementNonCompetitionService {
     return achievements;
   }
 
-  async editAchievementNonCompetitionById(id, { name, category, faculty, activity, numberOfStudents, year, fileUrl }) {
+  async editAchievementNonCompetitionById(id, { name, category, faculty, activity, levelActivity, numberOfStudents, year, fileUrl }) {
     const updatedAchievement = await prisma.achievementNonCompetition.update({
       data: {
         name,
         category,
         faculty,
         activity,
+        level_activity: levelActivity,
         number_of_students: numberOfStudents,
         year,
         file_url: fileUrl,

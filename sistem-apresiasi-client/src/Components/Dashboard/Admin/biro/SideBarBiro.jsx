@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
-
+import { useNavigate } from "react-router-dom";
 import PertukaranMahasiswa from "./PertukaranMahasiswa";
 import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";
@@ -16,6 +16,8 @@ const SideBarBiro = () => {
   const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelectedMenu("Dashboard");
@@ -32,7 +34,11 @@ const SideBarBiro = () => {
       setSubMenuOpenNonLomba(false);
     }
   };
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const toggleUserDropdown = () => {
     setUserDropdownOpen(!userDropdownOpen);

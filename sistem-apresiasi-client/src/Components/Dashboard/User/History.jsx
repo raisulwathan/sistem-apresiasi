@@ -78,12 +78,14 @@ const History = () => {
         <img src="./src/assets/approved.png" alt="" className="w-6 h-6 mt-[3px]" />
         <div className="pl-2">
           <p className="text-gray-600">Diterima</p>
-          <h3 className="p-3 lg:w-[600px] mt-4 bg-dimBlue rounded-md">
+          <h3 className=" lg:w-[600px] mt-4  rounded-md">
             <div>
               {acceptedActivities.length > 0 ? (
-                <ul>
+                <ul className="">
                   {acceptedActivities.map((activity) => (
-                    <li key={activity.id}>{activity.activity}</li>
+                    <li className="p-3 my-2 rounded-lg bg-dimBlue" key={activity.id}>
+                      {activity.activity}
+                    </li>
                   ))}
                 </ul>
               ) : (

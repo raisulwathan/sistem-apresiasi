@@ -118,7 +118,8 @@ model AchievementNonCompetition {
   category           String
   faculty            String
   activity           String?
-  number_of_students Int
+  level_activity     String?
+  number_of_students Int?
   year               String
   file_url           String[]
 

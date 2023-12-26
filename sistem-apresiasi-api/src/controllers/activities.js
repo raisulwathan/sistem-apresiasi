@@ -8,7 +8,6 @@ export const postActivityController = async (req, res) => {
 
   const userId = req.userId;
   const { name, fieldActivity, activity, level, possitionAchievement, location, years, fileUrl } = req.body;
-
   const activitiesService = new ActivitiesService();
 
   const newActivity = await activitiesService.addActivity({

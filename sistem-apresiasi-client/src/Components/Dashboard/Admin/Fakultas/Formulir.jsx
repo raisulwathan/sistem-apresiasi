@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getToken } from "../../../../utils/Config";
+import { getToken, getUserId } from "../../../../utils/Config";
 
 function Formulir() {
+  const [faculty, setFaculty] = useState("");
+
+  useEffect(() => {
+    const fetchDataUser = async () => {
+      const response = await axios.get(`http://localhost:5001/api/v1/users/${getUserId()}`);
+
+      if (response.status === 200) {
+        const userFaculty = response.data.data.user.faculty;
+        setFaculty(userFaculty);
+
+        // Memperbarui daftar program studi berdasarkan fakultas dari respons API
+        const updatedPrograms = facultyPrograms[userFaculty] || [];
+        const firstProgram = updatedPrograms.length > 0 ? updatedPrograms[0] : "";
+        setFormData((prevData) => ({
+          ...prevData,
+          facultyName: userFaculty,
+          studyProgram: firstProgram,
+          studyPrograms: updatedPrograms,
+        }));
+      }
+    };
+
+    fetchDataUser();
+  }, []);
+
   const [formData, setFormData] = useState({
     facultyName: "",
     eventName: "",
@@ -56,7 +81,12 @@ function Formulir() {
     }));
   };
 
-  const data = {
+  const individualParticipant = {
+    name: formData.nama,
+    npm: formData.npm,
+  };
+
+  let data = {
     faculty: formData.facultyName,
     name: formData.eventName,
     major: formData.studyProgram,
@@ -74,6 +104,9 @@ function Formulir() {
 
   const handleUpload = async () => {
     try {
+      if (isIndividual) {
+        data.participants[0] = individualParticipant;
+      }
       const response = await axios.post("http://localhost:5001/api/v1/achievements/independents", data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -330,27 +363,6 @@ function Formulir() {
       <h2 className="font-semibold text-gray-700 font-poppins">Formulir</h2>
 
       <form className="max-h-[80vh] p-10 overflow-auto mt-9 shadow-boxShadow" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="facultyName" className="block mb-2 font-medium text-gray-700 font-poppins">
-            Nama Fakultas
-          </label>
-          <select id="facultyName" name="facultyName" value={formData.facultyName} onChange={handleDropdownChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
-            <option value="">Pilih Fakultas</option>
-            <option value="MIPA">Fakultas Mipa</option>
-            <option value="Fakultas Teknik">Fakultas Teknik</option>
-            <option value="Fakultas Ekonomi">Fakultas Ekonomi</option>
-            <option value="Fakultas Kedokteran Hewan">Fakultas Kedokteran Hewan</option>
-            <option value="Fakultas Hukum">Fakultas Hukum</option>
-            <option value="Fakultas Pertanian">Fakultas Pertanian</option>
-            <option value="KIP">KIP</option>
-            <option value="Kedokteran">Kedokteran</option>
-            <option value="Pasca sarjana">Pasca Sarjana</option>
-            <option value="FISIP">Ilmu Sosial dan Ilmu Politik</option>
-            <option value="Kelautan">Kelautan dan Perikanan</option>
-            <option value="Keperawatan">Keperawatan</option>
-            <option value="Kedokteran Gigi">Kedokteran Gigi</option>
-          </select>
-        </div>
         <div className="mb-4">
           <label htmlFor="eventName" className="block mb-2 font-medium text-black font-poppins">
             Nama Kegiatan

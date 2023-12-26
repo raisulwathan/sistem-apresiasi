@@ -13,6 +13,8 @@ function Formulir() {
     achievement: "",
     advisorName: "",
     participants: [],
+    nama: "",
+    npm: "",
     startDate: "",
     endDate: "",
     year: "",
@@ -24,8 +26,8 @@ function Formulir() {
 
   const handleAddParticipant = () => {
     const newParticipant = {
-      name: "",
-      npm: "",
+      name: formData.nama,
+      npm: formData.npm,
     };
 
     setFormData((prevData) => ({
@@ -41,7 +43,6 @@ function Formulir() {
       [name]: value,
     }));
 
-    // Set isIndividual berdasarkan jenis kegiatan yang dipilih
     if (name === "participationType") {
       setIsIndividual(value === "Individu");
     }
@@ -52,11 +53,16 @@ function Formulir() {
     setFormData((prevData) => ({
       ...prevData,
       file,
-      uploadedFiles: [...prevData.uploadedFiles, file.name], // Menambahkan nama file ke dalam array
+      uploadedFiles: [...prevData.uploadedFiles, file.name],
     }));
   };
 
-  const data = {
+  const individualParticipant = {
+    name: formData.nama,
+    npm: formData.npm,
+  };
+
+  let data = {
     faculty: formData.facultyName,
     name: formData.eventName,
     major: formData.studyProgram,
@@ -74,6 +80,9 @@ function Formulir() {
 
   const handleUpload = async () => {
     try {
+      if (isIndividual) {
+        data.participants[0] = individualParticipant;
+      }
       const response = await axios.post("http://localhost:5001/api/v1/achievements/independents", data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -292,6 +301,7 @@ function Formulir() {
       };
     });
   };
+  console.log(formData);
 
   const renderParticipants = () => {
     return formData.participants.map((participant, index) => (
@@ -305,7 +315,7 @@ function Formulir() {
           name="name"
           value={participant.name}
           onChange={(e) => handleParticipantChange(e, index)}
-          className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+          className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500"
           required
         />
         <label htmlFor={`participantNPM-${index}`} className="block mb-2 font-medium text-gray-700 font-poppins">
@@ -317,7 +327,7 @@ function Formulir() {
           name="npm"
           value={participant.npm}
           onChange={(e) => handleParticipantChange(e, index)}
-          className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+          className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500"
           required
         />
         <button onClick={() => handleRemoveParticipant(index)}>Hapus Peserta</button>
@@ -334,7 +344,7 @@ function Formulir() {
           <label htmlFor="facultyName" className="block mb-2 font-medium text-gray-700 font-poppins">
             Nama Fakultas
           </label>
-          <select id="facultyName" name="facultyName" value={formData.facultyName} onChange={handleDropdownChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+          <select id="facultyName" name="facultyName" value={formData.facultyName} onChange={handleDropdownChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required>
             <option value="">Pilih Fakultas</option>
             <option value="MIPA">Fakultas Mipa</option>
             <option value="Fakultas Teknik">Fakultas Teknik</option>
@@ -355,13 +365,13 @@ function Formulir() {
           <label htmlFor="eventName" className="block mb-2 font-medium text-black font-poppins">
             Nama Kegiatan
           </label>
-          <input type="text" id="eventName" name="eventName" value={formData.eventName} onChange={handleEventNameChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="text" id="eventName" name="eventName" value={formData.eventName} onChange={handleEventNameChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
         <div className="mb-4">
           <label htmlFor="studyProgram" className="block mb-2 font-medium text-gray-700 font-poppins">
             Program Studi
           </label>
-          <select id="studyProgram" name="studyProgram" value={formData.studyProgram} onChange={handleStudyProgramChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+          <select id="studyProgram" name="studyProgram" value={formData.studyProgram} onChange={handleStudyProgramChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required>
             <option value="">Pilih Program Studi</option>
             {formData.studyPrograms &&
               formData.studyPrograms.map((program, index) => (
@@ -377,7 +387,7 @@ function Formulir() {
           <label htmlFor="category" className="block mb-2 font-medium text-gray-700 font-poppins">
             Kategori Kegiatan
           </label>
-          <select id="category" name="category" value={formData.category} onChange={handleDropdownChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+          <select id="category" name="category" value={formData.category} onChange={handleDropdownChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required>
             <option value="">Pilih Kategori</option>
             <option value="Provinsi">Provinsi</option>
             <option value="Wilayah">Wilayah</option>
@@ -391,7 +401,7 @@ function Formulir() {
           <label htmlFor="participationType" className="block mb-2 font-medium text-gray-700 font-poppins">
             Jenis Kegiatan
           </label>
-          <select id="participationType" name="participationType" value={formData.participationType} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+          <select id="participationType" name="participationType" value={formData.participationType} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required>
             <option value="">Pilih Jenis Kegiatan</option>
             <option value="Individu">Individu</option>
             <option value="Kelompok">Kelompok</option>
@@ -405,13 +415,13 @@ function Formulir() {
                 <label htmlFor="nama" className="block mb-2 font-medium text-gray-700 font-poppins">
                   Nama
                 </label>
-                <input type="text" id="nama" name="nama" value={formData.nama} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+                <input type="text" id="nama" name="nama" value={formData.nama} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
               </div>
               <div className="w-full pr-4 mb-4 md:w-1/2">
                 <label htmlFor="npm" className="block mb-2 font-medium text-gray-700 font-poppins">
                   NPM
                 </label>
-                <input type="text" id="npm" name="npm" value={formData.npm} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+                <input type="text" id="npm" name="npm" value={formData.npm} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
               </div>
             </div>
           </div>
@@ -438,7 +448,7 @@ function Formulir() {
             name="participantCount"
             value={formData.participantCount}
             onChange={handleInputChange}
-            className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500"
             required
           />
         </div>
@@ -447,7 +457,7 @@ function Formulir() {
           <label htmlFor="achievement" className="block mb-2 font-medium text-gray-700 font-poppins">
             Capaian Prestasi
           </label>
-          <select id="achievement" name="achievement" value={formData.achievement} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+          <select id="achievement" name="achievement" value={formData.achievement} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required>
             <option value="">Pilih Capaian Prestasi</option>
             <option value="Juara 1">Juara 1</option>
             <option value="Juara 2">Juara 2</option>
@@ -455,50 +465,42 @@ function Formulir() {
           </select>
         </div>
 
-        {/* Nama Pembimbing */}
         <div className="mb-4">
           <label htmlFor="advisorName" className="block mb-2 font-medium text-gray-700 font-poppins">
             Nama Pembimbing
           </label>
-          <input type="text" id="advisorName" name="advisorName" value={formData.advisorName} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="text" id="advisorName" name="advisorName" value={formData.advisorName} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
 
-        {/* NIP Pembimbing */}
-
-        {/* Penyelenggara */}
-
-        {/* Tanggal Mulai */}
         <div className="mb-4">
           <label htmlFor="startDate" className="block mb-2 font-medium text-gray-700 font-poppins">
             Tanggal Mulai
           </label>
-          <input type="date" id="startDate" name="startDate" value={formData.startDate} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="date" id="startDate" name="startDate" value={formData.startDate} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
 
-        {/* Tanggal Selesai */}
         <div className="mb-4">
           <label htmlFor="endDate" className="block mb-2 font-medium text-gray-700 font-poppins">
             Tanggal Selesai
           </label>
-          <input type="date" id="endDate" name="endDate" value={formData.endDate} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="date" id="endDate" name="endDate" value={formData.endDate} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
 
-        {/* Tahun Kegiatan */}
         <div className="mb-4">
           <label htmlFor="year" className="block mb-2 font-medium text-gray-700 font-poppins">
             Tahun Kegiatan
           </label>
-          <input type="text" id="year" name="year" value={formData.year} onChange={handleInputChange} className="w-full p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="text" id="year" name="year" value={formData.year} onChange={handleInputChange} className="w-full p-2 border-2 rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
 
         <div className="mb-4">
           <label htmlFor="file" className="block mb-2 font-medium text-gray-700 font-poppins">
             Upload File
           </label>
-          <input type="file" id="file" name="file" onChange={handleFileChange} className="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required />
+          <input type="file" id="file" name="file" onChange={handleFileChange} className="p-2 border rounded-md border-secondary focus:outline-none focus:border-blue-500" required />
         </div>
 
-        <button type="submit" onClick={handleUpload} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700 font-poppins focus:outline-none focus:shadow-outline">
+        <button type="submit" onClick={handleUpload} className="px-4 py-2 font-semibold text-white rounded bg-secondary hover:bg-green-600 font-poppins focus:outline-none focus:shadow-outline">
           Daftar
         </button>
       </form>

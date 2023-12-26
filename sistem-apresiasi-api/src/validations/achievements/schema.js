@@ -50,9 +50,22 @@ export const PostAchievementNonCompetitionPayloadSchema = Joi.object({
   activity: Joi.when("category", {
     is: "Rekognisi",
     then: Joi.string().required(),
+    otherwise: Joi.when("category", {
+      is: "Pembinaan Mental Kebangsaan",
+      then: Joi.string().required(),
+      otherwise: Joi.optional(),
+    }),
+  }),
+  levelActivity: Joi.when("category", {
+    is: "Pembinaan Mental Kebangsaan",
+    then: Joi.string().required(),
     otherwise: Joi.optional(),
   }),
-  numberOfStudents: Joi.number().required(),
+  numberOfStudents: Joi.when("category", {
+    is: "Pembinaan Mental Kebangsaan",
+    then: Joi.optional,
+    otherwise: Joi.number().required(),
+  }),
   year: Joi.string().required(),
   fileUrl: Joi.array().items(Joi.string()).required(),
 });
@@ -63,6 +76,15 @@ export const PutAchievementNonCompetitionPayloadSchema = Joi.object({
   faculty: Joi.string().required(),
   activity: Joi.when("category", {
     is: "Rekognisi",
+    then: Joi.string().required(),
+    otherwise: Joi.when("category", {
+      is: "Pembinaan Mental Kebangsaan",
+      then: Joi.string().required(),
+      otherwise: Joi.optional(),
+    }),
+  }),
+  levelActivity: Joi.when("category", {
+    is: "Pembinaan Mental Kebangsaan",
     then: Joi.string().required(),
     otherwise: Joi.optional(),
   }),

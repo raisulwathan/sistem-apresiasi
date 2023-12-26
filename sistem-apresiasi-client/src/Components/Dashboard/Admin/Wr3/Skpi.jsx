@@ -111,36 +111,48 @@ function Skpi() {
 
         {showDetail && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="p-4 bg-white rounded-lg">
-              <h3>Detail Kegiatan</h3>
+            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "50vw" }}>
+              <h3 className="underline">Detail Kegiatan</h3>
+              <div className="p-5">
+                <p>Mandatory Points: {detailKegiatan.mandatoryPoints}</p>
+                <p>Charity Points: {detailKegiatan.charityPoints}</p>
+                <p>Scientific Points: {detailKegiatan.scientificPoints}</p>
+                <p>Talent Points: {detailKegiatan.talentPoints}</p>
+                <p>Organization Points: {detailKegiatan.organizationPoints}</p>
+                <p>Other Points: {detailKegiatan.otherPoints}</p>
+                <p>Status: {detailKegiatan.status}</p>
 
-              <p>Mandatory Points: {detailKegiatan.mandatoryPoints}</p>
-              <p>Charity Points: {detailKegiatan.charityPoints}</p>
-              <p>Scientific Points: {detailKegiatan.scientificPoints}</p>
-              <p>Talent Points: {detailKegiatan.talentPoints}</p>
-              <p>Organization Points: {detailKegiatan.organizationPoints}</p>
-              <p>Other Points: {detailKegiatan.otherPoints}</p>
-              <p>Status: {detailKegiatan.status}</p>
+                <p className="mt-4">Mahasiswa:</p>
+                <div className="pl-6">
+                  <p>Nama: {detailKegiatan.owner.name}</p>
+                  <p>NPM: {detailKegiatan.owner.npm}</p>
+                  <p>Fakultas: {detailKegiatan.owner.faculty}</p>
+                </div>
+              </div>
 
-              {/* Informasi mahasiswa */}
-              <p>Mahasiswa:</p>
-              <p>Nama: {detailKegiatan.owner.name}</p>
-              <p>NPM: {detailKegiatan.owner.npm}</p>
-              <p>Fakultas: {detailKegiatan.owner.faculty}</p>
-
-              <button onClick={() => setShowDetail(false)}>Tutup</button>
-              <button onClick={() => setShowConfirmation(true)}>Validasi</button>
+              <button onClick={() => setShowDetail(false)} className="absolute text-gray-700 top-2 right-2 hover:text-gray-900">
+                <span className="sr-only">Close</span>
+                &#215;
+              </button>
+              <button className="px-2 py-3 rounded-lg bg-secondary" onClick={() => setShowConfirmation(true)}>
+                Validasi
+              </button>
             </div>
           </div>
         )}
 
         {showConfirmation && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="p-4 bg-white rounded-lg">
-              <h3>Konfirmasi</h3>
+            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "30vw" }}>
               <p>Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
-              <button onClick={handleValidate}>Ya</button>
-              <button onClick={() => setShowConfirmation(false)}>Tidak</button>
+              <div className="p-3 mx-auto">
+                <button className="px-4 py-2 rounded-lg bg-secondary" onClick={handleValidate}>
+                  Ya
+                </button>
+                <button className="px-4 py-2 ml-4 bg-red-600 rounded-lg" onClick={() => setShowConfirmation(false)}>
+                  Tidak
+                </button>
+              </div>
             </div>
           </div>
         )}

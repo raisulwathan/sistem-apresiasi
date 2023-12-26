@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../../../utils/Config";
 import axios from "axios";
+import { getUserId } from "../../../utils/Config";
 
 const Transkrip = () => {
   const [kegiatanWajib, setKegiatanWajib] = useState([]);
@@ -12,6 +13,7 @@ const Transkrip = () => {
   const [showInsufficientPointsPopup, setShowInsufficientPointsPopup] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [skpiProcessed, setSkpiProcessed] = useState(false);
+  const [skpi, setSkpi] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,17 @@ const Transkrip = () => {
       }
     };
 
+    const fetchDataSkpi = async () => {
+      const response = await axios.get(`http://localhost:5001/api/v1/skpi`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSkpi(response.data.data);
+    };
+
     fetchData();
+    fetchDataSkpi();
   }, []);
 
   useEffect(() => {
@@ -210,10 +222,18 @@ const Transkrip = () => {
         </div>
         <div className="flex mt-6">
           <img src="./src/assets/print.png" alt="print" className="mt-2 mr-2 w-7 h-7" />
-          {skpiProcessed ? (
-            <p>SKPI Sedang Diproses</p>
+          {skpi.status === "pending" || skpi.status === "accepted" ? (
+            <div>
+              <p>SKPI Sedang Diproses</p>
+              <p>Status SKPI: {skpi.status}</p>
+            </div>
+          ) : skpi.status === "completed" ? (
+            <div>
+              <p>Status SKPI: {skpi.status}</p>
+              <button className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">Cetak</button>
+            </div>
           ) : (
-            <button onClick={handleAjukanSkpi} disabled={skpiProcessed} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
+            <button onClick={handleAjukanSkpi} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
               Ajukan
             </button>
           )}
