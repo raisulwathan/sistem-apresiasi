@@ -1,12 +1,12 @@
 import UsersService from '../services/UsersService.js';
 import { UsersValidator } from '../validations/users/index.js';
 
+const usersService = new UsersService();
+
 export const postUsersController = async (req, res) => {
   UsersValidator.validatePostUsersPayload(req.body);
 
   const { npm, name, password, faculty, major, role } = req.body;
-
-  const usersService = new UsersService();
 
   const userId = await usersService.addUser({
     npm,
@@ -30,7 +30,6 @@ export const postUsersController = async (req, res) => {
 export const getUserByIdController = async (req, res) => {
   const { id } = req.params;
 
-  const usersService = new UsersService();
   const user = await usersService.getUserById(id);
 
   res.json({
@@ -47,7 +46,6 @@ export const putUsersByIdController = async (req, res) => {
   const { id } = req.params;
   const { role } = req.body;
 
-  const usersService = new UsersService();
   await usersService.editUserById(id, { role });
 
   res.json({
