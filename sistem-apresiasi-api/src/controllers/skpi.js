@@ -1,6 +1,5 @@
 import { AuthorizationError } from '../exceptions/AuthorizationError.js';
 import { InvariantError } from '../exceptions/InvariantError.js';
-import { NotFoundError } from '../exceptions/NotFoundError.js';
 import ActivitiesService from '../services/ActivitiesService.js';
 import SkpiService from '../services/SkpiService.js';
 import UsersService from '../services/UsersService.js';
@@ -135,7 +134,7 @@ export const putStatusSkpiByIdController = async (req, res) => {
       break;
 
     default:
-      throw new NotFoundError('tidak berhak mengakses resource ini');
+      throw new AuthorizationError('tidak berhak mengakses resource ini');
   }
   await skpiService.editStatusSkpiById({ status, id });
 
