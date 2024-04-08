@@ -8,7 +8,7 @@ import Formulir from "./Formulir";
 import PembinaanMental from "./PembinaanMental";
 import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
 import axios from "axios";
-import Dashboard from "./Dashboard";
+import Skpi from "./Skpi";
 
 const SideBarBiro = () => {
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
@@ -20,7 +20,7 @@ const SideBarBiro = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedMenu("Dashboard");
+    setSelectedMenu("SKPI");
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -90,8 +90,8 @@ const SideBarBiro = () => {
 
   const renderContent = () => {
     switch (selectedMenu) {
-      case "Dashboard":
-        return <Dashboard />;
+      case "SKPI":
+        return <Skpi />;
       case "Kegiatan Lomba":
         return <KegiatanLomba />;
       case "Formulir":
@@ -117,9 +117,9 @@ const SideBarBiro = () => {
           <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
         </div>
         <ul className="pt-10">
-          <li onClick={() => handleMenuClick("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
+          <li onClick={() => handleMenuClick("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
             <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
-            Dashboard
+            SKPI
           </li>
           <li onClick={() => handleMenuClick("Kegiatan Mandiri")} className={`cursor-pointer mb-7 gap-3  flex items-center`}>
             <img src={nonlomba} alt="Icon2" className=" menu-icon w-7" />

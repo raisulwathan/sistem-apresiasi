@@ -61,7 +61,7 @@ function FormulirPengabdian() {
 
   return (
     <div className="w-[1130px] h-[700px] p-6">
-      <h1 className="text-2xl font-semibold mb-11">Formulir Pengabdian Mahasiswa Kepada Masyarakat</h1>
+      <h1 className="text-2xl font-semibold mb-11">Formulir Pembinaan Mental kebangsaan</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex items-center space-x-4">
           <label htmlFor="fakultas" className="w-36">

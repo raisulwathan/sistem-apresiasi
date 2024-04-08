@@ -9,7 +9,7 @@ const Hero = () => {
         <div className="flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2">
           <img src={discount} alt="discount" className="w-[32px] h-[32px]" />
           <p className={`${styles.paragraph} ml-2`}>
-            <span className="text-white"></span> Semakin simple <span className="text-white">Dan</span> Cepat
+            <span className="text-white "></span> Semakin simple <span className="text-white">Dan</span> Cepat
           </p>
         </div>
 
@@ -22,7 +22,7 @@ const Hero = () => {
           </div>
         </div>
 
-        <h1 className="font-poppins ss:text-[68px] text-[52px] text-white ss:leading-[100.8px] leading-[75px] w-full">Universitas Syiah Kuala.</h1>
+        <h1 className="font-poppins ss:text-[67px] text-[52px] text-gray-300 ss:leading-[100.8px] leading-[75px] w-full">Universitas Syiah Kuala.</h1>
         <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
           Website apresiasi adalah website yang membantu mahasiswa untuk mendapatkan skpi dan rekognisi beserta melaporkan prestasi yang pernah di ikuti’ oleh mahasiswa universitas syiah kuala.
         </p>

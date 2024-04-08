@@ -42,7 +42,7 @@ function PertukaranMahasiswa() {
   };
 
   useEffect(() => {
-    fetchDataFromAPI(); // Memanggil fungsi fetchDataFromAPI saat komponen dimuat
+    fetchDataFromAPI();
   }, []);
 
   return (

@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import FormulirPertukaran from "./FormulirPertukaran"; // Impor komponen FormulirPertukaran
 import { closePop } from "../../../../assets";
 import FormulirMentalBangsa from "./FormuliMentalBangsa";
 
 function PertukaranMahasiswa() {
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState(null); // State untuk menyimpan data yang diterima dari FormulirPertukaran
-  const [apiData, setApiData] = useState([]); // State untuk menyimpan data dari API
+  const [formData, setFormData] = useState(null);
+  const [apiData, setApiData] = useState([]);
 
   const handleInputClick = () => {
-    setShowForm(true); // Mengubah state untuk menampilkan pop-up formulir
+    setShowForm(true);
   };
 
   const handleFormClose = () => {
-    setShowForm(false); // Mengubah state untuk menutup pop-up formulir
+    setShowForm(false);
   };
 
   const handleFormSubmit = async (data) => {
-    setFormData(data); // Menyimpan data yang diterima dari FormulirPertukaran ke state
-    setShowForm(false); // Menutup pop-up formulir setelah pengiriman data
-    // Kirim data ke server menggunakan axios (contoh)
+    setFormData(data);
+    setShowForm(false);
+
     try {
       const response = await axios.post("URL_API", data);
       console.log("Data berhasil dikirim:", response.data);

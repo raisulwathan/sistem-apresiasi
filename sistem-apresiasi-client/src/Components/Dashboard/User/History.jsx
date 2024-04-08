@@ -51,95 +51,77 @@ const History = () => {
   const rejectedActivities = activities.filter((activity) => activity.status === "rejected");
 
   return (
-    <div className="max-h-[887px]  h-[870px] lg:mt-4 lg:p-16 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow">
-      <h2 className="mb-6 text-xl text-gray-700 w-[104px] p-2 rounded-lg ml-8 font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Riwayat</h2>
+    <div className="max-h-[887px] h-[870px] lg:mt-4 lg:p-14 pb-3 p-5 overflow-auto rounded-lg lg:w-[97%] lg:px-0 lg:shadow-Shadow">
+      <h2 className="mb-6 text-xl text-gray-700 w-[120px] p-2 ml-8 rounded-lg font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Riwayat</h2>
 
-      <div className="flex mt-20">
-        <img src="./src/assets/proses.png" alt="" className="w-6 h-6 mt-[3px]" />
-        <div className="pl-2">
-          <p className="text-gray-600">Dalam Proses</p>
-          <div>
-            {pendingActivities.length > 0 ? (
-              <ul className="">
-                {pendingActivities.map((activity) => (
-                  <li key={activity.id} className="p-3 mt-3 bg-dimBlue lg:w-[600px] rounded-lg ">
-                    {activity.activity}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Tidak ada data yang diproses.</p>
-            )}
+      <div className="mt-6 p-9">
+        <div className="lg:w-1/2">
+          <div className="flex items-center mb-4">
+            <img src="./src/assets/proses.png" alt="" className="w-6 h-6 mr-2" />
+            <p className="text-gray-600">Dalam Proses</p>
           </div>
+          {pendingActivities.length > 0 ? (
+            <ul>
+              {pendingActivities.map((activity) => (
+                <li key={activity.id} className="p-3 mb-2 rounded-lg text-gray-950 bg-dimBlue">
+                  {activity.activity}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Tidak ada data yang diproses.</p>
+          )}
+        </div>
+
+        <div className="mt-11 lg:w-1/2">
+          <div className="flex items-center mb-4">
+            <img src="./src/assets/approved.png" alt="" className="w-6 h-6 mr-2" />
+            <p className="text-gray-600 ">Diterima</p>
+          </div>
+          {acceptedActivities.length > 0 ? (
+            <ul>
+              {acceptedActivities.map((activity) => (
+                <li key={activity.id} className="p-3 mb-2 rounded-lg text-gray-950 bg-dimBlue">
+                  {activity.activity}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Tidak ada data yang diterima.</p>
+          )}
+        </div>
+
+        <div className="mt-11 lg:w-1/2">
+          <div className="flex items-center mb-4">
+            <img src="./src/assets/rejected.png" alt="" className="w-6 h-6 mr-2" />
+            <p className="text-gray-600">Ditolak</p>
+          </div>
+          {rejectedActivities.length > 0 ? (
+            <table className="w-full border ">
+              <thead>
+                <tr className=" text-gray-950 bg-dimBlue">
+                  <th className="p-3 text-left">Nama Kegiatan</th>
+                  <th className="p-3 text-left">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rejectedActivities.map((activity) => (
+                  <tr key={activity.id} className="border-b border-gray-200">
+                    <td className="p-3">{activity.activity}</td>
+                    <td className="p-3">
+                      <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary focus:outline-none">
+                        Detail
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>Tidak ada data yang diterima.</p>
+          )}
         </div>
       </div>
-
-      <div className="flex mt-20">
-        <img src="./src/assets/approved.png" alt="" className="w-6 h-6 mt-[3px]" />
-        <div className="pl-2">
-          <p className="text-gray-600">Diterima</p>
-          <h3 className=" lg:w-[600px] mt-4  rounded-md">
-            <div>
-              {acceptedActivities.length > 0 ? (
-                <ul className="">
-                  {acceptedActivities.map((activity) => (
-                    <li className="p-3 my-2 rounded-lg bg-dimBlue" key={activity.id}>
-                      {activity.activity}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Tidak ada data yang diterima.</p>
-              )}
-            </div>
-          </h3>
-        </div>
-      </div>
-
-      <div className="flex mt-20">
-        <img src="./src/assets/rejected.png" alt="" className="w-6 h-6 mt-[3px]" />
-        <div className="pl-2">
-          <p className="text-gray-600">Ditolak</p>
-          <h3 className="flex lg:w-[600px] px-5 py-4 mt-4 bg-dimBlue rounded-md ">
-            <div>
-              {rejectedActivities.length > 0 ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Kegiatan</th>
-                      {/* Tambahkan kolom lain di sini sesuai kebutuhan */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rejectedActivities.map((activity) => (
-                      <tr key={activity.id}>
-                        <td>{activity.activity}</td>
-                        <td className="py-2">
-                          <button onClick={() => handleLihatDetail(activity.id)} className="text-blue-500 hover:underline focus:outline-none">
-                            Detail
-                          </button>
-                        </td>
-                        {/* Tambahkan sel lain di sini sesuai kebutuhan */}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p>Tidak ada data yang diterima.</p>
-              )}
-            </div>
-          </h3>{" "}
-          {/* Menggunakan data dari API */}
-        </div>
-      </div>
-
-      {alasanDitolak && (
-        <div className="mt-4 bg-pink-100   lg:w-[600px]">
-          <h3>Alasan Ditolak:</h3>
-          <p>{alasanDitolak}</p>
-        </div>
-      )}
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">

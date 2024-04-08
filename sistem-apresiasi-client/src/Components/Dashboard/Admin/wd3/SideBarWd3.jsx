@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
-import KegiatanLomba from "./KegiatanLomba";
-import KegiatanMahasiswa from "./KegiatanMahasiswa";
-import PertukaranMahasiswa from "./PertukaranMahasiswa";
-import PengabdianMahasiswa from "./PengabdianMahasiswa";
-import Formulir from "./Formulir";
-import PembinaanMental from "./PembinaanMental";
-import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
+import { logoDark, Upload } from "../../../../assets";
 import axios from "axios";
 import { getToken, getUserId } from "../../../../utils/Config";
 import Skpi from "./Skpi";
+import KegiatanMahasiswa from "./KegiatanMahasiswa";
 
 const SideBarWd3 = () => {
   const [selectedMenu, setSelectedMenu] = useState("Kegiatan Mahasiswa");
-  const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
-  const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // State untuk mengontrol tampilan sidebar mobile
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     setSelectedMenu("Kegiatan Mahasiswa");
@@ -34,25 +31,14 @@ const SideBarWd3 = () => {
     fetchUserData(userId);
   }, []);
 
-  const handleMenuClick = (menu) => {
-    if (menu === "Kegiatan Mandiri") {
-      setSubMenuOpenMandiri(!subMenuOpenMandiri);
-    } else if (menu === "Kegiatan Non Lomba") {
-      setSubMenuOpenNonLomba(!subMenuOpenNonLomba);
-    } else {
-      setSelectedMenu(menu);
-      setSubMenuOpenMandiri(false);
-      setSubMenuOpenNonLomba(false);
-    }
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/login");
-  };
-
-  const toggleUserDropdown = () => {
-    setUserDropdownOpen(!userDropdownOpen);
   };
 
   const fetchUserData = async (userId) => {
@@ -71,120 +57,93 @@ const SideBarWd3 = () => {
     }
   };
 
-  const renderSubMenuMandiri = () => {
-    if (subMenuOpenMandiri) {
-      return (
-        <div className={`ml-5 submenu transition-all duration-300 ${subMenuOpenMandiri ? "block" : "hidden"}`}>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Kegiatan Lomba")}>
-            <img src={next} alt="Kegiatan Lomba" className={`w-4 `} />
-            Kegiatan Lomba
-          </div>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Formulir")}>
-            <img src={next} alt="Formulir" className={`w-4 `} />
-            Formulir
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderSubMenuNonLomba = () => {
-    if (subMenuOpenNonLomba) {
-      return (
-        <div className={`ml-4 submenu transition-all duration-300 ${subMenuOpenNonLomba ? "block" : "hidden"}`}>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Pertukaran Mahasiswa")}>
-            <img src={next} alt="Pertukaran Mahasiswa" className={`w-4 `} />
-            Pertukaran Mahasiswa
-          </div>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Pengabdian Mahasiswa")}>
-            <img src={next} alt="Pengabdian Mahasiswa" className={`w-4 `} />
-            Pengabdian Mahasiswa
-          </div>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Pembinaan Mental Bangsa")}>
-            <img src={next} alt="Pembinaan Mental Bangsa" className={`w-4 `} />
-            Pembinaan Mental Bangsa
-          </div>
-          <div className="flex items-center gap-3 mb-3 cursor-pointer sub-item" onClick={() => setSelectedMenu("Mahasiswa Berwira Usaha")}>
-            <img src={next} alt="Mahasiswa Berwira Usaha" className={`w-4 `} />
-            Mahasiswa Berwira Usaha
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const renderContent = () => {
-    switch (selectedMenu) {
-      case "SKPI":
-        return <Skpi />;
-      case "Kegiatan Mahasiswa":
-        return <KegiatanMahasiswa />;
-      case "Kegiatan Lomba":
-        return <KegiatanLomba />;
-      case "Formulir":
-        return <Formulir />;
-      case "Pertukaran Mahasiswa":
-        return <PertukaranMahasiswa />;
-      case "Pengabdian Mahasiswa":
-        return <PengabdianMahasiswa />;
-      case "Pembinaan Mental Bangsa":
-        return <PembinaanMental />;
-      case "Mahasiswa Berwira Usaha":
-        return <MahasiswaBerwiraUsaha />;
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="flex h-screen bg-white font-poppins">
-      <div className={` p-10 w-[325px] pt-11 relative`}>
+    <div className="flex bg-white font-poppins">
+      <div className={` lg:p-8 lg:w-[285px] pt-11 relative`}>
         <div className="flex items-center mb-6 gap-x-4">
-          <img src={logoDark} className={`cursor-pointer ml-3 duration-500`} />
-          <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
+          <img src={logoDark} className={`cursor-pointer ml-3 lg:mt-4 duration-500 w-8 h-8 lg:w-auto lg:h-auto`} />
+          <h1 className={`text-black origin-left font-medium text-xl lg:mt-4 duration-200 hidden lg:block`}>Apresiasi</h1>
+          <button onClick={toggleMobileSidebar} className="lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-black cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
         </div>
-        <ul className="pt-10">
-          <li onClick={() => handleMenuClick("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
-            <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
+        <ul className={`${isMobileSidebarOpen ? "block" : "hidden"} pt-10 lg:block`}>
+          <li onClick={() => setSelectedMenu("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Kegiatan Mahasiswa" ? "text-secondary" : ""}`}>
+            <img src={Upload} alt="Icon1" className="menu-icon w-7" />
             Kegiatan Mahasiswa
           </li>
-          <li onClick={() => handleMenuClick("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
-            <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
+          <li onClick={() => setSelectedMenu("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "SKPI" ? "text-secondary" : ""}`}>
+            <img src={Upload} alt="Icon1" className="menu-icon w-7" />
             SKPI
           </li>
-          <li onClick={() => handleMenuClick("Kegiatan Mandiri")} className={`cursor-pointer mb-7 gap-3  flex items-center`}>
-            <img src={nonlomba} alt="Icon2" className=" menu-icon w-7" />
-            Kegiatan Mandiri
-            <img src={next} alt="dropdown" className={`w-4 transform duration-300 ${subMenuOpenMandiri ? "rotate-90" : "rotate-0"}`} />
-          </li>
-          {renderSubMenuMandiri()}
-          <li onClick={() => handleMenuClick("Kegiatan Non Lomba")} className={`cursor-pointer mb-7  gap-3 flex items-center`}>
-            <img src={cup} alt="Icon1" className=" menu-icon w-7" />
-            Kegiatan Non Lomba
-            <img src={next} alt="dropdown" className={`w-4 duration-300 transform ${subMenuOpenNonLomba ? "rotate-90" : "rotate-0"}`} />
-          </li>
-          {renderSubMenuNonLomba()}
-          <li className="relative mx-1 mt-64 rounded-lg">
-            <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
+        </ul>
+        {/* Menampilkan nama pengguna dan tombol logout hanya pada mode desktop */}
+        <div className="hidden lg:block">
+          <li className="relative mx-1 mt-[380px] rounded-lg" onClick={toggleDropdown}>
+            <div className="flex items-center cursor-pointer">
               <img src={"./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
               <span className={`pl-4 pt-2 duration-400`}>{username}</span>
-              <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-2 bg-white border w-40 border-secondary rounded-lg z-10`}>
-                <li className="cursor-pointer " onClick={handleLogout}>
+            </div>
+
+            {isDropdownOpen && (
+              <ul className={`absolute left-0 mt-2 bg-white border w-40 border-secondary rounded-lg z-10`}>
+                <li className="cursor-pointer" onClick={handleLogout}>
                   <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
-                    {" "}
                     <img src="./src/assets/logout.png" alt="" className="w-8 lg:w-8" />
                     <h1 className="lg:pl-3">Log Out</h1>
                   </div>
                 </li>
               </ul>
-            </div>
+            )}
           </li>
-        </ul>
+        </div>
       </div>
 
-      <div className="flex-1 h-screen p-8 text-lg">{renderContent()}</div>
+      {/* Bagian Sidebar Mobile */}
+
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border border-secondary overflow-y-auto transform transition-transform lg:hidden ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {/* Konten Sidebar Mobile */}
+        <div className="p-4">
+          <button onClick={toggleMobileSidebar} className="text-secondary hover:text-gray-900 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fillRule="evenodd"
+                d="M3.414 6.343a2 2 0 0 1 2.828-2.828L10 7.172l3.757-3.757a2 2 0 1 1 2.828 2.828L12.828 10l3.757 3.757a2 2 0 1 1-2.828 2.828L10 12.828l-3.757 3.757a2 2 0 1 1-2.828-2.828L7.172 10 3.414 6.343z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className={`${isMobileSidebarOpen ? "block" : "hidden"} p-4`}>
+          <ul>
+            <li className="mb-4 ">
+              <button onClick={() => setSelectedMenu("Kegiatan Mahasiswa")} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === "Kegiatan Mahasiswa" ? "text-secondary" : ""}`}>
+                <img src={Upload} alt="Icon1" className="menu-icon w-7" />
+                <h4 className="mt-1 ml-2">Kegiatan Mahasiswa</h4>
+              </button>
+            </li>
+            <li className="mt-8 mb-4 ">
+              <button onClick={() => setSelectedMenu("SKPI")} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === "SKPI" ? "text-secondary" : ""}`}>
+                <img src={Upload} alt="Icon1" className="menu-icon w-7" />
+                <p className="mt-1 ml-2">SKPI</p>
+              </button>
+            </li>
+          </ul>
+        </div>
+        {/* Tombol logout hanya ditampilkan pada mode mobile */}
+        <div className={`${isMobileSidebarOpen ? "block" : "hidden"} absolute bottom-0 w-full`}>
+          <button onClick={handleLogout} className="block w-full py-2 font-bold text-center text-gray-900 bg-secondary hover:bg-gray-300 focus:outline-none">
+            Log Out
+          </button>
+        </div>
+      </div>
+
+      <div className="h-screen p-8 text-lg lg:flex-1">
+        {selectedMenu === "Kegiatan Mahasiswa" && <KegiatanMahasiswa />}
+        {selectedMenu === "SKPI" && <Skpi />}
+      </div>
     </div>
   );
 };

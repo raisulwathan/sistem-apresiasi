@@ -7,6 +7,7 @@ import axios from "axios";
 const Login = () => {
   const [npm, setNpm] = useState(""); // State for username
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -43,6 +44,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Error:", error.response.data);
+      setError("Npm atau Kata sandi salah ");
     }
   };
 
@@ -55,6 +57,7 @@ const Login = () => {
               <img src={logoApresiasi} alt="logo Apresiasi" className="mx-auto w-[50px] h-[50px]" />
               <h2 className={`text-2xl font-bold text-white pt-8 font-poppins `}>Login</h2>
             </div>
+            {error && <p className="text-center text-red-500">{error}</p>}
             <div className="pt-8">
               <label htmlFor="username" className={`block text-sm font-medium ${styles.textColor}`}>
                 Username:
@@ -82,7 +85,7 @@ const Login = () => {
               />
             </div>
             <div className="px-[140px] py-7 lg:mr-16 sm:flex">
-              <button className="text-white " type="submit">
+              <button className="px-6 py-3 font-semibold text-black rounded-lg lg:ml-3 bg-secondary " type="submit">
                 Login
               </button>
             </div>

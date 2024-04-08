@@ -9,6 +9,7 @@ function Skpi() {
   const [detailKegiatan, setDetailKegiatan] = useState({});
   const [showDetail, setShowDetail] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleGetSkpi = async () => {
     try {
@@ -45,7 +46,7 @@ function Skpi() {
     try {
       await axios.put(
         `http://localhost:5001/api/v1/skpi/${id}/validate`,
-        { status: "accepted" },
+        { status: "completed" },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,6 +56,11 @@ function Skpi() {
 
       console.log("Kegiatan berhasil divalidasi!");
       setShowConfirmation(false);
+      setShowSuccessMessage(true);
+
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -69,44 +75,78 @@ function Skpi() {
     }
   };
 
+  const unvalidateSkpi = skpiData.filter((skpi) => skpi.status === "accepted by ADMIN");
+  const validatedSkpi = skpiData.filter((skpi) => skpi.status === "completed");
+
   return (
     <div className="h-screen pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
+        <button className="px-2 py-4 rounded-lg bg-secondary">Validasi Semua</button>
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-2 border-secondary">
-                <th className="px-4 py-2 text-left">Nama</th>
-                <th className="px-4 py-2 text-left">NPM</th>
-                <th className="px-4 py-2 text-left">Fakultas</th>
-                <th className="px-4 py-2 text-left">Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {skpiData.map((item, index) => (
-                <tr key={index} className="">
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.name}</td>
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.npm}</td>
-                  <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.faculty}</td>
-                  <td className="py-2">
-                    <button onClick={() => handleLihatDetail(item.id)} className="text-secondary hover:underline focus:outline-none">
-                      Detail
-                    </button>
-                  </td>
+          <div>
+            <h2 className="mt-8">Belum Diterima</h2>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2 border-secondary">
+                  <th className="px-4 py-2 text-left">Nama</th>
+                  <th className="px-4 py-2 text-left">NPM</th>
+                  <th className="px-4 py-2 text-left">Fakultas</th>
+                  <th className="px-4 py-2 text-left">Detail</th>
                 </tr>
-              ))}
-              {skpiData.length === 0 && (
-                <tr>
-                  <td colSpan="4" className="px-4 py-2 text-center">
-                    Data tidak tersedia.
-                  </td>
+              </thead>
+              <tbody>
+                {unvalidateSkpi.map((item, index) => (
+                  <tr key={index} className="">
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.name}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.npm}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.faculty}</td>
+                    <td className="py-2">
+                      <button onClick={() => handleLihatDetail(item.id)} className="text-secondary hover:underline focus:outline-none">
+                        Detail
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {unvalidateSkpi.length === 0 && (
+                  <tr>
+                    <td colSpan="4" className="px-4 py-2 text-center">
+                      Data tidak tersedia.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <h2 className="mt-8">Sudah Diterima</h2>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2 border-secondary">
+                  <th className="px-4 py-2 text-left">Nama</th>
+                  <th className="px-4 py-2 text-left">NPM</th>
+                  <th className="px-4 py-2 text-left">Fakultas</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {validatedSkpi.map((item, index) => (
+                  <tr key={index} className="">
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.name}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.npm}</td>
+                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.faculty}</td>
+                  </tr>
+                ))}
+                {validatedSkpi.length === 0 && (
+                  <tr>
+                    <td colSpan="4" className="px-4 py-2 text-center">
+                      Data tidak tersedia.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {showDetail && (
@@ -153,6 +193,13 @@ function Skpi() {
                   Tidak
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+        {showSuccessMessage && (
+          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "30vw" }}>
+              <p>Kegiatan berhasil divalidasi!</p>
             </div>
           </div>
         )}

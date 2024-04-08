@@ -10,6 +10,7 @@ import PembinaanMental from "./PembinaanMental";
 import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
 import axios from "axios";
 import { getToken, getUserId } from "../../../../utils/Config";
+import Skpi from "./Skpi";
 
 const SideBarAdminFakultas = () => {
   const [selectedMenu, setSelectedMenu] = useState("Kegiatan Mahasiswa");
@@ -116,6 +117,8 @@ const SideBarAdminFakultas = () => {
 
   const renderContent = () => {
     switch (selectedMenu) {
+      case "Skpi":
+        return <Skpi />;
       case "Kegiatan Mahasiswa":
         return <KegiatanMahasiswa />;
       case "Kegiatan Lomba":
@@ -143,6 +146,10 @@ const SideBarAdminFakultas = () => {
           <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
         </div>
         <ul className="pt-10">
+          <li onClick={() => handleMenuClick("Skpi")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
+            <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
+            SKPI
+          </li>
           <li onClick={() => handleMenuClick("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
             <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
             Kegiatan Mahasiswa
@@ -159,25 +166,26 @@ const SideBarAdminFakultas = () => {
             <img src={next} alt="dropdown" className={`w-4 duration-300 transform ${subMenuOpenNonLomba ? "rotate-90" : "rotate-0"}`} />
           </li>
           {renderSubMenuNonLomba()}
-          <li className="relative mx-1 mt-64 rounded-lg">
-            <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-              <img src={"./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
-              <span className={`pl-4 pt-2 duration-400`}>{username}</span>
-              <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-2 bg-white border w-40 border-secondary rounded-lg z-10`}>
-                <li className="cursor-pointer " onClick={handleLogout}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
-                    {" "}
-                    <img src="./src/assets/logout.png" alt="" className="w-8 lg:w-8" />
-                    <h1 className="lg:pl-3">Log Out</h1>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </div>
 
       <div className="flex-1 h-screen p-8 text-lg">{renderContent()}</div>
+
+      <div className="absolute mx-10 mb-10 bottom-28">
+        <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
+          <img src={"./src/assets/userSet.png"} alt="Profile" className="w-8 lg:w-10" />
+          <span className={`pl-4 pt-2 duration-400`}>{username}</span>
+          <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-24 bg-white border w-40 border-secondary rounded-lg z-10`}>
+            <li className="cursor-pointer " onClick={handleLogout}>
+              <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
+                {" "}
+                <img src="./src/assets/logout.png" alt="" className="w-8 lg:w-8" />
+                <h1 className="lg:pl-3">Log Out</h1>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

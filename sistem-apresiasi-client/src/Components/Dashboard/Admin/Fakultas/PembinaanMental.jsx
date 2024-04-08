@@ -47,7 +47,7 @@ function PertukaranMahasiswa() {
 
   return (
     <div className="pt-3">
-      <h2 className="font-semibold text-gray-700 font-poppins">Pertukaran mahasiswa</h2>
+      <h2 className="font-semibold text-gray-700 font-poppins">Pembinaan Mental dan kebangsaan</h2>
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
         <div className="flex px-3 py-3 mt-6 ml-1 text-base transition-transform hover:text-secondary rounded-lg w-[150px] bg-yellow-200 font-poppins hover:transform hover:scale-110 ">
           <img src="./src/assets/print.png" alt="" className="w-5 h-5" />

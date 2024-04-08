@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getToken } from "../../../utils/Config";
 import axios from "axios";
 import { getUserId } from "../../../utils/Config";
+import html2pdf from "html2pdf.js";
 
 const Transkrip = () => {
   const [kegiatanWajib, setKegiatanWajib] = useState([]);
@@ -14,6 +15,19 @@ const Transkrip = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [skpiProcessed, setSkpiProcessed] = useState(false);
   const [skpi, setSkpi] = useState({});
+  const [data, setData] = useState({});
+  const userId = getUserId();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5001/api/v1/users/${userId}`)
+      .then((response) => {
+        setData(response.data.data.user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,12 +50,19 @@ const Transkrip = () => {
     };
 
     const fetchDataSkpi = async () => {
-      const response = await axios.get(`http://localhost:5001/api/v1/skpi`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setSkpi(response.data.data);
+      try {
+        const response = await axios.get(`http://localhost:5001/api/v1/skpi`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setSkpi(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+      }
     };
 
     fetchData();
@@ -87,6 +108,66 @@ const Transkrip = () => {
     setShowConfirmation(true);
   };
 
+  const generatePDF = () => {
+    const certificateHTML = `
+      <div>
+        <p>Kementrian Kebudayaan, Riset, dan Teknologi</p>
+        <p>Fakultas: ${data.faculty}</p>
+        <p>Transkrip Surat Keterangan Pendamping Ijazah</p>
+        <div style="margin-top: 10px;">
+          <p><strong>Nama:</strong> ${data.name}</p>
+          <p><strong>NPM:</strong> ${data.npm}</p>
+          <p><strong>Jurusan:</strong> ${data.major}</p>
+          <p><strong>Fakultas:</strong> ${data.faculty}</p>
+        </div>
+        <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
+          <thead>
+            <tr style="border: 1px solid #ddd; padding: 8px;">
+              <th style="border: 1px solid #ddd; padding: 8px;">Bidang</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">Point</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Kegiatan Wajib</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.mandatoryPoints}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Organisasi dan Kepemimpinan</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.organizationPoints}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Penalaran dan Keilmuan</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.scientificPoints}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Minat dan Bakat</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.talentPoints}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Kepedulian Sosial</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.charityPoints}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 8px;">Kegiatan Lainnya</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.otherPoints}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    const element = document.createElement("div");
+    element.innerHTML = certificateHTML;
+    html2pdf(element, {
+      margin: 10,
+      filename: "sertifikat_skpi.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    });
+  };
+
   const confirmAjukanSkpi = async () => {
     setShowConfirmation(false);
     try {
@@ -97,10 +178,12 @@ const Transkrip = () => {
       });
 
       const statusCode = response.status;
-
+      setSkpi({
+        ...skpi,
+        status: "pending",
+      });
       if (statusCode === 201) {
         setShowPopup(true);
-        setSkpiProcessed(true); // Mengganti status tombol saat data berhasil terkirim
       }
     } catch (error) {
       console.error(error);
@@ -139,18 +222,18 @@ const Transkrip = () => {
           <img src="./src/assets/asteriks.png" className="w-5 h-5 mr-2" alt="asteriks" />
           <h2 className="text-lg font-bold font-poppins">Kegiatan Wajib</h2>
         </div>
-        <table className="w-full mt-6">
+        <table className="w-full mt-6 font-poppins">
           <thead>
-            <tr className="lg:border-b-2 lg:border-secondary">
-              <th className="py-2 text-left ">Kegiatan</th>
-              <th className="py-2 text-left">Point</th>
+            <tr>
+              <th className="py-2 pl-2 text-left text-white bg-secondary ">Kegiatan</th>
+              <th className="py-2 text-left text-white bg-secondary">Point</th>
             </tr>
           </thead>
           <tbody>
             {kegiatanWajib.map((activity, index) => (
-              <tr key={index}>
-                <td className="py-2 ">{activity.activity}</td>
-                <td className="py-2 ">{activity.points}</td>
+              <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                <td className="py-2 text-base">{activity.activity}</td>
+                <td className="py-2 text-base">{activity.points}</td>
               </tr>
             ))}
           </tbody>
@@ -163,25 +246,25 @@ const Transkrip = () => {
           <h2 className="text-lg font-bold font-poppins">Kegiatan Pilihan</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full mt-6">
-            <thead className="lg:border-b-2 lg:border-secondary">
-              <tr>
-                <th className="py-2 text-left">Kegiatan</th>
-                <th className="hidden py-2 text-left lg:table-cell">Nama Kegiatan</th>
-                <th className="hidden py-2 text-left lg:table-cell">Point</th>
-                <th className="hidden py-2 text-left lg:table-cell">Status</th>
-                <th className="py-2 text-left">Detail</th>
+          <table className="w-full mt-6 font-poppins">
+            <thead>
+              <tr className="">
+                <th className="py-2 pl-2 text-left text-white bg-secondary">Kegiatan</th>
+                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Nama Kegiatan</th>
+                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Point</th>
+                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Status</th>
+                <th className="py-2 text-left text-white bg-secondary">Detail</th>
               </tr>
             </thead>
             <tbody>
               {kegiatanPilihan.map((activity, index) => (
-                <tr key={index}>
-                  <td className="py-2">{activity.activity}</td>
-                  <td className="hidden py-2 lg:table-cell">{activity.name}</td>
-                  <td className="hidden py-2 lg:table-cell">{activity.points}</td>
-                  <td className="hidden py-2 lg:table-cell">{activity.status}</td>
+                <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                  <td className="py-2 text-base">{activity.activity}</td>
+                  <td className="hidden py-2 text-base lg:table-cell">{activity.name}</td>
+                  <td className="hidden py-2 text-base lg:table-cell">{activity.points}</td>
+                  <td className="hidden py-2 text-base lg:table-cell">{activity.status}</td>
                   <td className="py-2">
-                    <button onClick={() => handleLihatDetail(activity.id)} className="text-secondary hover:underline focus:outline-none">
+                    <button onClick={() => handleLihatDetail(activity.id)} className="text-base text-secondary hover:underline focus:outline-none">
                       Detail
                     </button>
                   </td>
@@ -192,22 +275,54 @@ const Transkrip = () => {
         </div>
 
         {showModal && (
-          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 ">
-            <div className="p-4 bg-white rounded-lg w-[1200px] h-[800px] ">
-              <h3 className="mb-2 text-lg font-semibold">Detail Data:</h3>
-              <div>
-                <p>Kegiatan : {detailKegiatan.activity.activity}</p>
-                <p>Kategori Kegiatan : {detailKegiatan.activity.fieldsActivity}</p>
-                <p>Sertifikat : {detailKegiatan.activity.fileUrl}</p>
-                <p>tingkat : {detailKegiatan.activity.levels}</p>
-                <p>Nama Kegiatan : {detailKegiatan.activity.name}</p>
-                <p>Point : {detailKegiatan.activity.points} </p>
-                <p>Harapan : {detailKegiatan.activity.possitions_achievements} </p>
-                <p> {detailKegiatan.activity.status} </p>
-                <p> {detailKegiatan.years} </p>
+          <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen overflow-auto bg-black bg-opacity-75">
+            <div className=" w-[800px] p-6 mx-auto h-[890px] overflow-y-auto bg-white rounded-lg shadow-lg">
+              <h3 className="mb-4 text-xl font-semibold text-center text-gray-800">Detail Kegiatan</h3>
+              <div className="text-gray-700">
+                <div className="">
+                  <p className="font-semibold">Nama Kegiatan :</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.activity || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Kategori Kegiatan:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.fieldsActivity || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Sertifikat:</p>
+                  {detailKegiatan.activity.fileUrl ? (
+                    <a href={detailKegiatan.activity.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-4 py-2 rounded-lg text-secondary bg-dimBlue hover:bg-blue-500">
+                      Lihat
+                    </a>
+                  ) : (
+                    <p className="px-4 py-2 rounded-lg bg-dimBlue">-</p>
+                  )}
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Tingkat:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.levels || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Nama Kegiatan:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.name || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Point:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.points || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Harapan:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.possitions_achievements || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Status:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.status || "-"}</p>
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold">Tahun:</p>
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.years || "-"}</p>
+                </div>
               </div>
-
-              <button onClick={() => setShowModal(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-secondary">
+              <button onClick={() => setShowModal(false)} className="block w-full py-2 mt-6 font-semibold text-white rounded-md bg-secondary hover:bg-secondary-dark focus:outline-none">
                 Tutup
               </button>
             </div>
@@ -221,16 +336,57 @@ const Transkrip = () => {
           <p className="text-2xl font-bold text-secondary">{totalPoint}</p>
         </div>
         <div className="flex mt-6">
-          <img src="./src/assets/print.png" alt="print" className="mt-2 mr-2 w-7 h-7" />
-          {skpi.status === "pending" || skpi.status === "accepted" ? (
+          {skpi.status ? (
             <div>
-              <p>SKPI Sedang Diproses</p>
-              <p>Status SKPI: {skpi.status}</p>
-            </div>
-          ) : skpi.status === "completed" ? (
-            <div>
-              <p>Status SKPI: {skpi.status}</p>
-              <button className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">Cetak</button>
+              <div className="mt-12 ">
+                <div className="flex items-center">
+                  <img src="./src/assets/choise.png" className="w-5 h-5 mr-2" alt="choise" />
+                  <h2 className="text-lg font-bold font-poppins">SKPI</h2>
+                </div>
+                {skpi.status === "completed" ? (
+                  <div>
+                    <button onClick={generatePDF} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
+                      Cetak
+                    </button>
+                  </div>
+                ) : (
+                  <h3> {skpi.status} </h3>
+                )}
+                <table className="w-full mt-6 overflow-hidden border border-collapse border-gray-300 rounded-lg font-poppins">
+                  <thead className="text-white bg-secondary">
+                    <tr>
+                      <th className="px-6 py-3 text-left">Bidang</th>
+                      <th className="px-6 py-3 text-left">Point</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-gray-100">
+                    <tr>
+                      <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
+                      <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
+                      <td className="px-6 py-4">{skpi.organizationPoints}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
+                      <td className="px-6 py-4">{skpi.scientificPoints}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-base">Minat dan Bakat</td>
+                      <td className="px-6 py-4">{skpi.talentPoints}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
+                      <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
+                      <td className="px-6 py-4">{skpi.otherPoints}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           ) : (
             <button onClick={handleAjukanSkpi} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
