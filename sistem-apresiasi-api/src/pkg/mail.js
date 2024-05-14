@@ -1,33 +1,29 @@
+// const nodemailer = require("nodemailer")
 import nodemailer from "nodemailer"
 
-class MailSender {
-    constructor() {
-        this._transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: process.env.SMTP_PORT,
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASSWORD,
-            },
-        })
-    }
+// Konfigurasi transporter untuk mengirim email
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.SMTP_USER_EMAIL,
+        pass: process.env.SMTP_USER_PASSWORD,
+    },
+})
 
-    sendEmail(targetEmail, content) {
-        const message = {
-            from: "Music Apps",
-            to: targetEmail,
-            subject: "Ekspor Playlist",
-            text: "Terlampir hasil dari ekspor playlist",
-            attachments: [
-                {
-                    filename: "playlist.json",
-                    content,
-                },
-            ],
+export async function sendNotificationEmail(email, htmlBody) {
+    try {
+        // Konfigurasi email yang akan dikirim
+        const mailOptions = {
+            from: process.env.SMTP_USER_EMAIL,
+            to: email,
+            subject: "[Notifications] - No Replay",
+            html: htmlBody,
         }
 
-        return this._transporter.sendMail(message)
+        // Kirim email
+        await transporter.sendMail(mailOptions)
+    } catch (error) {
+        console.error("Error sending email:", error)
+        throw error
     }
 }
-
-module.exports = MailSender

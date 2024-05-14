@@ -1,11 +1,8 @@
 import { AuthorizationError } from "../exceptions/AuthorizationError.js"
 import { InvariantError } from "../exceptions/InvariantError.js"
-import AchievementIndependentService from "../services/AchievementIndependentService.js"
-import UsersService from "../services/UsersService.js"
+import * as AchievementIndependentService from "../services/AchievementIndependentService.js"
 import { AchievementValidator } from "../validations/achievements/index.js"
-
-const achievementIndependentService = new AchievementIndependentService()
-const usersService = new UsersService()
+import * as UsersServices from "../services/UsersService.js"
 
 export const postAchievementIndependentController = async (req, res) => {
     AchievementValidator.validatePostAchievementIndependentPayload(req.body)
@@ -25,7 +22,7 @@ export const postAchievementIndependentController = async (req, res) => {
         fileUrl,
     } = req.body
 
-    const users = await usersService.getUserById(req.userId)
+    const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
         if (faculty !== users.faculty) {
@@ -33,7 +30,7 @@ export const postAchievementIndependentController = async (req, res) => {
         }
     }
 
-    const newAchievement = await achievementIndependentService.addAchievementIndependent({
+    const newAchievement = await AchievementIndependentService.create({
         name,
         levelActivity,
         participantType,
@@ -61,7 +58,7 @@ export const getAchievementIndependentController = async (req, res) => {
     if (req.userRole !== "ADMIN" && req.userRole !== "WR") {
         throw new AuthorizationError("Doesnt have right to access this resources")
     }
-    const achievements = await achievementIndependentService.getAchievementIndependents()
+    const achievements = await AchievementIndependentService.getAll()
 
     res.json({
         status: "success",
@@ -70,10 +67,8 @@ export const getAchievementIndependentController = async (req, res) => {
 }
 
 export const getAchievementIndependentByFacultyController = async (req, res) => {
-    const users = await usersService.getUserById(req.userId)
-    const achievements = await achievementIndependentService.getAchievementIndependentByFaculty(
-        users.faculty
-    )
+    const users = await UsersServices.getById(req.userId)
+    const achievements = await AchievementIndependentService.getByFaculty(users.faculty)
 
     res.json({
         status: "success",
@@ -84,9 +79,9 @@ export const getAchievementIndependentByFacultyController = async (req, res) => 
 export const getAchievementIndependentByIdController = async (req, res) => {
     const { id } = req.params
 
-    const achievement = await achievementIndependentService.getAchievementIndependentById(id)
+    const achievement = await AchievementIndependentService.getById(id)
 
-    const users = await usersService.getUserById(req.userId)
+    const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
         if (users.faculty !== achievement.faculty) {
@@ -119,9 +114,9 @@ export const putAchievementIndependentByIdController = async (req, res) => {
         fileUrl,
     } = req.body
 
-    const targetAchievement = await achievementIndependentService.getAchievementIndependentById(id)
+    const targetAchievement = await AchievementIndependentService.getById(id)
 
-    const users = await usersService.getUserById(req.userId)
+    const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
         if (users.faculty !== targetAchievement.faculty) {
@@ -129,7 +124,7 @@ export const putAchievementIndependentByIdController = async (req, res) => {
         }
     }
 
-    const upadatedAchievement = await achievementIndependentService.putAchievementIndependent(id, {
+    const upadatedAchievement = await AchievementIndependentService.update(id, {
         name,
         levelActivity,
         participantType,
@@ -157,9 +152,9 @@ export const putAchievementIndependentByIdController = async (req, res) => {
 export const deleteAchievementIndependentByIdController = async (req, res) => {
     const { id } = req.params
 
-    const targetAchievement = await achievementIndependentService.getAchievementIndependentById(id)
+    const targetAchievement = await AchievementIndependentService.getById(id)
 
-    const users = await usersService.getUserById(req.userId)
+    const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
         if (users.faculty !== targetAchievement.faculty) {
@@ -167,7 +162,7 @@ export const deleteAchievementIndependentByIdController = async (req, res) => {
         }
     }
 
-    await achievementIndependentService.deleteAchievementIndependentById(id)
+    await AchievementIndependentService.deleteById(id)
 
     res.json({
         status: "success",

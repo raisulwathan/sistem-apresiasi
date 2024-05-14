@@ -1,4 +1,4 @@
-import { UploadValidator } from "../validations/uploads"
+import { UploadValidator } from "../validations/uploads/index.js"
 
 export const postUploadsController = async (req, res) => {
     UploadValidator.validatePostUploadsPayload(req.file)

@@ -1,5 +1,4 @@
 import { prisma } from "../utils/prisma.utils"
-import { DateTime } from "luxon"
 
 export async function generateOtp() {
     let otpExist = true
