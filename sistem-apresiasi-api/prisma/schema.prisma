@@ -8,18 +8,33 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  npm      String  @unique
-  password String
-  name     String
-  faculty  String?
-  major    String?
-  role     String
+  id             String              @id @default(cuid())
+  npm            String              @unique
+  email          String              @unique
+  phoneNumber    String?             @unique
+  password       String
+  name           String
+  faculty        String?
+  major          String?
+  statusActive   UserStatusActive?
+  statusGraduate UserStatusGraduate?
+  role           String
 
   activities       Activity[]
   Recognitions     Achievement[]
   RejectedActivity RejectedActivity[]
   Skpi             Skpi[]
+  Ttd              Ttd?
+}
+
+enum UserStatusActive {
+  AKTIF
+  TIDAK_AKTIF
+}
+
+enum UserStatusGraduate {
+  LULUS
+  BELUM_LULUS
 }
 
 model Admin {
@@ -91,10 +106,8 @@ model Authentication {
   token String
 }
 
-// File: schema.prisma
-
 model AchievementIndependent {
-  id                 String    @id @default(cuid())
+  id                 String   @id @default(cuid())
   name               String
   level_activity     String
   participant_type   String
@@ -124,4 +137,24 @@ model AchievementNonCompetition {
   file_url           String[]
 
   @@map("achievement_non_competition")
+}
+
+model OtpCode {
+  id         String   @id @unique
+  code       String   @unique
+  npm        String
+  email      String
+  isUsed     Boolean
+  validUntil DateTime
+  createAt   DateTime @default(now())
+  updateAt   DateTime @updatedAt
+}
+
+model Ttd {
+  id     String @id @unique @default(cuid())
+  userId String @unique
+  url    String
+  role   String
+
+  user User @relation(fields: [userId], references: [id])
 }

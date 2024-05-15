@@ -1,99 +1,99 @@
 {
-  "bobotSkp": [
-    {
-      "kegiatan": "memperoleh prestasi",
-      "tingkat": {
-        "internasional": {
-          "Juara 1": 80,
-          "Juara 2 ": 70,
-          "Juara 3": 60,
-          "Finalis": 50,
-          "Peserta terpilih": 40
+    "bobotSkp": [
+        {
+            "kegiatan": "memperoleh prestasi",
+            "tingkat": {
+                "internasional": {
+                    "Juara 1": 80,
+                    "Juara 2": 70,
+                    "Juara 3": 60,
+                    "Finalis": 50,
+                    "Peserta terpilih": 40
+                },
+                "nasional": {
+                    "Juara 1": 70,
+                    "Juara 2": 60,
+                    "Juara 3": 50,
+                    "Finalis": 30,
+                    "Peserta terpilih": 20
+                },
+                "regional": {
+                    "Juara 1": 50,
+                    "Juara 2": 40,
+                    "Juara 3": 30,
+                    "Finalis": 10,
+                    "Peserta terpilih": 5
+                },
+                "universitas": {
+                    "Juara 1": 30,
+                    "Juara 2": 20,
+                    "Juara 3": 10,
+                    "Finalis": 5,
+                    "Peserta terpilih": 3
+                },
+                "fakultas": {
+                    "Juara 1": 20,
+                    "Juara 2": 15,
+                    "Juara 3": 10,
+                    "Finalis": 5,
+                    "Peserta terpilih": 3
+                }
+            }
         },
-        "nasional": {
-          "Juara 1": 70,
-          "Juara 2 ": 60,
-          "Juara 3": 50,
-          "Finalis": 30,
-          "Peserta terpilih": 20
+        {
+            "kegiatan": "mengikuti kegiatan",
+            "tingkat": {
+                "internasional": {
+                    "Delegasi": 50,
+                    "Peserta undangan": 25,
+                    "Peserta": 10
+                },
+                "nasional": {
+                    "Delegasi": 30,
+                    "Peserta undangan": 15,
+                    "Peserta": 10
+                },
+                "regional": {
+                    "Delegasi": 20,
+                    "Peserta undangan": 10,
+                    "Peserta": 7
+                },
+                "universitas": {
+                    "Delegasi": 15,
+                    "Peserta undangan": 7,
+                    "Peserta": 3
+                },
+                "fakultas": {
+                    "Delegasi": 10,
+                    "Peserta undangan": 5
+                }
+            }
         },
-        "regional": {
-          "Juara 1": 50,
-          "Juara 2 ": 40,
-          "Juara 3": 30,
-          "Finalis": 10,
-          "Peserta terpilih": 5
+        {
+            "kegiatan": "pelatih",
+            "tingkat": {
+                "nasional": 80,
+                "regional": 60,
+                "universitas": 40,
+                "fakultas": 30,
+                "lainnya": 10
+            }
         },
-        "universitas": {
-          "Juara 1": 30,
-          "Juara 2 ": 20,
-          "Juara 3": 10,
-          "Finalis": 5,
-          "Peserta terpilih": 3
+        {
+            "kegiatan": "pembinaan khusus",
+            "semuaLevel": 10
         },
-        "fakultas": {
-          "Juara 1": 20,
-          "Juara 2 ": 15,
-          "Juara 3": 10,
-          "Finalis": 5,
-          "Peserta terpilih": 3
+        {
+            "kegiatan": "mitra",
+            "semuaLevel": 10
+        },
+        {
+            "kegiatan": "karya seni",
+            "semuaLevel": 20
+        },
+        {
+            "kegiatan": "wirausaha",
+            "semuaLevel": 10
         }
-      }
-    },
-    {
-      "kegiatan": "mengikuti kegiatan",
-      "tingkat": {
-        "internasional": {
-          "Delegasi": 50,
-          "Peserta undangan ": 25,
-          "Peserta": 10
-        },
-        "nasional": {
-          "Delegasi": 30,
-          "Peserta undangan ": 15,
-          "Peserta": 10
-        },
-        "regional": {
-          "Delegasi": 20,
-          "Peserta undangan ": 10,
-          "Peserta": 7
-        },
-        "universitas": {
-          "Delegasi": 15,
-          "Peserta undangan ": 7,
-          "Peserta": 3
-        },
-        "fakultas": {
-          "Delegasi": 10,
-          "Peserta undangan ": 5
-        }
-      }
-    },
-    {
-      "kegiatan": "pelatih",
-      "tingkat": {
-        "nasional": 80,
-        "regional": 60,
-        "universitas": 40,
-        "fakultas": 30,
-        "lainnya": 10
-      }
-    },
-    {
-      "kegiatan": "pembinaan khusus",
-      "semuaLevel": 10
-    },
-    {
-      "kegiatan": "mitra",
-      "semuaLevel": 10
-    },
-    {
-      "kegiatan": "karya seni",
-      "semuaLevel": 20
-    },
-    {
-      "kegiatan": "wirausaha",
-      "semuaLevel": 10
-    }
-  ]
+    ]
 }

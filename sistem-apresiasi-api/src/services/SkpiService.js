@@ -1,159 +1,185 @@
-import { PrismaClient } from "@prisma/client";
-import { InvariantError } from "../exceptions/InvariantError.js";
-import { NotFoundError } from "../exceptions/NotFoundError.js";
-import { verifyMinimumPoints } from "../utils/index.js";
+import { PrismaClient } from "@prisma/client"
+import { InvariantError } from "../exceptions/InvariantError.js"
+import { NotFoundError } from "../exceptions/NotFoundError.js"
+import { verifyMinimumPoints } from "../utils/index.js"
+import * as MailHelper from "../utils/mail.utils.js"
 
-class SkpiService {
-  constructor() {
-    this._prisma = new PrismaClient();
-  }
+const prisma = new PrismaClient()
 
-  async addSkpi({ mandatoryPoints, organizationPoints, scientificPoints, charityPoints, talentPoints, otherPoints, owner }) {
+export async function create({
+    mandatoryPoints,
+    organizationPoints,
+    scientificPoints,
+    charityPoints,
+    talentPoints,
+    otherPoints,
+    owner,
+}) {
     verifyMinimumPoints({
-      mandatoryPoints,
-      organizationPoints,
-      scientificPoints,
-      talentPoints,
-      charityPoints,
-      otherPoints,
-    });
-
-    const newSkpi = await this._prisma.skpi.create({
-      data: {
         mandatoryPoints,
         organizationPoints,
-        charityPoints,
         scientificPoints,
         talentPoints,
+        charityPoints,
         otherPoints,
-        status: "pending",
-        ownerId: owner,
-      },
-    });
+    })
+
+    await MailHelper.pushEmailNotificationFaculty(owner, "OPERATOR")
+
+    const newSkpi = await prisma.skpi.create({
+        data: {
+            mandatoryPoints,
+            organizationPoints,
+            charityPoints,
+            scientificPoints,
+            talentPoints,
+            otherPoints,
+            status: "pending",
+            ownerId: owner,
+        },
+    })
 
     if (!newSkpi) {
-      throw new InvariantError("failed to add SKPI");
+        throw new InvariantError("failed to add SKPI")
     }
 
     return {
-      skpiId: newSkpi.id,
-      ownerId: newSkpi.ownerId,
-    };
-  }
-
-  async getSkpi() {
-    const skpi = await this._prisma.skpi.findMany({
-      select: {
-        id: true,
-        status: true,
-        owner: {
-          select: {
-            npm: true,
-            name: true,
-            faculty: true,
-            major: true,
-          },
-        },
-      },
-    });
-
-    return skpi;
-  }
-
-  async getSkpiByFaculty(faculty) {
-    const skpi = await this._prisma.skpi.findMany({
-      select: {
-        id: true,
-        status: true,
-        owner: {
-          select: {
-            name: true,
-            npm: true,
-            faculty: true,
-            major: true,
-          },
-        },
-      },
-      where: {
-        owner: {
-          faculty,
-        },
-      },
-    });
-
-    if (!skpi) {
-      throw new NotFoundError("skpi not found");
+        skpiId: newSkpi.id,
+        ownerId: newSkpi.ownerId,
     }
-
-    return skpi;
-  }
-
-  async getSkpiByOwner(owner) {
-    const skpi = await this._prisma.skpi.findUnique({
-      where: {
-        ownerId: owner,
-      },
-    });
-
-    if (!skpi) {
-      throw new NotFoundError("skpi not found");
-    }
-
-    return skpi;
-  }
-
-  async getSkpiById(id) {
-    const skpi = await this._prisma.skpi.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        owner: {
-          select: {
-            name: true,
-            npm: true,
-            faculty: true,
-            major: true,
-          },
-        },
-      },
-    });
-
-    if (!skpi) {
-      throw new NotFoundError("skpi not found");
-    }
-
-    return skpi;
-  }
-
-  async editStatusSkpiById({ status, id }) {
-    await this.getSkpiById(id);
-
-    const editedSkpi = await this._prisma.skpi.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
-    });
-
-    if (!editedSkpi) {
-      throw new InvariantError("failed to edit skpi status");
-    }
-  }
-
-  async isExistSkpiByOwner(ownerId) {
-    const skpi = await this._prisma.skpi.findUnique({
-      where: {
-        ownerId,
-      },
-    });
-
-    if (skpi) {
-      throw new InvariantError("this users already have skpi data");
-    }
-  }
 }
 
-export default SkpiService;
+export async function getAll() {
+    const skpi = await prisma.skpi.findMany({
+        select: {
+            id: true,
+            status: true,
+            owner: {
+                select: {
+                    npm: true,
+                    name: true,
+                    faculty: true,
+                    major: true,
+                },
+            },
+        },
+    })
+
+    return skpi
+}
+
+export async function getByFaculty(faculty) {
+    const skpi = await prisma.skpi.findMany({
+        select: {
+            id: true,
+            status: true,
+            owner: {
+                select: {
+                    name: true,
+                    npm: true,
+                    faculty: true,
+                    major: true,
+                },
+            },
+        },
+        where: {
+            owner: {
+                faculty,
+            },
+        },
+    })
+
+    if (!skpi) {
+        throw new NotFoundError("skpi not found")
+    }
+
+    return skpi
+}
+
+export async function getByOwnerId(ownerId) {
+    const skpi = await prisma.skpi.findUnique({
+        where: {
+            ownerId,
+        },
+    })
+
+    if (!skpi) {
+        throw new NotFoundError("skpi not found")
+    }
+
+    return skpi
+}
+
+export async function getById(id) {
+    const skpi = await prisma.skpi.findUnique({
+        where: {
+            id,
+        },
+        include: {
+            owner: {
+                select: {
+                    name: true,
+                    npm: true,
+                    faculty: true,
+                    major: true,
+                },
+            },
+        },
+    })
+
+    if (!skpi) {
+        throw new NotFoundError("skpi not found")
+    }
+
+    return skpi
+}
+
+export async function processSkpi(id, status) {
+    await this.getSkpiById(id)
+
+    const editedSkpi = await prisma.skpi.update({
+        where: {
+            id,
+        },
+        data: {
+            status,
+        },
+    })
+
+    if (!editedSkpi) {
+        throw new InvariantError("failed to edit skpi status")
+    }
+
+    switch (editedSkpi.status) {
+        case "accepted by OPERATOR":
+            await MailHelper.pushEmailNotificationFaculty(editedSkpi.ownerId, "WD")
+            break
+
+        case "accepted by WD":
+            await MailHelper.pushEmailNotification(editedSkpi.ownerId, "ADMIN")
+            break
+
+        case "accepted by ADMIN":
+            await MailHelper.pushEmailNotification(editedSkpi.ownerId, "WR")
+            break
+
+        case "completed":
+            await MailHelper.pushEmailNotificationMahasiswa(editedSkpi.ownerId)
+            break
+
+        default:
+            break
+    }
+}
+
+export async function isExist(ownerId) {
+    const skpi = await prisma.skpi.findUnique({
+        where: {
+            ownerId,
+        },
+    })
+
+    if (skpi) {
+        throw new InvariantError("this users already have skpi data")
+    }
+}
