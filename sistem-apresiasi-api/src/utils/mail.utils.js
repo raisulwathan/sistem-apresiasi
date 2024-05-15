@@ -35,7 +35,8 @@ export async function pushEmailNotificationFaculty(ownerId, role) {
                                   <p>Program Studi: ${user.major}</p>
                                   <p>Silakan login ke sistem untuk informasi lebih lanjut.</p>
                                   <p>Terima kasih.</p>
-                                  <p><i>Admin</i></p>
+                                  <p><i>sistem@apresiasi_usk</i></p>
+
                               </div>
                           </body>
                           </html>`
@@ -73,7 +74,7 @@ export async function pushEmailNotification(ownerId, role) {
                                   <p>Fakultas: ${user.faculty}</p>
                                   <p>Silakan login ke sistem untuk informasi lebih lanjut.</p>
                                   <p>Terima kasih.</p>
-                                  <p><i>Admin</i></p>
+                                  <p><i>sistem@apresiasi_usk</i></p>
                               </div>
                           </body>
                           </html>`
@@ -98,10 +99,10 @@ export async function pushEmailNotificationMahasiswa(ownerId) {
                           <body style="font-family: Arial, sans-serif;">
                               <div style="background-color: #f4f4f4; padding: 20px;">
                                   <h2 style="color: #333;">Notification</h2>
-                                  <p>SKPI Anda sudah Selesai</p>
-                                  <p>Silakan login ke sistem untuk informasi lebih lanjut.</p>
+                                  <p>Hai ${user.name}. SKPI Anda sudah Selesai</p>
+                                  <p>Silakan login ke sistem Apresiasi-USK untuk informasi lebih lanjut.</p>
                                   <p>Terima kasih.</p>
-                                  <p><i>Admin</i></p>
+                                  <p><i>sistem@apresiasi_usk</i></p>
                               </div>
                           </body>
                           </html>`

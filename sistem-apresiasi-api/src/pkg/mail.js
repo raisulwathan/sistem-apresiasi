@@ -22,6 +22,8 @@ export async function sendNotificationEmail(email, htmlBody) {
 
         // Kirim email
         await transporter.sendMail(mailOptions)
+
+        console.info("Email Sent!!!")
     } catch (error) {
         console.error("Error sending email:", error)
         throw error

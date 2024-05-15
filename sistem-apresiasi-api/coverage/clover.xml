@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1715795450128" clover="3.2.0">
-  <project timestamp="1715795450128" name="All files">
+<coverage generated="1715798687067" clover="3.2.0">
+  <project timestamp="1715798687067" name="All files">
     <metrics statements="58" coveredstatements="58" conditionals="30" coveredconditionals="30" methods="14" coveredmethods="14" elements="102" coveredelements="102" complexity="0" loc="58" ncloc="58" packages="2" files="6" classes="6"/>
     <package name="exceptions">
       <metrics statements="7" coveredstatements="7" conditionals="1" coveredconditionals="1" methods="3" coveredmethods="3"/>
@@ -57,14 +57,14 @@
         <line num="7" count="3" type="stmt"/>
         <line num="13" count="3" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="53" count="3" type="stmt"/>
-        <line num="59" count="3" type="stmt"/>
-        <line num="81" count="2" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
-        <line num="91" count="2" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="82" count="2" type="stmt"/>
+        <line num="86" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="110" count="1" type="stmt"/>
       </file>
       <file name="user.utils.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\utils\user.utils.js">
         <metrics statements="14" coveredstatements="14" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
