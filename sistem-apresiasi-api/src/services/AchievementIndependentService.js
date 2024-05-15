@@ -1,4 +1,6 @@
-// achievementIndependentService.js
+import { PrismaClient } from "@prisma/client";
+import { NotFoundError } from "../exceptions/NotFoundError.js";
+import { InvariantError } from "../exceptions/InvariantError.js";
 
 const prisma = new PrismaClient();
 
