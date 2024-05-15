@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getToken } from "../../../utils/Config";
 import axios from "axios";
 import { getUserId } from "../../../utils/Config";
-import html2pdf from "html2pdf.js";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const Transkrip = () => {
   const [kegiatanWajib, setKegiatanWajib] = useState([]);
@@ -109,63 +110,98 @@ const Transkrip = () => {
   };
 
   const generatePDF = () => {
-    const certificateHTML = `
-      <div>
-        <p>Kementrian Kebudayaan, Riset, dan Teknologi</p>
-        <p>Fakultas: ${data.faculty}</p>
-        <p>Transkrip Surat Keterangan Pendamping Ijazah</p>
-        <div style="margin-top: 10px;">
-          <p><strong>Nama:</strong> ${data.name}</p>
-          <p><strong>NPM:</strong> ${data.npm}</p>
-          <p><strong>Jurusan:</strong> ${data.major}</p>
-          <p><strong>Fakultas:</strong> ${data.faculty}</p>
-        </div>
-        <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
-          <thead>
-            <tr style="border: 1px solid #ddd; padding: 8px;">
-              <th style="border: 1px solid #ddd; padding: 8px;">Bidang</th>
-              <th style="border: 1px solid #ddd; padding: 8px;">Point</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Kegiatan Wajib</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.mandatoryPoints}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Organisasi dan Kepemimpinan</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.organizationPoints}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Penalaran dan Keilmuan</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.scientificPoints}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Minat dan Bakat</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.talentPoints}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Kepedulian Sosial</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.charityPoints}</td>
-            </tr>
-            <tr>
-              <td style="border: 1px solid #ddd; padding: 8px;">Kegiatan Lainnya</td>
-              <td style="border: 1px solid #ddd; padding: 8px;">${skpi.otherPoints}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    `;
+    const doc = new jsPDF();
+    doc.setFontSize(12);
 
-    const element = document.createElement("div");
-    element.innerHTML = certificateHTML;
-    html2pdf(element, {
-      margin: 10,
-      filename: "sertifikat_skpi.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    const bingkaiWidth = 210;
+    const bingkaiHeight = 297;
+
+    const bingkaiX = (pageWidth - bingkaiWidth) / 2;
+    const bingkaiY = (pageHeight - bingkaiHeight) / 2;
+
+    doc.addImage("./src/assets/bingkai.png", "PNG", bingkaiX, bingkaiY, bingkaiWidth, bingkaiHeight);
+
+    const contentWidth = 170;
+    const contentX = (pageWidth - contentWidth) / 2;
+    const contentY = 40;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.textWithLink("KEMENTERIAN PENDIDIKAN DAN BUDAYA", pageWidth / 2, contentY, { align: "center" });
+    doc.textWithLink("UNIVERSITAS SYIAH KUALA", pageWidth / 2, contentY + 5, { align: "center" });
+    doc.textWithLink(`FAKULTAS  ${data.faculty}`, pageWidth / 2, contentY + 10, { align: "center" });
+    doc.setFont("helvetica", "normal");
+
+    const logoLeftWidth = 18;
+    const logoLeftHeight = 18;
+    const logoLeftY = 35;
+    const logoLeftX = 18 + logoLeftWidth / 2;
+    doc.addImage("./src/assets/tutwuri.png", "PNG", logoLeftX, logoLeftY, logoLeftWidth, logoLeftHeight, "", "FAST");
+
+    const logoRightWidth = 18;
+    const logoRightHeight = 18;
+    const logoRightY = 35;
+    const logoRightX = pageWidth - 20 - logoRightWidth - 5;
+    doc.addImage("./src/assets/logousk.png", "PNG", logoRightX, logoRightY, logoRightWidth, logoRightHeight, "", "FAST");
+
+    doc.text("TRANSKRIP SURAT KETERENGAN PENDAPING IJAZAH", pageWidth / 2, contentY + 30, { align: "center" });
+
+    const textSpacing = 7;
+    const maxTextWidth = (Math.max(doc.getStringUnitWidth(`Nama: ${data.name}`), doc.getStringUnitWidth(`NPM: ${data.npm}`), doc.getStringUnitWidth(`Jurusan: ${data.major}`)) * doc.internal.getFontSize()) / doc.internal.scaleFactor;
+
+    const startX = (pageWidth - maxTextWidth) / 2;
+    const fontSize = 12;
+
+    doc.setFontSize(fontSize);
+
+    doc.text(`Nama: ${data.name}`, startX, contentY + 40, { align: "left" });
+    doc.text(`NPM: ${data.npm}`, startX, contentY + 40 + textSpacing, { align: "left" });
+    doc.text(`Jurusan: ${data.major}`, startX, contentY + 40 + textSpacing * 2, { align: "left" });
+
+    const headers = [["Bidang", "Point"]];
+    const rows = [
+      ["Kegiatan Wajib", skpi.mandatoryPoints],
+      ["Organisasi dan Kepemimpinan", skpi.organizationPoints],
+      ["Penalaran dan Keilmuan", skpi.scientificPoints],
+      ["Minat dan Bakat", skpi.talentPoints],
+      ["Kepedulian Sosial", skpi.charityPoints],
+      ["Kegiatan Lainnya", skpi.otherPoints],
+    ];
+
+    const tableY = 110;
+    const tableMargin = { top: 10, right: 30, bottom: 10, left: 30 };
+
+    doc.autoTable({
+      startY: tableY,
+      head: headers,
+      body: rows,
+      theme: "grid",
+      margin: tableMargin,
+      didDrawPage: function () {
+        doc.setLineWidth(0.5);
+        doc.line(tableMargin.left, tableY - tableMargin.top, pageWidth - tableMargin.right, tableY - tableMargin.top);
+      },
+      headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.5, lineColor: [0, 0, 0] },
+      bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.5, lineColor: [0, 0, 0] },
     });
+
+    const textY = doc.autoTable.previous.finalY + 20;
+    const rightTextX = pageWidth - 30;
+
+    doc.text("a.n. Wakil Rektor III", rightTextX, textY, { align: "right" });
+    doc.text("Bidang Kemahasiswaan", rightTextX, textY + 5, { align: "right" });
+
+    doc.text("Prof. Dr. Mustanir, M.Sc", rightTextX, textY + 35, { align: "right" });
+
+    const leftTextX = 30;
+    const catatanText = "Catatan:\nPredikat SKPI S1 :\nSangat baik => 251 skp\nBaik => 151 - 250 skp\nCukup => 45 - 150 skp";
+    doc.setFontSize(10);
+    doc.text(catatanText, leftTextX, textY + 40, { align: "left" });
+
+    doc.save("sertifikat_skpi.pdf");
   };
 
   const confirmAjukanSkpi = async () => {
@@ -214,57 +250,57 @@ const Transkrip = () => {
   const totalPoint = totalPointWajib + totalPointPilihan;
 
   return (
-    <div className="max-h-[887px] h-[870px] lg:mt-4 lg:p-14 pb-3 overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow">
-      <h2 className="mb-6 text-xl text-gray-700 w-[120px] p-2 ml-8 rounded-lg font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Transkrip</h2>
+    <div className="max-h-[887px] h-[878px] overflow-auto  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
+      <h2 className="mb-6 text-[40px] text-gray-800  p-2 rounded-lg ml-8 font-bold mt-9 lg:mt-0 font-poppins">Transkrip</h2>
 
-      <div className="mt-24 mb-6">
+      <div className="p-4 mt-24 mb-6 border border-gray-400 rounded-md">
         <div className="flex items-center">
-          <img src="./src/assets/asteriks.png" className="w-5 h-5 mr-2" alt="asteriks" />
-          <h2 className="text-lg font-bold font-poppins">Kegiatan Wajib</h2>
+          <img src="./src/assets/kegiatan_wajib.png" className="mr-2 w-14 h-14" alt="asteriks" />
+          <h2 className="ml-2 text-lg font-medium font-poppins">Kegiatan Wajib</h2>
         </div>
-        <table className="w-full mt-6 font-poppins">
+        <table className="w-[94%] ml-[68px] mt-3 font-poppins">
           <thead>
             <tr>
-              <th className="py-2 pl-2 text-left text-white bg-secondary ">Kegiatan</th>
-              <th className="py-2 text-left text-white bg-secondary">Point</th>
+              <th className="py-2 pl-2 font-normal text-left text-black bg-sky-50 ">Kegiatan</th>
+              <th className="py-2 font-normal text-left text-black bg-sky-50">Point</th>
             </tr>
           </thead>
           <tbody>
             {kegiatanWajib.map((activity, index) => (
-              <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
-                <td className="py-2 text-base">{activity.activity}</td>
-                <td className="py-2 text-base">{activity.points}</td>
+              <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-sky-50"}>
+                <td className="py-2 text-[16px] text-base">{activity.activity}</td>
+                <td className="py-2 text-[16px] text-base">{activity.points}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      <div className="mt-12">
+      <div className="p-4 mt-12 mb-6 border border-gray-400 rounded-md">
         <div className="flex items-center">
-          <img src="./src/assets/choise.png" className="w-5 h-5 mr-2" alt="choise" />
-          <h2 className="text-lg font-bold font-poppins">Kegiatan Pilihan</h2>
+          <img src="./src/assets/kegiatan_pilihan.png" className="mr-2 w-14 h-14" alt="choise" />
+          <h2 className="ml-2 text-lg font-medium font-poppins">Kegiatan Pilihan</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full mt-6 font-poppins">
+          <table className="w-[94%] ml-[68px] mt-3 font-poppins">
             <thead>
               <tr className="">
-                <th className="py-2 pl-2 text-left text-white bg-secondary">Kegiatan</th>
-                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Nama Kegiatan</th>
-                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Point</th>
-                <th className="hidden py-2 text-left text-white lg:table-cell bg-secondary">Status</th>
-                <th className="py-2 text-left text-white bg-secondary">Detail</th>
+                <th className="py-2 pl-2 font-normal text-left text-black bg-sky-50">Kegiatan</th>
+                <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Nama Kegiatan</th>
+                <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Point</th>
+                <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Status</th>
+                <th className="py-2 font-normal text-left text-black bg-sky-50">Detail</th>
               </tr>
             </thead>
             <tbody>
               {kegiatanPilihan.map((activity, index) => (
-                <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-sky-50"}>
                   <td className="py-2 text-base">{activity.activity}</td>
                   <td className="hidden py-2 text-base lg:table-cell">{activity.name}</td>
                   <td className="hidden py-2 text-base lg:table-cell">{activity.points}</td>
                   <td className="hidden py-2 text-base lg:table-cell">{activity.status}</td>
                   <td className="py-2">
-                    <button onClick={() => handleLihatDetail(activity.id)} className="text-base text-secondary hover:underline focus:outline-none">
+                    <button onClick={() => handleLihatDetail(activity.id)} className="text-base text-lime-500 hover:underline focus:outline-none">
                       Detail
                     </button>
                   </td>
@@ -331,69 +367,62 @@ const Transkrip = () => {
       </div>
 
       <div className="pt-6 mt-12 ">
-        <div className=" bg-dimBlue w-[200px] p-5 rounded-3xl shadow-lg inline-block">
-          <h2 className="mb-2 text-lg font-semibold font-poppins">Total Point</h2>
-          <p className="text-2xl font-bold text-secondary">{totalPoint}</p>
-        </div>
-        <div className="flex mt-6">
+        <div className="bg-indigo-50 w-[200px] p-5 rounded-3xl shadow-lg inline-block">
+          <h2 className=" font-poppins text-base text-[16px] ">Total Point :</h2>
+          <p className="mt-3 text-2xl font-bold text-gray-700">{totalPoint}</p>
           {skpi.status ? (
             <div>
-              <div className="mt-12 ">
-                <div className="flex items-center">
-                  <img src="./src/assets/choise.png" className="w-5 h-5 mr-2" alt="choise" />
-                  <h2 className="text-lg font-bold font-poppins">SKPI</h2>
+              {skpi.status === "completed" ? (
+                <div className="mt-4 ">
+                  <button onClick={generatePDF} className="px-4 py-2 font-normal text-[16px] text-white rounded-md bg-customPurple hover:bg-purple-500">
+                    Cetak SKPI
+                  </button>
                 </div>
-                {skpi.status === "completed" ? (
-                  <div>
-                    <button onClick={generatePDF} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
-                      Cetak
-                    </button>
-                  </div>
-                ) : (
-                  <h3> {skpi.status} </h3>
-                )}
-                <table className="w-full mt-6 overflow-hidden border border-collapse border-gray-300 rounded-lg font-poppins">
-                  <thead className="text-white bg-secondary">
-                    <tr>
-                      <th className="px-6 py-3 text-left">Bidang</th>
-                      <th className="px-6 py-3 text-left">Point</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-gray-100">
-                    <tr>
-                      <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
-                      <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
-                      <td className="px-6 py-4">{skpi.organizationPoints}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
-                      <td className="px-6 py-4">{skpi.scientificPoints}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 text-base">Minat dan Bakat</td>
-                      <td className="px-6 py-4">{skpi.talentPoints}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
-                      <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
-                      <td className="px-6 py-4">{skpi.otherPoints}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              ) : (
+                <h3 className=" text-base text-[16px] mt-4 ">{skpi.status}</h3>
+              )}
             </div>
           ) : (
-            <button onClick={handleAjukanSkpi} className="px-4 py-2 font-semibold text-gray-700 bg-yellow-200 rounded-md hover:bg-yellow-300">
-              Ajukan
-            </button>
+            <div className="mt-2 ">
+              <p className="mt-2">Status</p>
+              <button onClick={handleAjukanSkpi} className="block w-full mt-2 px-4 py-2 font-normal text-[16px] text-white rounded-md bg-customPurple hover:bg-purple-500">
+                Ajukan SKPI
+              </button>
+            </div>
           )}
         </div>
+        <table className="mt-6 overflow-hidden rounded-xl bg-gray-50 font-poppins">
+          <tbody>
+            <tr>
+              <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
+              <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
+            </tr>
+            <tr>
+              <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
+              <td className="px-6 py-4">{skpi.organizationPoints}</td>
+            </tr>
+            <tr>
+              <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
+              <td className="px-6 py-4">{skpi.scientificPoints}</td>
+            </tr>
+            <tr>
+              <td className="px-6 py-4 text-base">Minat dan Bakat</td>
+              <td className="px-6 py-4">{skpi.talentPoints}</td>
+            </tr>
+            <tr>
+              <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
+              <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
+            </tr>
+            <tr>
+              <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
+              <td className="px-6 py-4">{skpi.otherPoints}</td>
+            </tr>
+          </tbody>
+          <div className="mt-20 ml-16">
+            <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
+          </div>
+        </table>
+
         {showInsufficientPointsPopup && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-[400px] p-8 rounded-lg text-center">
@@ -408,7 +437,7 @@ const Transkrip = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white w-[400px] p-8 rounded-lg text-center">
               <p>Data berhasil dikirim!</p>
-              <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-secondary">
+              <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-customPurple">
                 Tutup
               </button>
             </div>
@@ -420,10 +449,10 @@ const Transkrip = () => {
             <div className="bg-white w-[400px] p-8 rounded-lg text-center">
               <p>Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
               <div className="mt-4 space-x-4">
-                <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-secondary">
+                <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-customPurple">
                   Ya
                 </button>
-                <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-white bg-gray-400 rounded-lg">
+                <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-white bg-red-600 rounded-lg">
                   Tidak
                 </button>
               </div>

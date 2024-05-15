@@ -13,6 +13,8 @@ module.exports = {
         secondary: "#54BD95",
         dimWhite: "rgba(255, 255, 255, 0.7)",
         dimBlue: "rgba(9, 151, 124, 0.1)",
+        customPurple: "#6E5BA5 ",
+        customGray: "#303030",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

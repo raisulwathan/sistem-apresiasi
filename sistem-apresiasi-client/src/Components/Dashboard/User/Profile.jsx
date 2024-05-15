@@ -41,8 +41,8 @@ const Profile = () => {
   }, [userId]); // Make sure to include userId in the dependency array
 
   return (
-    <div className="flex max-h-[887px] h-[878px]  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
-      <div className="w-1/2">
+    <div className="lg:flex max-h-[887px] h-[878px] overflow-auto  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
+      <div className="lg:w-1/2">
         <h2 className="mb-6 text-[40px] text-gray-800 w-[85px] p-2 rounded-lg ml-8 font-bold mt-9 lg:mt-0 font-poppins">Profil</h2>
 
         <div className="border bg-slate-300 rounded-md mt-20 ml-8  h-1 lg:w-[600px]"></div>
@@ -92,7 +92,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex justify-end w-1/2 ">
+      <div className="flex justify-center mt-24 lg:mt-0 lg:justify-end lg:w-1/2 ">
         <table className="mt-6 overflow-hidden rounded-xl bg-gray-50 font-poppins">
           <tbody className="">
             <tr>
@@ -120,7 +120,7 @@ const Profile = () => {
               <td className="px-6 py-4">{skpi.otherPoints}</td>
             </tr>
           </tbody>
-          <div className="mt-20 lg:ml-16 ">
+          <div className="mt-20 ml-16 ">
             <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
             <button className="py-3 text-white bg-black rounded-lg px-14">Ajukan Prestasi</button>
           </div>

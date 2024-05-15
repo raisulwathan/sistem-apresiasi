@@ -9,7 +9,6 @@ function Skpi() {
   const [detailKegiatan, setDetailKegiatan] = useState({});
   const [showDetail, setShowDetail] = useState(false);
 
-  // State untuk pop-up konfirmasi dan pop-up sukses
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
@@ -26,6 +25,7 @@ function Skpi() {
           Authorization: `Bearer ${token}`,
         },
       });
+
       setSkpiData(response.data.data.skpi);
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
@@ -44,6 +44,7 @@ function Skpi() {
   }, [skpiData]);
 
   const handleLihatDetail = async (id) => {
+    console.log("Detail id:", id);
     try {
       const response = await axios.get(`http://localhost:5001/api/v1/skpi/${id}`, {
         headers: {
@@ -51,7 +52,7 @@ function Skpi() {
         },
       });
       setDetailKegiatan(response.data.data);
-      setShowDetail(true); // Tampilkan pop-up detail
+      setShowDetail(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -75,17 +76,10 @@ function Skpi() {
 
       console.log("Kegiatan berhasil divalidasi!");
 
-      // Menghapus data yang sudah divalidasi dari tampilan
       const updatedSkpiData = skpiData.filter((item) => item.id !== detailKegiatan.id);
       setSkpiData(updatedSkpiData);
-
-      // Sembunyikan pop-up konfirmasi
       setShowConfirmationPopup(false);
-
-      // Sembunyikan pop-up detail
       setShowDetail(false);
-
-      // Tampilkan pop-up sukses
       setShowSuccessPopup(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
@@ -144,11 +138,14 @@ function Skpi() {
                     <td className="px-4 py-2 text-base">{item.owner.name}</td>
                     <td className="px-4 py-2 text-base">{item.owner.npm}</td>
                     <td className="px-4 py-2 text-base">{item.owner.faculty}</td>
-                    <td className="px-4 py-2 text-base">
-                      <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-600">
-                        Lihat
-                      </button>
-                    </td>
+                    {/* Cek apakah kategori saat ini adalah "unvalidated" */}
+                    {currentCategory === "unvalidated" && (
+                      <td className="px-4 py-2 text-base">
+                        <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-600">
+                          Lihat
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

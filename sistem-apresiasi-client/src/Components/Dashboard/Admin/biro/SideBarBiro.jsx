@@ -7,7 +7,7 @@ import PengabdianMahasiswa from "./PengabdianMahasiswa";
 import Formulir from "./Formulir";
 import PembinaanMental from "./PembinaanMental";
 import MahasiswaBerwiraUsaha from "./MahasiswaBerwiraUsaha";
-import axios from "axios";
+import Dashboard from "../biro/Dashboard";
 import Skpi from "./Skpi";
 
 const SideBarBiro = () => {
@@ -20,7 +20,7 @@ const SideBarBiro = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedMenu("SKPI");
+    setSelectedMenu("Dashboard");
   }, []);
 
   const handleMenuClick = (menu) => {
@@ -90,6 +90,8 @@ const SideBarBiro = () => {
 
   const renderContent = () => {
     switch (selectedMenu) {
+      case "Dashboard":
+        return <Dashboard />;
       case "SKPI":
         return <Skpi />;
       case "Kegiatan Lomba":
@@ -117,6 +119,10 @@ const SideBarBiro = () => {
           <h1 className={`text-black origin-left font-medium text-xl duration-200`}>Apresiasi</h1>
         </div>
         <ul className="pt-10">
+          <li onClick={() => handleMenuClick("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
+            <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
+            Dashboard
+          </li>
           <li onClick={() => handleMenuClick("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center `}>
             <img src={Upload} alt="Icon1" className=" menu-icon w-7" />
             SKPI

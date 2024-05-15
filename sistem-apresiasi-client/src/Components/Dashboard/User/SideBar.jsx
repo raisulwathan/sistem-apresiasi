@@ -127,18 +127,16 @@ const SideBar = () => {
                 <span className="text-[30px]">{username}</span>
                 <span className="text-base text-gray-500">{npm}</span>
               </div>
-              <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[160px] bg-white border w-40 border-secondary rounded-lg`}>
+              <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[230px] bg-white border w-40 text-black rounded-lg`}>
                 <li className="cursor-pointer " onClick={() => handleMenuClick(Menus[0])}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
+                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue ">
                     {" "}
-                    <img src="./src/assets/toProfile.png" alt="" className="w-8 lg:w-8" />
                     <h1 className="lg:pl-3">Profile</h1>
                   </div>
                 </li>
                 <li className="cursor-pointer " onClick={handleLogout}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
+                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue ">
                     {" "}
-                    <img src="./src/assets/logout.png" alt="" className="w-8 lg:w-8" />
                     <h1 className="lg:pl-3">Log Out</h1>
                   </div>
                 </li>

@@ -77,7 +77,7 @@ function Formulir() {
     setFormData((prevData) => ({
       ...prevData,
       file,
-      uploadedFiles: [...prevData.uploadedFiles, file.name], // Menambahkan nama file ke dalam array
+      uploadedFiles: [...prevData.uploadedFiles, file.name],
     }));
   };
 

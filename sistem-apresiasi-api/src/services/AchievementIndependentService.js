@@ -93,6 +93,7 @@ class AchievementIndependentService {
         participant_type: true,
         achievement: true,
         participants: true,
+        major: true,
         year: true,
         faculty: true,
       },
@@ -131,7 +132,7 @@ class AchievementIndependentService {
     });
 
     if (!achievements) {
-      throw new NotFoundError('achievements not found');
+      throw new NotFoundError("achievements not found");
     }
 
     return achievements;

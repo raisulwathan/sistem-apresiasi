@@ -19,6 +19,7 @@ const KegiatanLomba = () => {
         });
 
         if (response.status === 200) {
+          console.log(response.data.data);
           setData(response.data.data);
         } else {
           setError("Data not found");

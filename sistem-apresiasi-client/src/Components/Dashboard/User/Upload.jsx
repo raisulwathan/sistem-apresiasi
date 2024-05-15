@@ -171,13 +171,14 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-h-[887px]  h-[870px] lg:mt-4 lg:p-14 pb-3  overflow-y-auto lg:w-[97%] rounded-lg lg:shadow-Shadow  ">
-      <h2 className="mb-6 text-xl ml-8 text-gray-700 w-[195px] p-2 rounded-lg font-bold mt-9 border-l-2 border-r-2 border-b-2 border-secondary lg:mt-0 font-poppins">Upload Kegiatan</h2>
+    <div className="max-h-[887px] h-[878px] overflow-auto  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg ">
+      <h2 className="mb-6 text-[40px] text-gray-800  p-2 rounded-lg ml-8 font-bold mt-9 lg:mt-0 font-poppins">Upload Kegiatan</h2>
+      <div className="border bg-slate-300 rounded-md mt-10 ml-8  h-1 lg:w-[600px]"></div>
       <div className=" mt-11 lg:mt-20 lg:flex">
         <label className="block text-lg font-poppins" htmlFor="category">
           Kategori :
         </label>
-        <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-56 lg:mt-0 lg:w-96 font-poppins border-secondary" id="category" onChange={handleCategoryChange} value={selectedCategory}>
+        <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-56 lg:mt-0 lg:w-96 font-poppins border-sky-500" id="category" onChange={handleCategoryChange} value={selectedCategory}>
           <option className="text-center " value="">
             -- Pilih Kategori --
           </option>
@@ -194,7 +195,7 @@ const Upload = () => {
         <label className="block mt-4 text-lg font-poppins" htmlFor="activity">
           Kegiatan :
         </label>
-        <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-[218px] lg:w-96 font-poppins border-secondary" id="activity" onChange={handleActivityChange} value={selectedActivity}>
+        <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-[218px] lg:w-96 font-poppins border-sky-500" id="activity" onChange={handleActivityChange} value={selectedActivity}>
           <option className="text-center " value="">
             -- Pilih Kegiatan --
           </option>
@@ -212,7 +213,7 @@ const Upload = () => {
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Nama Kegiatan :
           </label>
-          <input type="text" id="participation" className="w-64 px-6 py-2 mt-4 lg:ml-[158px] text-sm text-center text-gray-500 border rounded-lg lg:w-96 font-poppins border-secondary" onChange={handleName} placeholder="Nama Kegiatan" />
+          <input type="text" id="participation" className="w-64 px-6 py-2 mt-4 lg:ml-[158px] text-sm text-center text-gray-500 border rounded-lg lg:w-96 font-poppins border-sky-500" onChange={handleName} placeholder="Nama Kegiatan" />
         </div>
       ) : null}
 
@@ -223,12 +224,12 @@ const Upload = () => {
           </label>
           {selectedActivity === "pengurus organisasi ekstrakampus" || selectedActivity === "pelatihan kempemimpinan lainnya" ? (
             // Jika kegiatan merupakan 'pengurus organisasi ekstrakampus' atau 'pelatihan kempemimpinan lainnya'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           ) : selectedActivity === "mengikuti pelatihan kepemimpinan" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Lanjut">Lanjut</option>
               <option value="Menengah">Menengah</option>
@@ -236,7 +237,7 @@ const Upload = () => {
             </select>
           ) : selectedActivity === "berpartisipasi dalam pemira" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Universitas">Universitas</option>
               <option value="Fakultas">Fakultas</option>
@@ -244,7 +245,7 @@ const Upload = () => {
             </select>
           ) : (
             // Untuk kegiatan lainnya
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Internasional">Internasional</option>
               <option value="Nasional">Nasional</option>
@@ -261,7 +262,7 @@ const Upload = () => {
           </label>
           {selectedActivity === "lomba karya ilmiah" || selectedActivity === "kegiatan karya ilmiah" || selectedActivity === "pilmapres" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Internasional">Internasional</option>
               <option value="Nasional">Nasional</option>
@@ -271,7 +272,7 @@ const Upload = () => {
             </select>
           ) : selectedActivity === "menghasilkan karya ilmiah" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Internasional">Internasional</option>
               <option value="Nasional">Nasional</option>
@@ -279,7 +280,7 @@ const Upload = () => {
             </select>
           ) : selectedActivity === "kegiatan karya populer" ? (
             // Untuk kegiatan lainnya
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Interasional">Interasional</option>
               <option value="Nasional">Nasional</option>
@@ -287,7 +288,7 @@ const Upload = () => {
               <option value="Universitas">Universitas</option>
             </select>
           ) : selectedActivity === "pelatihan soft skill" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Interasional">Interasional</option>
               <option value="Nasional">Nasional</option>
@@ -295,7 +296,7 @@ const Upload = () => {
               <option value="Daerah">Daerah</option>
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -307,7 +308,7 @@ const Upload = () => {
           </label>
           {selectedActivity === "memperoleh prestasi" || selectedActivity === "mengikuti kegiatan" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Internasional">Internasional</option>
               <option value="Nasional">Nasional</option>
@@ -317,7 +318,7 @@ const Upload = () => {
             </select>
           ) : selectedActivity === "pelatih" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Nasional">Nasional</option>
               <option value="Regional">Daerah / Regional</option>
@@ -326,7 +327,7 @@ const Upload = () => {
               <option value="Lainnya">Lainnya</option>
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -338,7 +339,7 @@ const Upload = () => {
           </label>
           {selectedActivity === "pelaksanaan bakti sosial" ? (
             // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleLevel}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
               <option value="">-- Tingkat --</option>
               <option value="Internasional">Internasional</option>
               <option value="Nasional">Nasional</option>
@@ -348,7 +349,7 @@ const Upload = () => {
               <option value="Jurusan">Jurusan</option>
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -361,7 +362,7 @@ const Upload = () => {
             Partisipasi :
           </label>
           {selectedActivity === "pengurus organisasi intrakampus" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[210px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[210px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">Pilih Partisipasi</option>
               {participationOptionsForSelectedCategory[selectedCategory] &&
                 participationOptionsForSelectedCategory[selectedCategory].map((option) => (
@@ -371,7 +372,7 @@ const Upload = () => {
                 ))}
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -382,14 +383,14 @@ const Upload = () => {
             Partisipasi :
           </label>
           {selectedActivity === "kegiatan karya ilmiah" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">-- pilih Partisipasi --</option>
               <option value="Pembicara">Pembicara</option>
               <option value="Moderator">Moderator</option>
               <option value="Peserta">Peserta</option>
             </select>
           ) : selectedActivity === "lomba karya ilmiah" || selectedActivity === "pilmapres" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">Pilih Partisipasi</option>
               {participationOptionsForSelectedCategory[selectedCategory] &&
                 participationOptionsForSelectedCategory[selectedCategory].map((option) => (
@@ -399,13 +400,13 @@ const Upload = () => {
                 ))}
             </select>
           ) : selectedActivity === "menghasilkan karya ilmiah" || selectedActivity === "kegiatan karya populer" || selectedActivity === "menghasilkan karya ilmiah yang didanai" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">-- pilih Partisipasi --</option>
               <option value="Ketua">Ketua</option>
               <option value="Anggota">Anggota</option>
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -416,14 +417,14 @@ const Upload = () => {
             Partisipasi :
           </label>
           {selectedActivity === "mengikuti kegiatan" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">-- Pilih Partisipasi --</option>
               <option value="Delegasi">Delegasi</option>
               <option value="Peserta undangan">Peserta undangan</option>
               <option value="Peserta">Peserta</option>
             </select>
           ) : selectedActivity === "memperoleh prestasi" ? (
-            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-secondary" id="participation" onChange={handleParticipationChange}>
+            <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
               <option value="">Pilih Partisipasi</option>
               {participationOptionsForSelectedCategory[selectedCategory] &&
                 participationOptionsForSelectedCategory[selectedCategory].map((option) => (
@@ -433,7 +434,7 @@ const Upload = () => {
                 ))}
             </select>
           ) : (
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
               <option value="">Tidak Ada</option>
             </select>
           )}
@@ -443,7 +444,7 @@ const Upload = () => {
           <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
             Partisipasi :
           </label>
-          <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-secondary" id="participation" disabled>
+          <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
             <option value="">Tidak Ada</option>
           </select>
         </div>
@@ -452,21 +453,22 @@ const Upload = () => {
         <label className="block mt-4 text-lg font-poppins" htmlFor="year">
           Tahun Sertifikat :
         </label>
-        <input className="w-64 px-6 py-2 mt-4 text-gray-500 border lg:ml-[161px] text-center text-sm lg:w-96 rounded-lg border-secondary" type="text" id="year" placeholder="Masukkan Tahun" onChange={handleYearChange} value={selectedYear} />
+        <input className="w-64 px-6 py-2 mt-4 text-gray-500 border lg:ml-[161px] text-center text-sm lg:w-96 rounded-lg border-sky-500" type="text" id="year" placeholder="Masukkan Tahun" onChange={handleYearChange} value={selectedYear} />
       </div>
 
       <div className="lg:flex lg:mt-8">
         <label className="block mt-4 text-lg font-poppins" htmlFor="file">
           Sertifikat :
         </label>
-        <input type="file" id="file" className="w-64 lg:ml-[226px] lg:w-96 text-sm lg:h-36 px-6 mt-4 border rounded-lg py-9 border-secondary" onChange={handleFileChange} />
+        <input type="file" id="file" className="w-64 lg:ml-[226px] lg:w-96 text-sm lg:h-36 px-6 mt-4 border rounded-lg py-9 border-sky-500" onChange={handleFileChange} />
       </div>
 
       <div className="mt-16">
-        <button className="lg:ml-[580px] shadow-md transition-transform hover:transform hover:scale-110 bg-secondary px-7 py-3 font-serif rounded-lg text-base hover:text-white " onClick={handleUpload}>
+        <button className="lg:ml-[580px] shadow-md transition-transform hover:transform hover:scale-110 bg-customPurple px-7 py-3 font-serif rounded-lg text-base text-white hover:text-white" onClick={handleUpload}>
           Submit
         </button>
       </div>
+
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white w-[400px] p-8 rounded-lg text-center">

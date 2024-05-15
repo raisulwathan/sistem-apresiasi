@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getToken } from "../../../../utils/Config";
+import SignatureCanvas from "react-signature-canvas";
 
 function Skpi() {
   const [skpiData, setSkpiData] = useState([]);
@@ -10,6 +11,10 @@ function Skpi() {
   const [showDetail, setShowDetail] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [digitalSignature, setDigitalSignature] = useState(null);
+  const [signatureRef, setSignatureRef] = useState(null);
+
+  <SignatureCanvas ref={(ref) => setSignatureRef(ref)} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />;
 
   const handleGetSkpi = async () => {
     try {
@@ -27,6 +32,38 @@ function Skpi() {
   useEffect(() => {
     handleGetSkpi();
   }, []);
+
+  const handleValidateAll = async () => {
+    setShowConfirmation(false);
+    try {
+      // Loop through each unvalidated SKPI and validate them
+      for (let i = 0; i < unvalidateSkpi.length; i++) {
+        const skpi = unvalidateSkpi[i];
+        const signatureImage = signatureRef.toDataURL();
+        await uploadDigitalSignature(signatureImage);
+        await handleValidation(skpi.id);
+      }
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  const uploadDigitalSignature = async (signatureImage) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/v1/digital-signature",
+        { signature: signatureImage },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Tanda tangan digital berhasil diunggah:", response.data);
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
 
   const handleLihatDetail = async (id) => {
     try {
@@ -69,10 +106,16 @@ function Skpi() {
   const handleValidate = async () => {
     setShowConfirmation(false);
     try {
+      const signatureImage = signatureRef.toDataURL();
+      await uploadDigitalSignature(signatureImage);
       await handleValidation(detailKegiatan.id);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
+  };
+
+  const handleSignatureChange = (event) => {
+    setDigitalSignature(event.target.files[0]);
   };
 
   const unvalidateSkpi = skpiData.filter((skpi) => skpi.status === "accepted by ADMIN");
@@ -82,7 +125,17 @@ function Skpi() {
     <div className="h-screen pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        <button className="px-2 py-4 rounded-lg bg-secondary">Validasi Semua</button>
+        <div className="mt-4">
+          <SignatureCanvas ref={(ref) => setSignatureRef(ref)} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />
+        </div>
+        <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleValidate}>
+          Kirim Tanda Tangan
+        </button>
+
+        <button className="px-2 py-4 rounded-lg bg-secondary" onClick={handleValidateAll}>
+          Validasi Semua
+        </button>
+
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (

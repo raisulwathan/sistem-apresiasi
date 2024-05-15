@@ -45,13 +45,11 @@ function PengabdianMahasiswa() {
       // Membuat elemen <a> untuk pengunduhan file
       const link = document.createElement("a");
       link.href = fileURL;
-      link.setAttribute("download", "Pengabdian_Mahasiswa.xlsx"); // Atur nama file yang ingin diunduh
+      link.setAttribute("download", "Pengabdian_Mahasiswa.xlsx");
       document.body.appendChild(link);
 
-      // Klik pada elemen <a> untuk memulai pengunduhan otomatis
       link.click();
 
-      // Hapus elemen <a> setelah selesai pengunduhan
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
