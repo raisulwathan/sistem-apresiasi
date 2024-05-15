@@ -10,20 +10,29 @@ export const loadData = (path) => {
 
 export const getBobotSKP = (data, { activity, level, possitionAchievement }) => {
     activity = activity.toLowerCase()
-    level = level.toLowerCase()
+
+    if (level) {
+        level = level.toLowerCase()
+    }
     const matchActivity = data.bobotSkp.find((item) => item.kegiatan === activity)
 
     if (!matchActivity) {
         throw new NotFoundError("Kegiatan tidak ditemukan")
     }
 
-    return matchActivity.tingkat
-        ? possitionAchievement
+    if (matchActivity.semuaLevel) {
+        return possitionAchievement
+            ? matchActivity.semuaLevel[possitionAchievement]
+            : matchActivity.semuaLevel
+    }
+
+    if (matchActivity.tingkat[level]) {
+        return possitionAchievement
             ? matchActivity.tingkat[level][possitionAchievement]
             : matchActivity.tingkat[level]
-        : matchActivity.semuaLevel
-        ? matchActivity.semuaLevel
-        : new NotFoundError("tingkat kegiatan tidak ditemukan")
+    } else {
+        throw new NotFoundError("Tingkat kegiatan tidak ditemukan")
+    }
 }
 
 export const tryCatch = (controller) => async (req, res, next) => {
@@ -42,7 +51,6 @@ export const verifyMinimumPoints = ({
     talentPoints,
     otherPoints,
 }) => {
-    console.log(mandatoryPoints)
     if (!mandatoryPoints || mandatoryPoints < 20) {
         throw new InvariantError("Kegiatan Wajib harus memiliki minimal 20 skp")
     }
