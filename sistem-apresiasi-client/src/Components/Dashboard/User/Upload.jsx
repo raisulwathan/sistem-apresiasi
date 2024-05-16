@@ -72,7 +72,7 @@ const Upload = () => {
   }, []);
 
   const formData = new FormData();
-  formData.append("file", file); // T
+  formData.append("file", file);
 
   const handleUpload = async () => {
     try {
