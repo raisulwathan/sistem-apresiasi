@@ -1,14 +1,14 @@
-import { UploadValidator } from "../validations/uploads/index.js"
+import { UploadValidator } from "../validations/uploads/index.js";
 
 export const postUploadsController = async (req, res) => {
-    UploadValidator.validatePostUploadsPayload(req.file)
+  UploadValidator.validatePostUploadsPayload({ file: req.file });
 
-    const finalUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename
+  const finalUrl = req.protocol + "://" + req.get("host") + "/uploads/" + req.file.filename;
 
-    res.json({
-        status: "success",
-        data: {
-            fileUrl: finalUrl,
-        },
-    })
-}
+  res.json({
+    status: "success",
+    data: {
+      fileUrl: finalUrl,
+    },
+  });
+};
