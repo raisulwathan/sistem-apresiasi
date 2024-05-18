@@ -66,14 +66,6 @@ export async function create({
 
 export async function getByOwnerId(ownerId) {
     const activites = await prisma.activity.findMany({
-        select: {
-            id: true,
-            name: true,
-            fieldsActivity: true,
-            activity: true,
-            points: true,
-            status: true,
-        },
         where: {
             ownerId,
         },
@@ -93,19 +85,8 @@ export async function getByFaculty(faculty) {
                 faculty,
             },
         },
-        select: {
-            id: true,
-            name: true,
-            fieldsActivity: true,
-            activity: true,
-            points: true,
-            status: true,
-            owner: {
-                select: {
-                    name: true,
-                    npm: true,
-                },
-            },
+        include: {
+            owner: true,
         },
     })
 
