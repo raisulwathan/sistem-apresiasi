@@ -33,7 +33,6 @@ const History = () => {
         },
       });
 
-      console.log(response.data);
       setAlasanDitolak(response.data.data.rejectedActivity.message);
       setShowModal(true);
     } catch (error) {
