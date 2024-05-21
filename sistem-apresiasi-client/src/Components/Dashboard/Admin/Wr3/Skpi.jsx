@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { getToken } from "../../../../utils/Config";
 import SignatureCanvas from "react-signature-canvas";
@@ -11,14 +11,13 @@ function Skpi() {
   const [showDetail, setShowDetail] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [digitalSignature, setDigitalSignature] = useState(null);
-  const [signatureRef, setSignatureRef] = useState(null);
-
-  <SignatureCanvas ref={(ref) => setSignatureRef(ref)} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />;
+  const [signatureImage, setSignatureImage] = useState("");
+  const signatureRef = useRef(null);
+  const [ttdExist, setTtdExist] = useState(false);
 
   const handleGetSkpi = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/api/v1/skpi`, {
+      const response = await axios.get("http://localhost:5001/api/v1/skpi", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,35 +30,95 @@ function Skpi() {
 
   useEffect(() => {
     handleGetSkpi();
+    getTtdHandler();
   }, []);
 
-  const handleValidateAll = async () => {
-    setShowConfirmation(false);
-    try {
-      // Loop through each unvalidated SKPI and validate them
-      for (let i = 0; i < unvalidateSkpi.length; i++) {
-        const skpi = unvalidateSkpi[i];
-        const signatureImage = signatureRef.toDataURL();
-        await uploadDigitalSignature(signatureImage);
-        await handleValidation(skpi.id);
-      }
-    } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
+  const handleSaveSignature = () => {
+    if (signatureRef.current) {
+      const trimmedCanvas = signatureRef.current.getTrimmedCanvas();
+      const image = trimmedCanvas.toDataURL("image/png");
+      setSignatureImage(image);
     }
   };
 
-  const uploadDigitalSignature = async (signatureImage) => {
+  const getTtdHandler = async () => {
+    const ttd = await axios.get("http://localhost:5001/api/v1/ttd?role=WR", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (ttd.status === 200) {
+      setTtdExist(true);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!signatureImage) {
+      console.error("No signature image to upload");
+      return;
+    }
+
+    const data = {
+      url: String(signatureImage),
+    };
+
     try {
-      const response = await axios.post(
-        "http://localhost:5001/api/v1/digital-signature",
-        { signature: signatureImage },
+      const response = await axios.post("http://localhost:5001/api/v1/ttd", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Tanda tangan digital berhasil diunggah:", response.data);
+      return response.data.data.fileUrl;
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+      throw error;
+    }
+  };
+
+  const handleValidation = async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:5001/api/v1/skpi/${id}/validate`,
+        { status: "completed" },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log("Tanda tangan digital berhasil diunggah:", response.data);
+      console.log("Kegiatan berhasil divalidasi!");
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
+      handleGetSkpi();
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  const handleValidate = async () => {
+    setShowConfirmation(false);
+    try {
+      handleSaveSignature();
+      await handleUpload();
+      await handleValidation(detailKegiatan.id);
+    } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  const handleValidateAll = async () => {
+    setShowConfirmation(false);
+    try {
+      for (let i = 0; i < unvalidateSkpi.length; i++) {
+        const skpi = unvalidateSkpi[i];
+        handleSaveSignature();
+        await handleUpload();
+        await handleValidation(skpi.id);
+      }
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -79,45 +138,6 @@ function Skpi() {
     }
   };
 
-  const handleValidation = async (id) => {
-    try {
-      await axios.put(
-        `http://localhost:5001/api/v1/skpi/${id}/validate`,
-        { status: "completed" },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("Kegiatan berhasil divalidasi!");
-      setShowConfirmation(false);
-      setShowSuccessMessage(true);
-
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 2000);
-    } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
-    }
-  };
-
-  const handleValidate = async () => {
-    setShowConfirmation(false);
-    try {
-      const signatureImage = signatureRef.toDataURL();
-      await uploadDigitalSignature(signatureImage);
-      await handleValidation(detailKegiatan.id);
-    } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
-    }
-  };
-
-  const handleSignatureChange = (event) => {
-    setDigitalSignature(event.target.files[0]);
-  };
-
   const unvalidateSkpi = skpiData.filter((skpi) => skpi.status === "accepted by ADMIN");
   const validatedSkpi = skpiData.filter((skpi) => skpi.status === "completed");
 
@@ -125,14 +145,21 @@ function Skpi() {
     <div className="h-screen pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
       <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        <div className="mt-4">
-          <SignatureCanvas ref={(ref) => setSignatureRef(ref)} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />
-        </div>
-        <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleValidate}>
-          Kirim Tanda Tangan
-        </button>
+        {!ttdExist && (
+          <>
+            <div className="mt-4">
+              <SignatureCanvas ref={signatureRef} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />
+            </div>
+            <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleSaveSignature}>
+              Simpan Tanda Tangan
+            </button>
+            <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleUpload}>
+              Kirim Tanda Tangan
+            </button>
+          </>
+        )}
 
-        <button className="px-2 py-4 rounded-lg bg-secondary" onClick={handleValidateAll}>
+        <button className="px-2 py-4 mt-4 ml-4 text-white rounded-lg bg-secondary" onClick={handleValidateAll}>
           Validasi Semua
         </button>
 
@@ -192,7 +219,7 @@ function Skpi() {
                 ))}
                 {validatedSkpi.length === 0 && (
                   <tr>
-                    <td colSpan="4" className="px-4 py-2 text-center">
+                    <td colSpan="3" className="px-4 py-2 text-center">
                       Data tidak tersedia.
                     </td>
                   </tr>
@@ -227,7 +254,7 @@ function Skpi() {
                 <span className="sr-only">Close</span>
                 &#215;
               </button>
-              <button className="px-2 py-3 rounded-lg bg-secondary" onClick={() => setShowConfirmation(true)}>
+              <button className="px-2 py-3 mt-4 rounded-lg bg-secondary" onClick={() => setShowConfirmation(true)}>
                 Validasi
               </button>
             </div>
@@ -249,6 +276,7 @@ function Skpi() {
             </div>
           </div>
         )}
+
         {showSuccessMessage && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
             <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "30vw" }}>

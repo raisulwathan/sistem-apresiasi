@@ -12,6 +12,7 @@ function Skpi() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [validating, setValidating] = useState(false);
   const [unvalidatedSkpiData, setUnvalidatedSkpiData] = useState([]);
   const [validatedSkpiData, setValidatedSkpiData] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("unvalidated");
@@ -60,6 +61,7 @@ function Skpi() {
 
   const handleValidation = async () => {
     try {
+      setValidating(true); // Set validating true saat proses validasi dimulai
       await axios.put(
         `http://localhost:5001/api/v1/skpi/${detailKegiatan.id}/validate`,
         {},
@@ -74,14 +76,13 @@ function Skpi() {
 
       const updatedSkpiData = skpiData.filter((item) => item.id !== detailKegiatan.id);
       setSkpiData(updatedSkpiData);
-
       setShowConfirmationPopup(false);
-
       setShowDetail(false);
-
       setShowSuccessPopup(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
+    } finally {
+      setValidating(false); // Set validating false setelah proses validasi selesai
     }
   };
 
@@ -98,52 +99,54 @@ function Skpi() {
   };
 
   return (
-    <div className="pt-3 overflow-y-auto ">
+    <div className="pt-3 overflow-y-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
           <div>
-            <div className="flex justify-center">
-              <button onClick={() => setCurrentCategory("unvalidated")} className={`px-4 py-2 border rounded-l ${currentCategory === "unvalidated" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}>
-                Belum Diterima
+            <div className="flex justify-center rounded-md">
+              <button onClick={() => setCurrentCategory("unvalidated")} className={`px-4 py-2 border rounded-l ${currentCategory === "unvalidated" ? "bg-lime-500 text-white" : "bg-white text-gray-700"}`}>
+                <p className=" text-[14px] ">Belum Diterima</p>
               </button>
-              <button onClick={() => setCurrentCategory("validated")} className={`px-4 py-2 border rounded-r ${currentCategory === "validated" ? "bg-green-500 text-white" : "bg-white text-gray-700"}`}>
-                Telah Diterima
+              <button onClick={() => setCurrentCategory("validated")} className={`px-4 py-2 border rounded-r ${currentCategory === "validated" ? "bg-lime-500 text-white" : "bg-white text-gray-700"}`}>
+                <p className=" text-[14px] ">Telah Diterima</p>
               </button>
             </div>
-            <h2 className="mt-8 ml-4 text-secondary">{currentCategory === "unvalidated" ? "Belum Diterima" : "Telah Diterima"}</h2>
-            <table className="w-full">
+            <h2 className="mt-8 ">{currentCategory === "unvalidated" ? "Belum Diterima" : "Telah Diterima"}</h2>
+            <table className="w-full mt-5">
               <thead>
-                <tr className="border border-gray-600">
-                  <th className="px-4 py-2 font-medium text-left text-green-800 border border-gray-600">Nama</th>
-                  <th className="px-4 py-2 font-medium text-left text-green-800 border border-gray-600">NPM</th>
-                  <th className="px-4 py-2 font-medium text-left text-green-800 border border-gray-600">Fakultas</th>
-                  <th className="px-4 py-2 font-medium text-left text-green-800 border border-gray-600">Detail</th>
+                <tr className="border border-gray-600 ">
+                  <th className="px-4 py-2 font-normal  text-left text-[15px]">Nama</th>
+                  <th className="px-4 py-2 text-left font-normal text-[15px]">NPM</th>
+                  <th className="px-4 py-2 text-left font-normal text-[15px]">Fakultas</th>
+                  <th className="px-4 py-2 text-left font-normal text-[15px]">Detail</th>
                 </tr>
               </thead>
               <tbody>
                 {(currentCategory === "unvalidated" ? unvalidatedSkpiData : validatedSkpiData).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) => (
-                  <tr key={index} className="">
-                    <td className="px-4 py-2 text-base border border-gray-600">{item.owner.name}</td>
-                    <td className="px-4 py-2 text-base border border-gray-600">{item.owner.npm}</td>
-                    <td className="px-4 py-2 text-base border border-gray-600">{item.owner.faculty}</td>
-                    <td className="px-4 py-2 text-base border border-gray-600">
-                      <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-600">
-                        Lihat
-                      </button>
-                    </td>
+                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                    <td className="px-4 py-2 text-[14px]">{item.owner.name}</td>
+                    <td className="px-4 py-2 text-[14px]">{item.owner.npm}</td>
+                    <td className="px-4 py-2 text-[14px]">{item.owner.faculty}</td>
+                    {currentCategory === "unvalidated" && (
+                      <td className="px-4 py-2 text-base">
+                        <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-[14px] text-white rounded bg-lime-500 hover:bg-lime-700">
+                          Lihat
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="px-4 py-2">
-              <button className="px-4 py-2 text-sm border cursor-pointer hover:bg-dimBlue hover:border-white border-secondary" onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <button className="px-3 py-1 text-sm text-[13px] border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-lime-500" onClick={handlePreviousPage} disabled={currentPage === 1}>
                 Previous Page
               </button>
               <button
-                className="px-4 py-2 ml-5 text-sm border cursor-pointer hover:bg-dimBlue hover:border-white border-secondary"
+                className="px-3 py-1 ml-5 text-[13px] text-sm border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-lime-500"
                 onClick={handleNextPage}
                 disabled={(currentPage - 1) * itemsPerPage + itemsPerPage >= (currentCategory === "unvalidated" ? unvalidatedSkpiData.length : validatedSkpiData.length)}
               >
@@ -158,11 +161,18 @@ function Skpi() {
                   <div className="p-5">
                     <p>Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
                     <div className="flex justify-end mt-4">
-                      <button onClick={() => setShowConfirmationPopup(false)} className="px-4 py-2 mr-4 text-white bg-red-500 rounded hover:bg-red-600">
+                      <button onClick={() => setShowConfirmationPopup(false)} className="px-3 py-1 mr-4 text-white bg-red-500 rounded hover:bg-red-700">
                         Batal
                       </button>
-                      <button onClick={handleValidation} className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600">
-                        Ya
+                      <button onClick={handleValidation} className="px-3 py-1 text-white rounded bg-lime-500 hover:bg-lime-700">
+                        {validating ? (
+                          <div className="flex items-center justify-center">
+                            <div className="w-4 h-4 mr-2 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
+                            <span>Validating...</span>
+                          </div>
+                        ) : (
+                          "Ya"
+                        )}
                       </button>
                     </div>
                   </div>

@@ -58,9 +58,9 @@ const KegiatanLomba = () => {
   };
 
   return (
-    <div className="h-screen pt-3 overflow-auto ">
-      <h2 className="mb-4 font-semibold text-gray-700 font-poppins">Kegiatan Lomba</h2>
-      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
+    <div className="pt-3 overflow-y-auto">
+      <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Lomba</h2>
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
         <div className="h-screen overflow-auto bg-white rounded-xl ">
           {data.map((item, index) => (
             <div key={item.id} className="p-6 mb-8 border-2 rounded-md border-secondary ">

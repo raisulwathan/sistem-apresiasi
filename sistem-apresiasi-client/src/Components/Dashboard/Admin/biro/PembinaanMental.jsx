@@ -57,9 +57,9 @@ function PertukaranMahasiswa() {
   }, [token]);
 
   return (
-    <div className="pt-6">
-      <h2 className="font-semibold text-gray-800 font-poppins">Pembinaan Mental Kebangsaan</h2>
-      <div className="h-screen p-8 mt-8 shadow-boxShadow">
+    <div className="pt-3 overflow-y-auto">
+      <h2 className="font-semibold text-gray-700 font-poppins">Pembinaan Mental Kebangsaan</h2>
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
         <div className="flex items-center py-3 transition-all duration-300 ease-in-out hover:text-white rounded-lg w-[150px] bg-dimBlue font-poppins hover:scale-105 cursor-pointer shadow-md hover:shadow-xl">
           <img src="./src/assets/print.png" alt="" className="w-5 h-5 pl-2 mr-2" />
           <button className=" text-secondary" onClick={handleInputClick}>
