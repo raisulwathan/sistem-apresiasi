@@ -121,9 +121,17 @@ export async function getById(id) {
 }
 
 export async function processActivity(id, status, message) {
-    await getById(id)
+    let activity = await prisma.activity.findUnique({
+        where: {
+            id,
+        },
+    })
 
-    const activity = await prisma.activity.update({
+    if (!activity) {
+        throw new NotFoundError("failed to get users. id not found")
+    }
+
+    activity = await prisma.activity.update({
         where: {
             id,
         },
@@ -156,7 +164,9 @@ export async function getTotalPoint(ownerId) {
     })
 
     if (!activities) {
-        return (points = 0)
+        return {
+            points: 0,
+        }
     }
 
     const pointsByFieldActivity = activities.reduce((acc, activity) => {
