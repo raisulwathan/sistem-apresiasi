@@ -51,7 +51,11 @@ const KegiatanMahasiswa = () => {
       setValidationSuccess(true);
 
       const validatedActivity = data.find((activity) => activity.id === id);
-      setValidatedData((prevData) => [...prevData, validatedActivity]);
+      setValidatedData((prevData) => {
+        const updatedData = [...prevData, validatedActivity];
+        localStorage.setItem("validatedData", JSON.stringify(updatedData)); // Simpan ke localStorage
+        return updatedData;
+      });
 
       const updatedData = data.filter((activity) => activity.id !== id);
       setData(updatedData);
@@ -62,7 +66,7 @@ const KegiatanMahasiswa = () => {
 
   const handleRejection = async (id) => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `http://localhost:5001/api/v1/activities/${id}/validate`,
         { status: "rejected", message: rejectionReason },
         {
@@ -72,11 +76,14 @@ const KegiatanMahasiswa = () => {
         }
       );
 
-      console.log(response.data);
       console.log("Kegiatan berhasil ditolak!");
       setConfirmRejection(false);
       setRejectionReason("");
       setShowRejectionConfirmation(true);
+
+      const updatedData = validatedData.filter((activity) => activity.id !== id);
+      setValidatedData(updatedData);
+      localStorage.setItem("validatedData", JSON.stringify(updatedData)); // Simpan ke localStorage
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
@@ -93,13 +100,17 @@ const KegiatanMahasiswa = () => {
 
         const nonValidatedActivities = response.data.data.activities.filter((activity) => activity.status === "pending");
         setData(nonValidatedActivities);
+
+        // Ambil data dari localStorage
+        const savedValidatedData = JSON.parse(localStorage.getItem("validatedData")) || [];
+        setValidatedData(savedValidatedData);
       } catch (error) {
         setError(error.message);
       }
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -171,7 +182,7 @@ const KegiatanMahasiswa = () => {
                 ) : (
                   <tr>
                     <td colSpan="5" className="px-4 py-2 text-center">
-                      Data tidak tersedia.
+                      <p className="text-base">Tidak ada data yang masuk</p>
                     </td>
                   </tr>
                 )}
@@ -213,7 +224,7 @@ const KegiatanMahasiswa = () => {
             </thead>
             <tbody>
               {currentValidatedItems.map((activity, index) => (
-                <tr key={index} className="">
+                <tr key={index} className="border border-gray-600">
                   <td className="px-4 py-2 text-[14px] ">{activity.activity}</td>
                   <td className="px-4 py-2 text-[14px] ">{activity.fieldsActivity}</td>
                   <td className="px-4 py-2 text-[14px] ">{activity.levels}</td>
@@ -223,7 +234,7 @@ const KegiatanMahasiswa = () => {
               {currentValidatedItems.length === 0 && (
                 <tr>
                   <td colSpan="4" className="px-4 py-2 text-center">
-                    Data tidak tersedia.
+                    <p className="text-base">Tidak ada data yang masuk</p>
                   </td>
                 </tr>
               )}
@@ -408,7 +419,7 @@ const KegiatanMahasiswa = () => {
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">
             <p>Kegiatan berhasil ditolak dan pesan berhasil dikirim.</p>
-            <button onClick={() => setShowRejectionConfirmation(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-secondary">
+            <button onClick={() => setShowRejectionConfirmation(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-lime-500">
               Tutup
             </button>
           </div>
@@ -419,7 +430,7 @@ const KegiatanMahasiswa = () => {
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">
             <p>Kegiatan berhasil divalidasi!</p>
-            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-secondary">
+            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-lime-500">
               Tutup
             </button>
           </div>

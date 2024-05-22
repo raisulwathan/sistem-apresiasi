@@ -18,6 +18,7 @@ const Transkrip = () => {
   const [skpi, setSkpi] = useState({});
   const [data, setData] = useState({});
   const userId = getUserId();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     axios
@@ -109,9 +110,17 @@ const Transkrip = () => {
     setShowConfirmation(true);
   };
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     const doc = new jsPDF();
     doc.setFontSize(12);
+
+    const ttd = await axios.get("http://localhost:5001/api/v1/ttd?role=WR", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const ttdUrl = ttd.data.data.url;
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -191,9 +200,14 @@ const Transkrip = () => {
     const textY = doc.autoTable.previous.finalY + 20;
     const rightTextX = pageWidth - 30;
 
+    const signatureImageWidth = 50;
+    const signatureImageHeight = 20;
+    const signatureImageY = textY + 10;
+    const signatureImageX = rightTextX - signatureImageWidth;
+
     doc.text("a.n. Wakil Rektor III", rightTextX, textY, { align: "right" });
     doc.text("Bidang Kemahasiswaan", rightTextX, textY + 5, { align: "right" });
-
+    doc.addImage(ttdUrl, "PNG", signatureImageX, signatureImageY, signatureImageWidth, signatureImageHeight);
     doc.text("Prof. Dr. Mustanir, M.Sc", rightTextX, textY + 35, { align: "right" });
 
     const leftTextX = 30;
@@ -206,6 +220,7 @@ const Transkrip = () => {
 
   const confirmAjukanSkpi = async () => {
     setShowConfirmation(false);
+    setIsLoading(true); // Mulai loading
     try {
       const response = await axios.post("http://localhost:5001/api/v1/skpi", null, {
         headers: {
@@ -230,6 +245,8 @@ const Transkrip = () => {
       } else {
         console.error("Error:", error.response ? error.response.data : error.message);
       }
+    } finally {
+      setIsLoading(false); // Selesai loading
     }
   };
 
@@ -456,6 +473,14 @@ const Transkrip = () => {
                   Tidak
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="p-8 text-center bg-white rounded-lg">
+              <p>Loading...</p>
+              <div className="loader"></div> {/* Anda bisa mengganti ini dengan indikator loading yang Anda inginkan */}
             </div>
           </div>
         )}

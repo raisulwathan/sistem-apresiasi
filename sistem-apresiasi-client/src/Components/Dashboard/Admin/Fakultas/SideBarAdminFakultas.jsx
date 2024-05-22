@@ -93,7 +93,6 @@ const SideBarAdminFakultas = () => {
 
   return (
     <div className="flex h-screen bg-white font-poppins">
-      {/* Sidebar */}
       <div className="w-full p-4 md:w-64 md:p-6">
         <div className="flex items-center mb-6 gap-x-4">
           <img src="./src/assets/logousk.png" className="w-[60px] cursor-pointer h-[60px] " alt="Logo" />
@@ -122,7 +121,7 @@ const SideBarAdminFakultas = () => {
             <TfiCup size={27} />
             <span className="hidden  md:block text-[15px]">Kegiatan Lomba</span>
           </li>
-          <li onClick={() => handleMenuClick("Formulir")} className="flex items-center gap-3 cursor-pointer mb-7">
+          <li onClick={() => handleMenuClick("Formulir")} className="flex items-center gap-3 cursor-pointer mb-7 ">
             <LiaFileUploadSolid size={33} />
             <span className="hidden  md:block text-[15px]">Formulir</span>
           </li>
