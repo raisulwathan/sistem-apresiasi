@@ -18,6 +18,7 @@ import {
     pushEmailNotificationFaculty,
     pushEmailNotification,
     pushEmailNotificationMahasiswa,
+    pushEmailNotificationRejected,
 } from "../mail.utils.js"
 
 const prisma = new PrismaClient()
@@ -148,6 +149,34 @@ describe("Notification Functions", () => {
             prisma.user.findUnique.mockResolvedValue(null)
 
             await expect(pushEmailNotificationMahasiswa(1)).rejects.toThrow()
+        })
+    })
+
+    describe("pushEmailNotificationRejected", () => {
+        it("should send email notification to student", async () => {
+            const user = {
+                id: 1,
+                name: "User One",
+                npm: "123",
+                faculty: "Science",
+                email: "user1@example.com",
+            }
+
+            prisma.user.findUnique.mockResolvedValue(user)
+
+            await pushEmailNotificationRejected(1)
+
+            expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { id: 1 } })
+            expect(sendNotificationEmail).toHaveBeenCalledWith(
+                "user1@example.com",
+                expect.stringContaining("SKPI Anda ditolak")
+            )
+        })
+
+        it("should throw an error if user is not found", async () => {
+            prisma.user.findUnique.mockResolvedValue(null)
+
+            await expect(pushEmailNotificationRejected(1)).rejects.toThrow()
         })
     })
 })
