@@ -41,7 +41,7 @@ export async function getAll() {
 }
 
 export async function getById(id) {
-    const achievement = await prisma.achievementNonCompetition.findFirst({
+    const achievement = await prisma.achievementNonCompetition.findUnique({
         where: {
             id,
         },
@@ -60,10 +60,6 @@ export async function getByFaculty(faculty) {
             faculty,
         },
     })
-
-    if (!faculty) {
-        throw new InvariantError("achievement no found. faculty invalid")
-    }
 
     return achievements
 }
@@ -87,10 +83,6 @@ export async function update(
             id,
         },
     })
-
-    if (!updatedAchievement) {
-        throw new InvariantError("failed to edit data")
-    }
 
     return updatedAchievement
 }

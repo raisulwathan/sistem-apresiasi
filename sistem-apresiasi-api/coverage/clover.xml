@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1716454556587" clover="3.2.0">
-  <project timestamp="1716454556587" name="All files">
-    <metrics statements="285" coveredstatements="268" conditionals="137" coveredconditionals="134" methods="65" coveredmethods="61" elements="487" coveredelements="463" complexity="0" loc="285" ncloc="285" packages="12" files="23" classes="23"/>
+<coverage generated="1716550392129" clover="3.2.0">
+  <project timestamp="1716550392129" name="All files">
+    <metrics statements="339" coveredstatements="322" conditionals="155" coveredconditionals="152" methods="81" coveredmethods="77" elements="575" coveredelements="551" complexity="0" loc="339" ncloc="339" packages="12" files="27" classes="27"/>
     <package name="exceptions">
       <metrics statements="11" coveredstatements="11" conditionals="1" coveredconditionals="1" methods="5" coveredmethods="5"/>
       <file name="AuthenticationError.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\exceptions\AuthenticationError.js">
@@ -16,19 +16,19 @@
       </file>
       <file name="ClientError.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\exceptions\ClientError.js">
         <metrics statements="3" coveredstatements="3" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="3" count="67" type="stmt"/>
-        <line num="4" count="67" type="stmt"/>
-        <line num="5" count="67" type="stmt"/>
+        <line num="3" count="76" type="stmt"/>
+        <line num="4" count="76" type="stmt"/>
+        <line num="5" count="76" type="stmt"/>
       </file>
       <file name="InvariantError.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\exceptions\InvariantError.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="39" type="stmt"/>
-        <line num="6" count="39" type="stmt"/>
+        <line num="5" count="44" type="stmt"/>
+        <line num="6" count="44" type="stmt"/>
       </file>
       <file name="NotFoundError.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\exceptions\NotFoundError.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="15" type="stmt"/>
-        <line num="6" count="15" type="stmt"/>
+        <line num="5" count="19" type="stmt"/>
+        <line num="6" count="19" type="stmt"/>
       </file>
     </package>
     <package name="middleware">
@@ -78,7 +78,50 @@
       </file>
     </package>
     <package name="services">
-      <metrics statements="147" coveredstatements="138" conditionals="73" coveredconditionals="70" methods="28" coveredmethods="27"/>
+      <metrics statements="201" coveredstatements="192" conditionals="91" coveredconditionals="88" methods="44" coveredmethods="43"/>
+      <file name="AchievementIndependentService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\AchievementIndependentService.js">
+        <metrics statements="18" coveredstatements="18" conditionals="6" coveredconditionals="6" methods="6" coveredmethods="6"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="40" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="97" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="101" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="109" count="1" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="117" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="118" count="1" type="stmt"/>
+      </file>
+      <file name="AchievementNonCompetitionService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\AchievementNonCompetitionService.js">
+        <metrics statements="19" coveredstatements="19" conditionals="6" coveredconditionals="6" methods="6" coveredmethods="6"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="30" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="50" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="97" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="101" count="1" type="stmt"/>
+      </file>
       <file name="AchievementsService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\AchievementsService.js">
         <metrics statements="24" coveredstatements="24" conditionals="14" coveredconditionals="14" methods="6" coveredmethods="6"/>
         <line num="6" count="1" type="stmt"/>
@@ -158,6 +201,16 @@
         <line num="213" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="214" count="1" type="stmt"/>
       </file>
+      <file name="RejectedActivityService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\RejectedActivityService.js">
+        <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="34" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+      </file>
       <file name="SkpiService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\SkpiService.js">
         <metrics statements="37" coveredstatements="37" conditionals="16" coveredconditionals="16" methods="7" coveredmethods="7"/>
         <line num="7" count="1" type="stmt"/>
@@ -197,6 +250,19 @@
         <line num="174" count="2" type="stmt"/>
         <line num="180" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="181" count="1" type="stmt"/>
+      </file>
+      <file name="TtdService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\TtdService.js">
+        <metrics statements="10" coveredstatements="10" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
       </file>
       <file name="UsersService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\UsersService.js">
         <metrics statements="37" coveredstatements="28" conditionals="17" coveredconditionals="14" methods="6" coveredmethods="5"/>

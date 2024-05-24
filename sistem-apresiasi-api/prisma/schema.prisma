@@ -139,17 +139,6 @@ model AchievementNonCompetition {
   @@map("achievement_non_competition")
 }
 
-model OtpCode {
-  id         String   @id @unique
-  code       String   @unique
-  npm        String
-  email      String
-  isUsed     Boolean
-  validUntil DateTime
-  createAt   DateTime @default(now())
-  updateAt   DateTime @updatedAt
-}
-
 model Ttd {
   id     String @id @unique @default(cuid())
   userId String @unique

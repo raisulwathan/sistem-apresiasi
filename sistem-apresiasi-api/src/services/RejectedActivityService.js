@@ -21,10 +21,6 @@ export async function getByOwnerId(ownerId) {
         },
     })
 
-    if (!activities) {
-        throw new NotFoundError("Activity not found")
-    }
-
     return activities
 }
 

@@ -16,17 +16,6 @@ export async function create(req, res) {
     })
 }
 
-export async function getByUserId(req, res) {
-    const userId = req.userId
-
-    const ttd = await TtdServices.getByUserId(userId)
-
-    res.json({
-        status: "success",
-        data: ttd,
-    })
-}
-
 export async function getByRole(req, res) {
     const role = String(req.query.role)
 
