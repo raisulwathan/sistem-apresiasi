@@ -9,7 +9,7 @@ export async function create(req, res) {
     const userId = req.userId
 
     const createdTtd = await TtdServices.create(url, userId)
-
+    res.status(201)
     res.json({
         status: "success",
         data: createdTtd,
@@ -19,7 +19,7 @@ export async function create(req, res) {
 export async function getByRole(req, res) {
     const role = String(req.query.role)
 
-    if (!role) {
+    if (role !== "WR") {
         throw new InvariantError("query role is required")
     }
 

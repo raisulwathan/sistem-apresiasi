@@ -65,7 +65,7 @@ export async function getAll() {
         },
     })
 
-    return skpi
+    return skpi.filter((data) => data.status != "rejected")
 }
 
 export async function getByFaculty(faculty) {
@@ -89,7 +89,7 @@ export async function getByFaculty(faculty) {
         },
     })
 
-    return skpi
+    return skpi.filter((data) => data.status != "rejected")
 }
 
 export async function getByOwnerId(ownerId) {
@@ -171,13 +171,13 @@ export async function processSkpi(id, status) {
 }
 
 export async function isExist(ownerId) {
-    const skpi = await prisma.skpi.findUnique({
+    const skpi = await prisma.skpi.findFirst({
         where: {
             ownerId,
         },
     })
 
-    if (skpi) {
+    if (skpi && skpi.status !== "rejected") {
         throw new InvariantError("this users already have skpi data")
     }
 }

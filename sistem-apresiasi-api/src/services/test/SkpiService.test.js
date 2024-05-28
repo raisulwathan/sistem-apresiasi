@@ -12,6 +12,7 @@ jest.mock("@prisma/client", () => {
             findMany: jest.fn(),
             create: jest.fn(),
             update: jest.fn(),
+            findFirst: jest.fn(),
         },
     }
     return { PrismaClient: jest.fn(() => PrismaClient) }
@@ -410,10 +411,10 @@ describe("processSkpi", () => {
 
 describe("isExist", () => {
     it("should return Invariant error when SKPI for ownerId is already exist", async () => {
-        prisma.skpi.findUnique.mockResolvedValue(mockReturnDatas[0])
+        prisma.skpi.findFirst.mockResolvedValue(mockReturnDatas[0])
 
         await expect(SkpiService.isExist(1)).rejects.toThrow(InvariantError)
-        expect(prisma.skpi.findUnique).toHaveBeenCalledWith({
+        expect(prisma.skpi.findFirst).toHaveBeenCalledWith({
             where: {
                 ownerId: 1,
             },
@@ -421,10 +422,10 @@ describe("isExist", () => {
     })
 
     it("should not return InvariantEror when SKPI for ownerId is not exist", async () => {
-        prisma.skpi.findUnique.mockResolvedValue(null)
+        prisma.skpi.findFirst.mockResolvedValue(null)
 
         await expect(SkpiService.isExist(1)).resolves.not.toThrow()
-        expect(prisma.skpi.findUnique).toHaveBeenCalledWith({
+        expect(prisma.skpi.findFirst).toHaveBeenCalledWith({
             where: {
                 ownerId: 1,
             },

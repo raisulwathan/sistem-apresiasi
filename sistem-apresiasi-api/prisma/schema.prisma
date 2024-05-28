@@ -86,7 +86,7 @@ model Skpi {
   otherPoints        Int
   status             String
 
-  ownerId String @unique
+  ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 }
 

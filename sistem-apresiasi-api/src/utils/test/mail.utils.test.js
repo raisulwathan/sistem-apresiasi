@@ -8,12 +8,12 @@ jest.mock("@prisma/client", () => {
     return { PrismaClient: jest.fn(() => mPrismaClient) }
 })
 
-jest.mock("../../pkg/mail.js", () => ({
+jest.mock("../../pkg/sendMail.js", () => ({
     sendNotificationEmail: jest.fn(),
 }))
 
 import { PrismaClient } from "@prisma/client"
-import { sendNotificationEmail } from "../../pkg/mail.js"
+import { sendNotificationEmail } from "../../pkg/sendMail.js"
 import {
     pushEmailNotificationFaculty,
     pushEmailNotification,

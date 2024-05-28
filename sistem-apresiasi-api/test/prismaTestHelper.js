@@ -1,13 +1,9 @@
-// prisma.test.js
-import { PrismaClient } from "@prisma/client"
-import "dotenv/config"
+const { PrismaClient } = require("@prisma/client")
+const prisma = new PrismaClient()
+const { execSync } = require("child_process")
 
-const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url: process.env.DATABASE_URL_TESTING,
-        },
-    },
-})
-
-export default prisma
+module.exports = async () => {
+    execSync("npx prisma migrate dev --name init --preview-feature", {
+        env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL_TEST },
+    })
+}

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { sendNotificationEmail } from "../pkg/mail.js"
+import { sendNotificationEmail } from "../pkg/sendMail.js"
 
 const prisma = new PrismaClient()
 

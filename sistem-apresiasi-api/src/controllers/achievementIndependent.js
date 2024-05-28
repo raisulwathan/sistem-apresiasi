@@ -22,6 +22,10 @@ export const postAchievementIndependentController = async (req, res) => {
         fileUrl,
     } = req.body
 
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
+
     const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
@@ -79,11 +83,15 @@ export const getAchievementIndependentByFacultyController = async (req, res) => 
 export const getAchievementIndependentByIdController = async (req, res) => {
     const { id } = req.params
 
+    if (req.userRole === "BASIC") {
+        throw new AuthorizationError("cannot access this resources")
+    }
+
     const achievement = await AchievementIndependentService.getById(id)
 
     const users = await UsersServices.getById(req.userId)
 
-    if (req.userRole === "OPERATOR") {
+    if (req.userRole === "OPERATOR" || req.userRole === "WD") {
         if (users.faculty !== achievement.faculty) {
             throw new AuthorizationError("Doesnt have right to access this resources")
         }
@@ -114,11 +122,14 @@ export const putAchievementIndependentByIdController = async (req, res) => {
         fileUrl,
     } = req.body
 
-    const targetAchievement = await AchievementIndependentService.getById(id)
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
 
+    const targetAchievement = await AchievementIndependentService.getById(id)
     const users = await UsersServices.getById(req.userId)
 
-    if (req.userRole === "OPERATOR") {
+    if (req.userRole == "OPERATOR") {
         if (users.faculty !== targetAchievement.faculty) {
             throw new AuthorizationError("Doesnt have right to access this resources")
         }
@@ -152,8 +163,11 @@ export const putAchievementIndependentByIdController = async (req, res) => {
 export const deleteAchievementIndependentByIdController = async (req, res) => {
     const { id } = req.params
 
-    const targetAchievement = await AchievementIndependentService.getById(id)
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
 
+    const targetAchievement = await AchievementIndependentService.getById(id)
     const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {

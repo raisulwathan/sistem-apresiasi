@@ -9,6 +9,10 @@ export const postAchievementNonCompetitionController = async (req, res) => {
     const { name, category, faculty, activity, levelActivity, numberOfStudents, year, fileUrl } =
         req.body
 
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
+
     const users = await UsersServices.getById(req.userId)
 
     if (req.userRole === "OPERATOR") {
@@ -38,7 +42,7 @@ export const postAchievementNonCompetitionController = async (req, res) => {
 }
 
 export const getAchievementNonCompetitionsController = async (req, res) => {
-    if (req.userRole !== "ADMIN") {
+    if (req.userRole !== "ADMIN" && req.userRole !== "WR") {
         throw new AuthorizationError("Doesnt have right to access this resources")
     }
 
@@ -64,10 +68,14 @@ export const getAchievementNonCompetitionsByFacultyController = async (req, res)
 export const getAchievementNonCompetitionByIdController = async (req, res) => {
     const { id } = req.params
 
+    if (req.userRole === "BASIC") {
+        throw new AuthorizationError("cannot access this resources")
+    }
+
     const achievement = await AchievementNonCompetitionService.getById(id)
     const users = await UsersServices.getById(req.userId)
 
-    if (req.userRole === "OPERATOR") {
+    if (req.userRole === "OPERATOR" || req.userRole === "WD") {
         if (users.faculty !== achievement.faculty) {
             throw new AuthorizationError("Doesnt have right to access this resources")
         }
@@ -84,6 +92,10 @@ export const putAchievementNonCompetitionByIdController = async (req, res) => {
     const { id } = req.params
     const { name, category, faculty, activity, levelActivity, numberOfStudents, year, fileUrl } =
         req.body
+
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
 
     const achievement = await AchievementNonCompetitionService.getById(id)
     const users = await UsersServices.getById(req.userId)
@@ -116,6 +128,10 @@ export const putAchievementNonCompetitionByIdController = async (req, res) => {
 
 export const deleteAchievementNonCompetitionByIdController = async (req, res) => {
     const { id } = req.params
+
+    if (req.userRole !== "OPERATOR" && req.userRole !== "ADMIN") {
+        throw new AuthorizationError("cannot access this resources")
+    }
 
     const achievement = await AchievementNonCompetitionService.getById(id)
     const users = await UsersServices.getById(req.userId)
