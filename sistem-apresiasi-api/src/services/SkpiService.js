@@ -93,7 +93,7 @@ export async function getByFaculty(faculty) {
 }
 
 export async function getByOwnerId(ownerId) {
-    const skpi = await prisma.skpi.findUnique({
+    const skpi = await prisma.skpi.findFirst({
         where: {
             ownerId,
         },

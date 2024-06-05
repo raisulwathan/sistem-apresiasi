@@ -225,10 +225,10 @@ describe("getByFaculty", () => {
 
 describe("getByOwnerId", () => {
     it("should return NotFoundError when skpi not found", async () => {
-        prisma.skpi.findUnique.mockResolvedValue(null)
+        prisma.skpi.findFirst.mockResolvedValue(null)
 
         await expect(SkpiService.getByOwnerId(1)).rejects.toThrow(NotFoundError)
-        expect(prisma.skpi.findUnique).toHaveBeenCalledWith({
+        expect(prisma.skpi.findFirst).toHaveBeenCalledWith({
             where: {
                 ownerId: 1,
             },
@@ -236,12 +236,12 @@ describe("getByOwnerId", () => {
     })
 
     it("should return valid data when exist", async () => {
-        prisma.skpi.findUnique.mockResolvedValue(mockReturnDatas[0])
+        prisma.skpi.findFirst.mockResolvedValue(mockReturnDatas[0])
 
         const result = await SkpiService.getByOwnerId(1)
 
         expect(result).toEqual(mockReturnDatas[0])
-        expect(prisma.skpi.findUnique).toHaveBeenCalledWith({
+        expect(prisma.skpi.findFirst).toHaveBeenCalledWith({
             where: {
                 ownerId: 1,
             },
