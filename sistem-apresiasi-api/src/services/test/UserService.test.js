@@ -4,6 +4,8 @@ import * as UsersService from "../UsersService.js"
 import { InvariantError } from "../../exceptions/InvariantError.js"
 import { NotFoundError } from "../../exceptions/NotFoundError.js"
 import { AuthenticationError } from "../../exceptions/AuthenticationError.js"
+import { generateStatusActive, generateStatusGraduate } from "../../utils/user.utils.js"
+import axios from "axios"
 
 // Mock dependencies
 jest.mock("@prisma/client", () => {
@@ -18,11 +20,14 @@ jest.mock("@prisma/client", () => {
 })
 
 jest.mock("bcrypt")
+jest.mock("axios")
 
 jest.mock("../UsersService", () => ({
     ...jest.requireActual("../UsersService"),
     getUserFromWebService: jest.fn(),
 }))
+
+jest.mock("../../utils/user.utils.js")
 
 let prisma
 let mockUser
@@ -203,45 +208,48 @@ describe("login", () => {
         expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "12345" } })
     })
 
-    // it("should create new user and login when user does not exist", async () => {
-    //     prisma.user.findUnique.mockResolvedValue(null)
-    //     const mockWebServiceUser = {
-    //         email: "test@test.com",
-    //         nama: "Test User",
-    //         npm: "12345",
-    //         status_aktif: "Aktif",
-    //         status_lulus: "Belum Lulus",
-    //         fakultas: "Fakultas Test",
-    //         prodi: "Prodi Test",
-    //         no_tlp_mhs: "08123456789",
-    //     }
-    //     getUserFromWebService.mockResolvedValue(mockWebServiceUser)
-    //     bcrypt.hash.mockResolvedValue("hashedpassword")
-    //     generateStatusActive.mockReturnValue("AKTIF")
-    //     generateStatusGraduate.mockReturnValue("BELUM_LULUS")
-    //     const mockNewUser = { id: 2, role: "BASIC" }
-    //     prisma.user.create.mockResolvedValue(mockNewUser)
+    it("should create new user and login when user does not exist", async () => {
+        prisma.user.findUnique.mockResolvedValue(null)
+        bcrypt.hash.mockResolvedValue("hashedpassword")
+        axios.get.mockResolvedValue({
+            status: 200,
+            data: {
+                email: "m.khawarilputra24@gmail.com",
+                nama: "M. Khawaril Putra",
+                npm: "2008107010038",
+                password: "hashedpassword",
+                status_aktif: "AKTIF",
+                status_lulus: "BELUM_LULUS",
+                fakultas: "MIPA",
+                prodi: "Informatika",
+                no_tlp_mhs: "082276847229",
+            },
+        })
+        generateStatusActive.mockReturnValue("AKTIF")
+        generateStatusGraduate.mockReturnValue("BELUM_LULUS")
+        const mockNewUser = { id: 2, role: "BASIC" }
+        prisma.user.create.mockResolvedValue(mockNewUser)
 
-    //     await expect(UsersService.login("12345", "password")).resolves.toEqual({
-    //         id: 2,
-    //         role: "BASIC",
-    //     })
-    //     expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "12345" } })
-    //     expect(prisma.user.create).toHaveBeenCalledWith({
-    //         data: {
-    //             email: "test@test.com",
-    //             name: "Test User",
-    //             npm: "12345",
-    //             password: "hashedpassword",
-    //             role: "BASIC",
-    //             statusActive: "AKTIF",
-    //             statusGraduate: "BELUM_LULUS",
-    //             faculty: "Fakultas Test",
-    //             major: "Prodi Test",
-    //             phoneNumber: "08123456789",
-    //         },
-    //     })
-    // }, 50000)
+        await expect(UsersService.login("2008107010038", "password")).resolves.toEqual({
+            id: 2,
+            role: "BASIC",
+        })
+        expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "2008107010038" } })
+        expect(prisma.user.create).toHaveBeenCalledWith({
+            data: {
+                email: "m.khawarilputra24@gmail.com",
+                name: "M. Khawaril Putra",
+                npm: "2008107010038",
+                password: "hashedpassword",
+                role: "BASIC",
+                statusActive: "AKTIF",
+                statusGraduate: "BELUM_LULUS",
+                faculty: "MIPA",
+                major: "Informatika",
+                phoneNumber: "082276847229",
+            },
+        })
+    })
 
     it("should throw AuthenticationError when password does not match", async () => {
         const mockUser = { id: 1, role: "BASIC", password: "hashedpassword" }
@@ -254,11 +262,12 @@ describe("login", () => {
         expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "12345" } })
     })
 
-    // it("should throw AuthenticationError when user from web service does not exist", async () => {
-    //     prisma.user.findUnique.mockResolvedValue(null)
-    //     getUserFromWebService.mockResolvedValue(null)
+    it("should throw AuthenticationError when user from web service does not exist", async () => {
+        prisma.user.findUnique.mockResolvedValue(null)
+        UsersService.getUserFromWebService.mockResolvedValue(null)
+        axios.get.mockResolvedValue({ status: 404 })
 
-    //     await expect(UsersService.login("12345", "password")).rejects.toThrow(AuthenticationError)
-    //     expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "12345" } })
-    // })
+        await expect(UsersService.login("12345", "password")).rejects.toThrow(AuthenticationError)
+        expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { npm: "12345" } })
+    })
 })
