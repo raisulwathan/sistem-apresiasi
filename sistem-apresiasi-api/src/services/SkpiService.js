@@ -87,6 +87,11 @@ export async function getByFaculty(faculty) {
                 faculty,
             },
         },
+        orderBy: {
+            owner: {
+                major: "asc",
+            },
+        },
     })
 
     return skpi.filter((data) => data.status != "rejected")
