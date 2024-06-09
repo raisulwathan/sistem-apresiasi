@@ -11,6 +11,8 @@ function PengabdianMahasiswa() {
   const [error, setError] = useState(null);
   const token = getToken();
   const [selectedYear, setSelectedYear] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   const category = "Pengabdian Mahasiswa kepada Masyarakat";
 
   const handleInputClick = () => {
@@ -83,73 +85,114 @@ function PengabdianMahasiswa() {
     fetchData();
   }, [token]);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  const goToNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <div className="pt-3 overflow-y-auto">
-      <h2 className="font-semibold text-gray-700 font-poppins">Pengabdian Mahasiswa kepada Masyarakat</h2>
-      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
-        <div className="flex items-center py-3 transition-all duration-300 ease-in-out hover:text-white rounded-lg w-[150px] bg-dimBlue font-poppins hover:scale-105 cursor-pointer shadow-md hover:shadow-xl">
-          <img src="./src/assets/print.png" alt="" className="w-5 h-5 pl-2 mr-2" />
-          <button className=" text-secondary" onClick={handleInputClick}>
-            Input Data
-          </button>
-        </div>
+      <h2 className="font-semibold text-gray-700 font-poppins">Pengabdian Mahasiswa</h2>
+      <div className="h-screen p-5 overflow-y-auto mt-9 shadow-boxShadow bg-slate-50" style={{ overflowY: "scroll", maxHeight: "90vh", minHeight: "90vh" }}>
+        <div className="p-10 bg-white border shadow-xl">
+          <div className="flex justify-between">
+            <button className="px-4 py-2 text-white text-[15px] transition-all duration-300 ease-in-out rounded-lg shadow-md cursor-pointer my-9 bg-amber-500 font-poppins hover:scale-105 hover:shadow-xl" onClick={handleInputClick}>
+              Input Data
+            </button>
 
-        <div className="mt-4">
-          <select id="tahun" className="p-2 mt-5 border rounded-md border-secondary" value={selectedYear} onChange={handleYearChange}>
-            <option value="">Pilih Tahun</option>
-            {[2018, 2019, 2020, 2021, 2022, 2023, 2024].map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {showForm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="relative w-[1200px] h-[800px] p-8 bg-white rounded-lg">
-              <button className="absolute p-3 top-2 right-2" onClick={handleFormClose}>
-                <img src={closePop} alt="" className="w-7" />
-              </button>
-              <FormulirPengabdian onSubmit={handleFormSubmit} />
-            </div>
+            <button
+              type="submit"
+              onClick={handleExports}
+              className="px-4 py-2 text-[15px] ml-auto mr-8 text-base transition-transform border rounded-lg my-9 hover:text-white border-amber-500 hover:bg-yellow-500 font-poppins hover:transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              Exports
+            </button>
           </div>
-        )}
 
-        <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-          {data
-            .filter((achievement) => selectedYear === "" || achievement.year === selectedYear)
-            .map((achievement) => (
-              <div className="p-4 transition duration-300 bg-white border rounded-lg shadow-md border-secondary hover:shadow-lg" key={achievement.id}>
-                <p className="">
-                  <span className="text-lg font-semibold text-gray-900 ">
-                    Nama : <br />
-                  </span>
-                  <span> - {achievement.name}</span>
-                </p>
-                <p className="text-gray-700">
-                  <span className="text-lg font-semibold text-gray-900">Kegiatan :</span>
-                  <br /> <span className=""> - {achievement.category}</span>
-                </p>
-                <p className="text-gray-700">
-                  <span className="text-lg font-semibold text-gray-900 ">Tahun: </span> <br />
-                  <span> - {achievement.year}</span>
-                </p>
-                <p className="text-gray-700">
-                  <span className="text-lg font-semibold text-gray-900">Fakultas: </span>
-                  <br /> <span> - {achievement.faculty}</span>
-                </p>
+          <div className="mt-4">
+            <select id="tahun" className="p-2 mt-5 bg-white border text-[14px] rounded-md border-amber-500" value={selectedYear} onChange={handleYearChange}>
+              <option value="">Pilih Tahun</option>
+              {[2018, 2019, 2020, 2021, 2022, 2023, 2024].map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {showForm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="relative w-[1200px] h-[800px] p-8 bg-white rounded-lg">
+                <button className="absolute p-3 top-2 right-2" onClick={handleFormClose}>
+                  <img src={closePop} alt="" className="w-7" />
+                </button>
+                <FormulirPengabdian onSubmit={handleFormSubmit} />
               </div>
-            ))}
+            </div>
+          )}
+
+          <div className="mt-8 overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Nama
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Kegiatan
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Tahun
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Fakultas
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentData
+                  .filter((achievement) => selectedYear === "" || achievement.year === selectedYear)
+                  .map((achievement, index) => (
+                    <tr key={achievement.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{achievement.name}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{achievement.category}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{achievement.year}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{achievement.faculty}</div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-14">
+            <button onClick={goToPreviousPage} disabled={currentPage === 1} className="px-3 py-1 mr-2 border text-[15px] rounded-lg hover:text-white hover:border-white hover:bg-amber-500 border-amber-500">
+              Previous
+            </button>
+            <button onClick={goToNextPage} disabled={indexOfLastItem >= data.length} className="px-3 py-1 border text-[15px] rounded-lg hover:text-white hover:border-white hover:bg-amber-500 border-amber-500">
+              Next
+            </button>
+            <p className="mt-4 text-[15px]">
+              Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+            </p>
+          </div>
+
+          {error && <p className="mt-4 text-red-500">{error}</p>}
         </div>
-        {error && <p className="mt-4 text-red-500">{error}</p>}
-        <button
-          type="submit"
-          onClick={handleExports}
-          className="px-4 py-2 my-9 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-yellow-400 font-poppins hover:transform hover:scale-105 ml-auto mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-        >
-          Exports
-        </button>
       </div>
     </div>
   );

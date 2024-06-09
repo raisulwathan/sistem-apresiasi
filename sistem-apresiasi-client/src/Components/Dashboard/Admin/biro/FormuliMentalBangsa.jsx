@@ -67,7 +67,7 @@ function FormulirPengabdian() {
           <label htmlFor="fakultas" className="w-36">
             Fakultas:
           </label>
-          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-secondary">
+          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500">
             <option value="">Pilih Fakultas</option>
             <option value="Fakultas Mipa">Fakultas Mipa</option>
             <option value="Fakultas teknik">Fakultas teknik</option>
@@ -88,13 +88,13 @@ function FormulirPengabdian() {
           <label htmlFor="program" className="w-36">
             Nama Kegiatan:
           </label>
-          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-secondary" />
+          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
         </div>
         <div className="flex items-center space-x-4">
           <label htmlFor="activityName" className="w-36">
             Tingkat Pengakuan Jenis Kegiatan:
           </label>
-          <select id="activityName" value={formData.activityName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-secondary">
+          <select id="activityName" value={formData.activityName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500">
             <option value="">Tingkat pengakuan Jenis kegiatan</option>
             <option value="Pelatihan Kepemimpinan Mahasiswa">Pelatihan Kepemimpinan Mahasiswa</option>
             <option value="Pelatihan bela Negara">Pelatihan bela Negara/Kewiraan/Wawasan Nusantara</option>
@@ -109,7 +109,7 @@ function FormulirPengabdian() {
           <label htmlFor="tingkatan" className="w-36">
             Tingkatan:
           </label>
-          <select id="level" onChange={handleInputChange} value={formData.level} className="flex-grow p-2 border rounded-lg border-secondary">
+          <select id="level" onChange={handleInputChange} value={formData.level} className="flex-grow p-2 border rounded-lg border-amber-500">
             {/* Options for levels */}
           </select>
         </div>
@@ -117,15 +117,15 @@ function FormulirPengabdian() {
           <label htmlFor="tahunKegiatan" className="w-36">
             Tahun Kegiatan:
           </label>
-          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-secondary" />
+          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
         </div>
         <div className="flex items-center space-x-4">
           <label htmlFor="file" className="w-36">
             Unggah File:
           </label>
-          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 border rounded-lg border-secondary" />
+          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
         </div>
-        <button type="submit" onClick={handleUpload} className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-secondary font-poppins hover:transform hover:scale-110">
+        <button type="submit" onClick={handleUpload} className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-amber-500 font-poppins hover:transform hover:scale-110">
           Submit
         </button>
       </form>

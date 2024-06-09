@@ -1,7 +1,10 @@
+import PropTypes from "prop-types"; // Import PropTypes
+
 import { features } from "../../constants";
 import styles, { layout } from "../../style";
 import Button from "./Button";
 
+// FeatureCard component
 const FeatureCard = ({ icon, title, content, index }) => (
   <div className={`flex flex-row p-6 rounded-[20px] ${index !== features.length - 1 ? "mb-6" : "mb-0"} feature-card`}>
     <div className={`w-[64px] h-[64px] rounded-full ${styles.flexCenter} bg-dimBlue`}>
@@ -14,6 +17,15 @@ const FeatureCard = ({ icon, title, content, index }) => (
   </div>
 );
 
+// PropTypes validation for FeatureCard component
+FeatureCard.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
+// Panduan component
 const Panduan = () => (
   <section id="Panduan" className={`${layout.section} ${styles.paddingX}`}>
     <div className={layout.sectionInfo}>

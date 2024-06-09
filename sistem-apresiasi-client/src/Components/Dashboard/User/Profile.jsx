@@ -41,11 +41,11 @@ const Profile = () => {
   }, [userId]); // Make sure to include userId in the dependency array
 
   return (
-    <div className="lg:flex max-h-[887px] h-[878px] overflow-auto  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
+    <div className="lg:flex max-h-[887px] h-[878px] overflow-auto my-3 mr-[4px] lg:mr-0 lg:my-0  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
       <div className="lg:w-1/2">
-        <h2 className="mb-6 text-[40px] text-gray-800 w-[85px] p-2 rounded-lg ml-8 font-bold mt-9 lg:mt-0 font-poppins">Profil</h2>
+        <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Profil</h2>
 
-        <div className="border bg-slate-300 rounded-md mt-20 ml-8  h-1 lg:w-[600px]"></div>
+        <div className="border bg-slate-300 rounded-md mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
 
         <div className="ml-8 mt-9">
           <div className="px-3  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
@@ -68,7 +68,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="border bg-slate-300 rounded-md mt-20  h-1 lg:w-[600px]"></div>
+          <div className="border bg-slate-300 rounded-md mt-20 w-[250px]  h-1 lg:w-[600px]"></div>
 
           <div className="px-3 mt-9  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
             <div className="mr-4 ">
@@ -92,8 +92,8 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex justify-center mt-24 lg:mt-0 lg:justify-end lg:w-1/2 ">
-        <table className="mt-6 overflow-hidden rounded-xl bg-gray-50 font-poppins">
+      <div className="flex justify-center mx-2 mt-24 lg:mt-0 lg:justify-end lg:w-1/2 ">
+        <table className="mt-6 overflow-hidden bg-gray-200 rounded-xl font-poppins">
           <tbody className="">
             <tr>
               <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
@@ -120,9 +120,8 @@ const Profile = () => {
               <td className="px-6 py-4">{skpi.otherPoints}</td>
             </tr>
           </tbody>
-          <div className="mt-20 ml-16 ">
+          <div className="mt-20 ml-16 text-[14px] ">
             <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
-            <button className="py-3 text-white bg-black rounded-lg px-14">Ajukan Prestasi</button>
           </div>
         </table>
       </div>

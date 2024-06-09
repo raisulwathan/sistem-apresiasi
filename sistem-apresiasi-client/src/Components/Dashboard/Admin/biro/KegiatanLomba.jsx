@@ -6,6 +6,8 @@ const KegiatanLomba = () => {
   const [data, setData] = useState([]);
   const token = getToken();
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,37 +59,74 @@ const KegiatanLomba = () => {
     }
   };
 
+  // Logic to calculate indexes of items to be displayed
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
-    <div className="pt-3 overflow-y-auto">
+    <div className="pt-3 overflow-auto">
       <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Lomba</h2>
-      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
-        <div className="h-screen overflow-auto bg-white rounded-xl ">
-          {data.map((item, index) => (
-            <div key={item.id} className="p-6 mb-8 border-2 rounded-md border-secondary ">
-              <p className="mb-2 text-lg font-semibold">Nama Kegiatan: {item.name}</p>
-              <p className="mb-2 text-gray-600">Bidang Kegiatan: {item.level_activity}</p>
-              <p className="mb-2 text-gray-600">Tingkat: {item.participant_type}</p>
-              <p className="mb-2 text-gray-600">Tahun: {item.year}</p>
-              <div className="mt-4">
-                <p className="mb-2 font-semibold">Pemilik:</p>
-                {item.participants.map((participant, idx) => (
-                  <div key={idx} className="pl-4 mb-2">
-                    <p className="text-gray-600">Nama: {participant.name}</p>
-                    <p className="text-gray-600">NPM: {participant.npm}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-          {error && <p>{error}</p>}
-          <button
-            type="submit"
-            onClick={handleExports}
-            className="px-4 py-2 my-5 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-yellow-400 font-poppins hover:transform hover:scale-105 ml-auto mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          >
-            Exports
+
+      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
+        <button
+          type="submit"
+          onClick={handleExports}
+          className="px-4 py-2 my-5 text-base  transition-transform hover:text-secondary rounded-lg w-[150px] bg-yellow-400 hover:bg-yellow-200 font-poppins hover:transform hover:scale-105  mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        >
+          Exports
+        </button>
+        {currentItems.length > 0 ? (
+          <table className="min-w-full">
+            <thead>
+              <tr className="border border-gray-600 ">
+                <th className="px-4 py-2 text-[15px] font-normal text-left ">Nama Kegiatan</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left ">Bidang Kegiatan</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left ">Tingkat</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left ">Tahun</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left ">Pemilik</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr key={item.id} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                  <td className="px-4 py-2 text-[14px]">{item.name}</td>
+                  <td className="px-4 py-2 text-[14px]">{item.level_activity}</td>
+                  <td className="px-4 py-2 text-[14px]">{item.participant_type}</td>
+                  <td className="px-4 py-2 text-[14px]">{item.year}</td>
+                  <td className="px-4 py-2 text-[14px]">
+                    {item.participants.map((participant, idx) => (
+                      <div key={idx}>
+                        <p>Nama: {participant.name}</p>
+                        <p>NPM: {participant.npm}</p>
+                      </div>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No data available</p>
+        )}
+
+        {/* Pagination */}
+        <p className="mt-4 text-center text-[15px]">
+          Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+        </p>
+        <div className="flex justify-center mt-4">
+          <button className="px-3 py-1 mr-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+            Previous
+          </button>
+          <button className="px-3 py-1 ml-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= data.length}>
+            Next
           </button>
         </div>
+
+        {error && <p>{error}</p>}
       </div>
     </div>
   );

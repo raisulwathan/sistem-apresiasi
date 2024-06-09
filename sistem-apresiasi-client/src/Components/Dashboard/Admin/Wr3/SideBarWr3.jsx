@@ -65,23 +65,21 @@ const SideBarWd3 = () => {
     <div className="flex bg-white font-poppins">
       <div className={` lg:p-8 lg:w-[285px] pt-11 relative`}>
         <div className="flex items-center mb-6 gap-x-4">
-          <div className="flex items-center mb-6 gap-x-4">
-            <img src="./src/assets/logousk.png" className="w-[60px] cursor-pointer h-[60px] " alt="Logo" />
-            <h1 className="text-xl font-medium text-black duration-200 origin-left">APRESIASI</h1>
-          </div>
-          <button onClick={toggleMobileSidebar} className="lg:hidden">
+          <img src="./src/assets/logousk.png" className="w-[60px] h-[60px] cursor-pointer hidden lg:block" alt="Logo" />
+          <h1 className="hidden text-xl font-medium text-black duration-200 origin-left lg:block">APRESIASI</h1>
+          <button onClick={toggleMobileSidebar} className="pl-5 lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-black cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
         </div>
-        <ul className={`${isMobileSidebarOpen ? "block" : "hidden"} pt-10 lg:block`}>
-          <li onClick={() => setSelectedMenu("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Dashboard" ? " text-indigo-400 " : ""}`}>
+        <ul className="pt-10 pl-5 lg:pl-0 lg:block">
+          <li onClick={() => setSelectedMenu("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Dashboard" ? " text-amber-500 " : ""}`}>
             <RxDashboard size={27} />
-            <span className="hidden  md:block text-[15px]">Dashboard</span>
+            <span className={`${isMobileSidebarOpen ? "block" : "hidden"} hidden  md:block text-[15px]}`}>Dashboard</span>
           </li>
 
-          <li onClick={() => setSelectedMenu("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "SKPI" ? " text-indigo-400 " : ""}`}>
+          <li onClick={() => setSelectedMenu("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "SKPI" ? " text-amber-500 " : ""}`}>
             <GoFileSymlinkFile size={27} />
             <span className="hidden  md:block text-[15px]">SKPI</span>
           </li>
@@ -108,10 +106,10 @@ const SideBarWd3 = () => {
         </div>
       </div>
 
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border border-secondary overflow-y-auto transform transition-transform lg:hidden ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border border-amber-500 overflow-y-auto transform transition-transform lg:hidden ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         {/* Konten Sidebar Mobile */}
         <div className="p-4">
-          <button onClick={toggleMobileSidebar} className="text-secondary hover:text-gray-900 focus:outline-none">
+          <button onClick={toggleMobileSidebar} className="text-red-500 hover:text-gray-900 focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -124,19 +122,13 @@ const SideBarWd3 = () => {
         <div className={`${isMobileSidebarOpen ? "block" : "hidden"} p-4`}>
           <ul>
             <li className="mb-4 ">
-              <button onClick={() => setSelectedMenu("Dashboard")} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === "Kegiatan Mahasiswa" ? "text-secondary" : ""}`}>
+              <button onClick={() => setSelectedMenu("Dashboard")} className={`text-gray-900 flex font-medium hover:text-amber-700 focus:outline-none ${selectedMenu === "Kegiatan Mahasiswa" ? "text-amber-500" : ""}`}>
                 <RxDashboard size={27} />
                 <h4 className="mt-1 ml-2">Dashboard</h4>
               </button>
             </li>
-            <li className="mb-4 ">
-              <button onClick={() => setSelectedMenu("Kegiatan Mahasiswa")} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === "Kegiatan Mahasiswa" ? "text-secondary" : ""}`}>
-                <GoFile size={27} />
-                <h4 className="mt-1 ml-2">Kegiatan Mahasiswa</h4>
-              </button>
-            </li>
             <li className="mt-8 mb-4 ">
-              <button onClick={() => setSelectedMenu("SKPI")} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === "SKPI" ? "text-secondary" : ""}`}>
+              <button onClick={() => setSelectedMenu("SKPI")} className={`text-gray-900 flex font-medium hover:text-amber-700 focus:outline-none ${selectedMenu === "SKPI" ? "text-amber-500" : ""}`}>
                 <GoFileSymlinkFile size={27} />
                 <p className="mt-1 ml-2">SKPI</p>
               </button>
@@ -145,7 +137,7 @@ const SideBarWd3 = () => {
         </div>
 
         <div className={`${isMobileSidebarOpen ? "block" : "hidden"} absolute bottom-0 w-full`}>
-          <button onClick={handleLogout} className="block w-full py-2 font-bold text-center text-gray-900 bg-secondary hover:bg-gray-300 focus:outline-none">
+          <button onClick={handleLogout} className="block w-full py-2 font-bold text-center text-white bg-amber-600 hover:bg-gray-300 focus:outline-none">
             Log Out
           </button>
         </div>
@@ -153,7 +145,6 @@ const SideBarWd3 = () => {
 
       <div className="h-screen p-8 text-lg lg:flex-1">
         {selectedMenu === "Dashboard" && <Dashboard />}
-
         {selectedMenu === "SKPI" && <Skpi />}
       </div>
     </div>

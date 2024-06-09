@@ -43,7 +43,7 @@ const KegiatanMahasiswa = () => {
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {currentActivities.map((activity, index) => (
-                <div key={index} className="overflow-hidden bg-white rounded-lg shadow-lg">
+                <div key={index} className="overflow-hidden bg-white border border-opacity-50 rounded-lg shadow-lg border-rose-300">
                   <div className="p-4">
                     <p className="mb-4 text-[15px] font-medium text-gray-600">
                       Kategori: <span className=" text-[14px] font-normal text-gray-700 ">{activity.fieldsActivity}</span>
@@ -60,7 +60,7 @@ const KegiatanMahasiswa = () => {
                     <p className="mb-4 text-[15px] font-medium text-gray-600">
                       Tahun: <span className=" text-[14px] font-normal text-gray-700 ">{activity.years}</span>
                     </p>
-                    <a href={activity.fileUrl} target="_blank" rel="noopener noreferrer" className=" text-[14px] text-purple-700 font-medium hover:underline">
+                    <a href={activity.fileUrl} target="_blank" rel="noopener noreferrer" className=" text-[14px] text-amber-700 font-medium hover:underline">
                       Lihat Sertifikat
                     </a>
                   </div>
@@ -70,7 +70,7 @@ const KegiatanMahasiswa = () => {
             </div>
           )}
           {/* Navigasi halaman */}
-          <div className="flex justify-center gap-4 mt-4 mb-28">
+          <div className="flex justify-center gap-4 mt-9 mb-28">
             <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-amber-500">
               Previous Page
             </button>

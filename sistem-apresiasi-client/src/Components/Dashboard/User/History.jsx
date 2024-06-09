@@ -50,9 +50,9 @@ const History = () => {
   const rejectedActivities = activities.filter((activity) => activity.status === "rejected");
 
   return (
-    <div className="max-h-[887px] h-[878px] overflow-auto  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
-      <h2 className="mb-6 text-[40px] text-gray-800 w-[85px] p-2 rounded-lg ml-8 font-bold mt-9 lg:mt-0 font-poppins">Riwayat</h2>
-
+    <div className="max-h-[887px] h-[878px] overflow-auto my-2 mx-[3px]  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
+      <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Riwayat</h2>
+      <div className="border bg-slate-300 rounded-md mt-10 lg:mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
       <div className="flex flex-wrap justify-between mt-6 p-9">
         <div className="w-full lg:w-[26%]">
           <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-customGray">

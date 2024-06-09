@@ -112,15 +112,14 @@ function Dashboard() {
 
     const yScale = d3
       .scaleLinear()
-      .domain([1, d3.max(data, (entry) => entry.count)])
+      .domain([0, d3.max(data, (entry) => entry.count)])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
-    const area = d3
-      .area()
+    const line = d3
+      .line()
       .x((d) => xScale(d.major) + xScale.bandwidth() / 2)
-      .y0(height - margin.bottom)
-      .y1((d) => yScale(d.count))
+      .y((d) => yScale(d.count))
       .curve(d3.curveMonotoneX);
 
     svg.selectAll("*").remove();
@@ -131,16 +130,18 @@ function Dashboard() {
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0, ${height - margin.bottom})`)
+      .transition()
+      .duration(1000)
       .call(d3.axisBottom(xScale))
       .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-0.5em")
       .attr("dy", "0.5em")
       .attr("transform", "rotate(-45)")
-      .style("fill", "#4a5568") // X-axis label color
+      .style("fill", "#6b7280") // X-axis label color
       .style("font-size", "12px");
 
-    svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+    svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`).transition().duration(1000).call(d3.axisLeft(yScale));
 
     svg
       .append("text")
@@ -148,11 +149,11 @@ function Dashboard() {
       .attr("transform", `translate(${width / 2}, ${height + margin.bottom / 2})`)
       .style("text-anchor", "middle")
       .style("font-style", "italic")
-      .style("fill", "#4a5568") // X-axis label color
+      .style("fill", "#6b7280") // X-axis label color
       .style("font-size", "14px")
       .text("Nama Jurusan");
 
-    svg.append("path").datum(data).attr("fill", "#B0EBB4").attr("d", area); // Area color
+    svg.append("path").datum(data).attr("fill", "none").attr("stroke", "#8b5cf6").attr("stroke-width", 2).attr("d", line); // Line color and width
 
     svg
       .selectAll(".dot")
@@ -162,18 +163,19 @@ function Dashboard() {
       .attr("class", "dot")
       .attr("cx", (d) => xScale(d.major) + xScale.bandwidth() / 2)
       .attr("cy", (d) => yScale(d.count))
-      .attr("r", 6) // Dot size
-      .style("fill", "#38b2ac") // Dot color
+      .attr("r", 0) // Dot size initially set to 0
+      .style("fill", "#6d28d9") // Dot color
       .on("mouseover", function (event, d) {
         d3.select(this).transition().duration("50").attr("r", 8); // Increase dot size on hover
         // Add tooltip or other interactivity
       })
       .on("mouseout", function (event, d) {
-        d3.select(this).transition().duration("50").attr("r", 6); // Revert dot size on mouseout
+        d3.select(this).transition().duration("50").attr("r", 0); // Revert dot size on mouseout
         // Remove tooltip or other interactivity
-      });
-
-    svg.selectAll(".dot").transition().duration(1000).attr("opacity", 1);
+      })
+      .transition()
+      .duration(1000)
+      .attr("r", 6); // Dot size transition
 
     svg.selectAll(".grid-line").remove();
     svg
@@ -186,7 +188,7 @@ function Dashboard() {
       .attr("x2", width - margin.right)
       .attr("y1", (d) => yScale(d))
       .attr("y2", (d) => yScale(d))
-      .style("stroke", "#FFE0B5") // Grid line color
+      .style("stroke", "#cbd5e0") // Grid line color
       .style("stroke-dasharray", "2,2");
 
     svg
@@ -199,7 +201,7 @@ function Dashboard() {
       .attr("x2", (d) => xScale(d) + xScale.bandwidth() / 2)
       .attr("y1", yScale(0))
       .attr("y2", yScale(d3.max(data, (entry) => entry.count)))
-      .style("stroke", "#FFE0B5") // Grid line color
+      .style("stroke", "#cbd5e0") // Grid line color
       .style("stroke-dasharray", "2,2");
   }, [independentAchievements, selectedYear]);
 
@@ -324,16 +326,19 @@ function Dashboard() {
   const getColorScheme = (data) => {
     const colors = ["brown", "teal", "orange"];
     const colorScheme = {};
-    const values = Object.values(data).sort((a, b) => b - a);
+    const values = Object.values(data);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
 
-    Object.keys(data).forEach((key, index) => {
+    Object.keys(data).forEach((key) => {
+      const percentage = (data[key] - minValue) / (maxValue - minValue);
       let colorIndex;
-      if (values[index] === Math.max(...values)) {
-        colorIndex = 2;
-      } else if (values[index] === Math.min(...values)) {
-        colorIndex = 0;
+      if (percentage === 1) {
+        colorIndex = 2; // Orange untuk nilai tertinggi
+      } else if (percentage === 0) {
+        colorIndex = 0; // Brown untuk nilai terendah
       } else {
-        colorIndex = 1;
+        colorIndex = 1; // Teal untuk nilai di tengah
       }
       colorScheme[key] = colors[colorIndex];
     });
@@ -408,7 +413,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="relative flex flex-row items-start w-full bg-white border shadow-lg rounded-xl p-7">
+        <div className="relative flex-row items-start hidden w-full bg-white border shadow-lg lg:flex rounded-xl p-7">
           <div className="w-2/3 pr-6">
             <h2 className="mb-2 text-base font-medium text-gray-700">SKPI yang sudah divalidasi</h2>
             <div className="border bg-gradient-to-r from-blue-300 to-blue-400 rounded-md mb-6  h-1 lg:w-[230px]"></div>
@@ -449,7 +454,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="relative flex flex-row items-start w-full ">
+        <div className="relative flex-row items-start hidden w-full lg:flex ">
           <div className="absolute top-0 right-0 w-full bg-white border rounded-lg shadow-lg mb-11 mt-7 p-7">
             <div className="flex items-center justify-between">
               <div>

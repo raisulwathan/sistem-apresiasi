@@ -14,6 +14,8 @@ function FormulirPengabdian() {
     uploadedFiles: [],
   });
   const token = getToken();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -49,13 +51,20 @@ function FormulirPengabdian() {
         },
       });
       console.log(response);
+      setShowSuccess(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmation(false);
+    await handleUpload();
   };
 
   return (
@@ -66,7 +75,7 @@ function FormulirPengabdian() {
           <label htmlFor="fakultas" className="w-36">
             Fakultas:
           </label>
-          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 ml-32 text-center border rounded-lg border-secondary">
+          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 ml-32 text-center border rounded-lg border-amber-500">
             <option value="">Pilih Fakultas</option>
             <option value="Fakultas Mipa">Fakultas Mipa</option>
             <option value="Fakultas teknik">Fakultas teknik</option>
@@ -87,30 +96,54 @@ function FormulirPengabdian() {
           <label htmlFor="program" className="w-39">
             Program Pengabdian:
           </label>
-          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className=" border-secondary flex-grow p-2 border rounded-lg ml-[75px]" />
+          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className=" border-amber-500 flex-grow p-2 border rounded-lg ml-[75px]" />
         </div>
         <div className="flex items-center">
           <label htmlFor="jumlahPeserta" className="w-36">
             Jumlah Peserta:
           </label>
-          <input type="number" id="numberOfStudent" value={formData.numberOfStudent} onChange={handleInputChange} className=" border-secondary flex-grow ml-[129px] p-2 border rounded-lg" />
+          <input type="number" id="numberOfStudent" value={formData.numberOfStudent} onChange={handleInputChange} className=" border-amber-500 flex-grow ml-[129px] p-2 border rounded-lg" />
         </div>
         <div className="flex items-center">
           <label htmlFor="tahunKegiatan" className="w-39">
             Tahun Kegiatan:
           </label>
-          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow ml-[128px] p-2 border border-secondary rounded-lg" />
+          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow ml-[128px] p-2 border border-amber-500 rounded-lg" />
         </div>
         <div className="flex items-center">
           <label htmlFor="file" className="w-36">
             Unggah File:
           </label>
-          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 ml-[129px] border border-secondary rounded-lg" />
+          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 ml-[129px] border border-amber-500 rounded-lg" />
         </div>
-        <button type="submit" onClick={handleUpload} className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-secondary font-poppins hover:transform hover:scale-110 ml-[270px] ">
+        <button type="submit" className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-amber-500 font-poppins hover:transform hover:scale-110 ml-[270px] ">
           Submit
         </button>
       </form>
+      {showConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="p-6 bg-white rounded-lg shadow-lg">
+            <p className="mb-4">Apakah anda yakin Mendaftarkan data ini?</p>
+            <button onClick={handleConfirmSubmit} className="px-4 py-1 mr-2 text-white rounded-lg hover:bg-amber-700 bg-amber-500">
+              Ya
+            </button>
+            <button onClick={() => setShowConfirmation(false)} className="px-4 py-1 bg-red-500 rounded-lg hover:bg-red-700">
+              Tidak
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showSuccess && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="p-6 bg-white rounded-lg shadow-lg">
+            <p className="mb-4">Berhasil didaftarkan!</p>
+            <button onClick={() => setShowSuccess(false)} className="px-4 py-2 text-white rounded-lg bg-amber-500">
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

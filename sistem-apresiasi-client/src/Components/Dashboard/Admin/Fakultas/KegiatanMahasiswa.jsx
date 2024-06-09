@@ -173,7 +173,7 @@ const KegiatanMahasiswa = () => {
                       <td className="px-4 py-2  text-[14px]">{activity.owner.name}</td>
                       <td className="px-4 py-2  text-[14px]">{activity.points}</td>
                       <td className="py-2">
-                        <button onClick={() => handleLihatDetail(activity.id)} className="px-2 text-base text-lime-500 hover:underline focus:outline-none">
+                        <button onClick={() => handleLihatDetail(activity.id)} className="px-2 text-base text-amber-500 hover:underline focus:outline-none">
                           Detail
                         </button>
                       </td>
@@ -191,14 +191,14 @@ const KegiatanMahasiswa = () => {
                 <tr>
                   <td colSpan="5" className="px-4 py-2 ">
                     <button
-                      className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-lime-500"
+                      className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-amber-500"
                       onClick={() => setCurrentPageNonValidated(currentPageNonValidated - 1)}
                       disabled={currentPageNonValidated === 1}
                     >
                       Previous Page
                     </button>
                     <button
-                      className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-lime-500"
+                      className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-amber-500"
                       onClick={() => setCurrentPageNonValidated(currentPageNonValidated + 1)}
                       disabled={currentNonValidatedItems.length < itemsPerPage}
                     >
@@ -241,11 +241,11 @@ const KegiatanMahasiswa = () => {
             </tbody>
           </table>
           <div className="px-4 py-2">
-            <button className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-lime-500" onClick={() => setCurrentPageValidated(currentPageValidated - 1)} disabled={currentPageValidated === 1}>
+            <button className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => setCurrentPageValidated(currentPageValidated - 1)} disabled={currentPageValidated === 1}>
               Previous Page
             </button>
             <button
-              className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-lime-500"
+              className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-amber-500"
               onClick={() => setCurrentPageValidated(currentPageValidated + 1)}
               disabled={currentValidatedItems.length < itemsPerPage}
             >
@@ -277,7 +277,7 @@ const KegiatanMahasiswa = () => {
                 <div className="mt-5">
                   <p className=" text-[16px] ">Sertifikat :</p>
                   <p className="px-4 py-2 rounded-lg bg-slate-100 ">
-                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className=" text-[14px] text-lime-500 hover:underline">
+                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className=" text-[14px] text-amber-500 hover:underline">
                       Lihat Sertifikat
                     </a>
                   </p>
@@ -342,9 +342,9 @@ const KegiatanMahasiswa = () => {
                 </p>
               </div>
 
-              <div className="flex border justify-evenly mt-36 py-9 rounded-xl border-lime-500 ">
+              <div className="flex border justify-evenly mt-36 py-9 rounded-xl border-amber-500 ">
                 <h2 className="font-sans ">Lakukan Aksi Disini !!</h2>
-                <button onClick={() => handleConfirmValidation(detailKegiatan.id)} className="px-3 py-1  border rounded-md text-white text-[14px] bg-lime-500 hover:bg-lime-700   focus:outline-none">
+                <button onClick={() => handleConfirmValidation(detailKegiatan.id)} className="px-3 py-1  border rounded-md text-white text-[14px] bg-amber-500 hover:bg-amber-700   focus:outline-none">
                   Validasi
                 </button>
                 <button onClick={() => handleConfirmRejection(detailKegiatan.id)} className="px-3 py-1 text-[14px] text-white  bg-red-600 rounded-md hover:bg-red-700   focus:outline-none">
@@ -360,10 +360,10 @@ const KegiatanMahasiswa = () => {
           <div className="p-4 bg-white rounded-lg">
             <p>Apakah Anda yakin ingin melakukan validasi kegiatan ini?</p>
             <div className="flex justify-around mt-4">
-              <button onClick={() => handleValidation(selectedItemId)} className="px-4 py-2 text-white rounded-md bg-lime-500">
+              <button onClick={() => handleValidation(selectedItemId)} className="px-3 py-1 text-white rounded-md bg-amber-500 hover:bg-amber-700">
                 Ya
               </button>
-              <button onClick={() => setConfirmValidation(false)} className="px-4 py-2 text-white bg-red-600 rounded-md">
+              <button onClick={() => setConfirmValidation(false)} className="px-3 py-1 text-white bg-red-600 rounded-md hover:bg-red-700">
                 Tidak
               </button>
             </div>
@@ -430,7 +430,7 @@ const KegiatanMahasiswa = () => {
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="p-4 bg-white rounded-lg">
             <p>Kegiatan berhasil divalidasi!</p>
-            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-lime-500">
+            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-amber-500">
               Tutup
             </button>
           </div>

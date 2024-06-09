@@ -24,8 +24,6 @@ import { LiaBusinessTimeSolid } from "react-icons/lia";
 
 const SideBarBiro = () => {
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
-  const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
-  const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -49,10 +47,6 @@ const SideBarBiro = () => {
 
   useEffect(() => {
     setSelectedMenu("Dashboard");
-  }, []);
-
-  useEffect(() => {
-    setSelectedMenu("Dashboard");
     const token = getToken();
     const userId = getUserId();
     if (token) {
@@ -63,18 +57,6 @@ const SideBarBiro = () => {
     }
     fetchUserData(userId);
   }, []);
-
-  const handleMenuClick = (menu) => {
-    if (menu === "Kegiatan Mandiri") {
-      setSubMenuOpenMandiri(!subMenuOpenMandiri);
-    } else if (menu === "Kegiatan Non Lomba") {
-      setSubMenuOpenNonLomba(!subMenuOpenNonLomba);
-    } else {
-      setSelectedMenu(menu);
-      setSubMenuOpenMandiri(false);
-      setSubMenuOpenNonLomba(false);
-    }
-  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -85,29 +67,6 @@ const SideBarBiro = () => {
     setUserDropdownOpen(!userDropdownOpen);
   };
 
-  const renderContent = () => {
-    switch (selectedMenu) {
-      case "Dashboard":
-        return <Dashboard />;
-      case "SKPI":
-        return <Skpi />;
-      case "Kegiatan Lomba":
-        return <KegiatanLomba />;
-      case "Formulir":
-        return <Formulir />;
-      case "Pertukaran Mahasiswa":
-        return <PertukaranMahasiswa />;
-      case "Pengabdian Mahasiswa":
-        return <PengabdianMahasiswa />;
-      case "Pembinaan Mental Bangsa":
-        return <PembinaanMental />;
-      case "Mahasiswa Berwira Usaha":
-        return <MahasiswaBerwiraUsaha />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="flex h-screen bg-white font-poppins">
       <div className="w-full p-4 md:w-64 md:p-6">
@@ -116,44 +75,44 @@ const SideBarBiro = () => {
           <h1 className="text-xl font-medium text-black duration-200 origin-left">APRESIASI</h1>
         </div>
         <ul className="pt-4">
-          <li onClick={() => handleMenuClick("Dashboard")} className="flex items-center gap-3 cursor-pointer mb-7">
+          <li onClick={() => setSelectedMenu("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Dashboard" ? " text-amber-500 " : ""}`}>
             <RxDashboard size={27} />
             <span className="hidden  md:block text-[15px]">Dashboard</span>
           </li>
           <div>
-            <h3 className=" ml-2 text-[14px] text-slate-600 lg:ml-5 ">Manajement Berkas</h3>
+            <h3 className=" ml-2 text-[14px] mb-4 text-slate-600 lg:ml-5 ">Manajement Berkas</h3>
           </div>
-          <li onClick={() => handleMenuClick("SKPI")} className="flex items-center gap-3 mt-4 cursor-pointer mb-7">
+          <li onClick={() => setSelectedMenu("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "SKPI" ? " text-amber-500 " : ""}`}>
             <GoFileSymlinkFile size={27} />
             <span className="hidden  md:block text-[15px]">SKPI</span>
           </li>
           <div>
-            <h3 className=" ml-2 text-[14px] text-slate-600 lg:ml-5 ">Kegiatan Mandiri</h3>
+            <h3 className="ml-2 text-[14px] mb-4 text-slate-600 lg:ml-5">Kegiatan Mandiri</h3>
           </div>
-          <li onClick={() => handleMenuClick("Kegiatan Lomba")} className="flex items-center gap-3 mt-4 cursor-pointer mb-7">
+          <li onClick={() => setSelectedMenu("Kegiatan Lomba")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Kegiatan Lomba" ? " text-amber-500 " : ""}`}>
             <TfiCup size={27} />
             <span className="hidden  md:block text-[15px]">Kegiatan Lomba</span>
           </li>
-          <li onClick={() => handleMenuClick("Formulir")} className="flex items-center gap-3 cursor-pointer mb-7 ">
+          <li onClick={() => setSelectedMenu("Formulir")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Formulir" ? " text-amber-500 " : ""}`}>
             <LiaFileUploadSolid size={33} />
             <span className="hidden  md:block text-[15px]">Formulir</span>
           </li>
           <div>
-            <h3 className=" ml-2 text-[14px] text-slate-600 lg:ml-5 ">Kegiatan Non-Mandiri</h3>
+            <h3 className=" ml-2 text-[14px] mb-4 text-slate-600 lg:ml-5 ">Kegiatan Non-Mandiri</h3>
           </div>
-          <li className="flex items-center gap-3 mt-4 cursor-pointer mb-7 " onClick={() => setSelectedMenu("Pertukaran Mahasiswa")}>
+          <li className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Pertukaran Mahasiswa" ? " text-amber-500 " : ""}`} onClick={() => setSelectedMenu("Pertukaran Mahasiswa")}>
             <LiaExchangeAltSolid size={27} />
             <span className="hidden  md:block text-[15px]">Pertukaran Mahasiswa</span>
           </li>
-          <li className="flex items-center gap-3 cursor-pointer mb-7 " onClick={() => setSelectedMenu("Pengabdian Mahasiswa")}>
+          <li className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Pengabdian Mahasiswa" ? " text-amber-500 " : ""}`} onClick={() => setSelectedMenu("Pengabdian Mahasiswa")}>
             <LiaHandsHelpingSolid size={30} />
             <span className="hidden  md:block text-[15px]">Pengabdian Mahasiswa</span>
           </li>
-          <li className="flex items-center gap-3 cursor-pointer mb-7 " onClick={() => setSelectedMenu("Pembinaan Mental Bangsa")}>
+          <li className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Pembinaan Mental Bangsa" ? " text-amber-500 " : ""}`} onClick={() => setSelectedMenu("Pembinaan Mental Bangsa")}>
             <PiStudentLight size={30} />
             <span className="hidden  md:block text-[15px]"> Pembinaan Mental Bangsa</span>
           </li>
-          <li className="flex items-center gap-3 cursor-pointer mb-7 " onClick={() => setSelectedMenu("Mahasiswa Berwira Usaha")}>
+          <li className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Mahasiswa Berwira Usaha" ? " text-amber-500 " : ""}`} onClick={() => setSelectedMenu("Mahasiswa Berwira Usaha")}>
             <LiaBusinessTimeSolid size={27} />
             <span className="hidden  md:block text-[15px]"> Mahasiswa Berwira Usaha</span>
           </li>
@@ -177,7 +136,16 @@ const SideBarBiro = () => {
         </ul>{" "}
       </div>
 
-      <div className="flex-1 p-8 text-lg">{renderContent()}</div>
+      <div className="h-screen p-8 text-lg lg:flex-1">
+        {selectedMenu === "Dashboard" && <Dashboard />}
+        {selectedMenu === "SKPI" && <Skpi />}
+        {selectedMenu === "Kegiatan Lomba" && <KegiatanLomba />}
+        {selectedMenu === "Formulir" && <Formulir />}
+        {selectedMenu === "Pertukaran Mahasiswa" && <PertukaranMahasiswa />}
+        {selectedMenu === "Pengabdian Mahasiswa" && <PengabdianMahasiswa />}
+        {selectedMenu === "Pembinaan Mental Bangsa" && <PembinaanMental />}
+        {selectedMenu === "Mahasiswa Berwira Usaha" && <MahasiswaBerwiraUsaha />}
+      </div>
     </div>
   );
 };

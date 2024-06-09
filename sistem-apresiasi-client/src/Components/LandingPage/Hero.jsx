@@ -4,7 +4,7 @@ import GetStarted from "./GetStarted";
 
 const Hero = () => {
   return (
-    <section id="home" className={`flex md:flex-row flex-col  ${styles.paddingY}`}>
+    <section id="home" className={`flex md:flex-row flex-col mx-5  ${styles.paddingY}`}>
       <div className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 `}>
         <div className="flex flex-row items-center py-[6px] px-4 bg-discount-gradient rounded-[10px] mb-2">
           <img src={discount} alt="discount" className="w-[32px] h-[32px]" />
@@ -22,14 +22,14 @@ const Hero = () => {
           </div>
         </div>
 
-        <h1 className="font-poppins ss:text-[67px] text-[52px] text-gray-300 ss:leading-[100.8px] leading-[75px] w-full">Universitas Syiah Kuala.</h1>
+        <h1 className="font-poppins text-[40px] lg:text-[52px] text-gray-300 ss:leading-[100.8px] leading-[75px] w-full">Universitas Syiah Kuala.</h1>
         <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
           Website apresiasi adalah website yang membantu mahasiswa untuk mendapatkan skpi dan rekognisi beserta melaporkan prestasi yang pernah di ikuti’ oleh mahasiswa universitas syiah kuala.
         </p>
       </div>
 
-      <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10 relative`}>
-        <img src={robot} alt="billing" className="w-[531px] h-[603px] relative z-[5] " />
+      <div className={`flex-1 flex ${styles.flexCenter} md:my-0 my-10  relative`}>
+        <img src={robot} alt="billing" className="w-[531px] hidden lg:block h-[603px] md:hidden relative z-[5] " />
 
         <div className="absolute z-[0] w-[40%] h-[35%] top-0 pink__gradient" />
         <div className="absolute z-[1] w-[80%] h-[80%] rounded-full white__gradient bottom-40" />

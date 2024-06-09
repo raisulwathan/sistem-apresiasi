@@ -115,10 +115,10 @@ const KegiatanLomba = () => {
 
         {/* Pagination */}
         <div className="flex justify-center mt-4">
-          <button className="px-3 py-1 mr-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-lime-500" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+          <button className="px-3 py-1 mr-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
             Previous
           </button>
-          <button className="px-3 py-1 ml-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-lime-500" onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= data.length}>
+          <button className="px-3 py-1 ml-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= data.length}>
             Next
           </button>
         </div>

@@ -8,10 +8,10 @@ const Navbar = () => {
   const [toggle, setToggle] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 z-50 flex items-center justify-between w-full py-6">
+    <nav className="fixed top-0 left-0 z-50 flex items-center justify-between w-full py-6 ">
       <div className="flex items-center">
         {" "}
-        <img src={logoApresiasi} alt="Apresiasi" className="w-[40px] h-[40px] lg:ml-16" />
+        <img src={logoApresiasi} alt="Apresiasi" className="w-[40px] ml-3 h-[40px] lg:ml-16" />
         <span className="ml-2 text-xl font-semibold text-white">Apresiasi</span>
       </div>
 
@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className=" lg:mr-16 sm:flex">
+      <div className="hidden lg:mr-16 sm:block">
         <Button text="Login" to="/login" />
       </div>
     </nav>

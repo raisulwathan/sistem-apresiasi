@@ -95,9 +95,9 @@ function Dashboard() {
 
     const svg = d3.select(svgRefIndependent.current);
 
-    const achievementsByMajor = countAchievementsByFaculty();
+    const achievementsByFaculty = countAchievementsByFaculty();
 
-    const data = achievementsByMajor;
+    const data = achievementsByFaculty;
 
     const margin = { top: 50, right: 60, bottom: 120, left: 80 };
     const width = 900;
@@ -111,35 +111,36 @@ function Dashboard() {
 
     const yScale = d3
       .scaleLinear()
-      .domain([1, d3.max(data, (entry) => entry.count)])
+      .domain([0, d3.max(data, (entry) => entry.count)])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
-    const area = d3
-      .area()
+    const line = d3
+      .line()
       .x((d) => xScale(d.faculty) + xScale.bandwidth() / 2)
-      .y0(height - margin.bottom)
-      .y1((d) => yScale(d.count))
+      .y((d) => yScale(d.count))
       .curve(d3.curveMonotoneX);
 
     svg.selectAll("*").remove();
 
-    svg.attr("width", width).attr("height", height).style("background-color", "white");
+    svg.attr("width", width).attr("height", height).style("background-color", "white"); // Background color
 
     svg
       .append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0, ${height - margin.bottom})`)
+      .transition()
+      .duration(1000)
       .call(d3.axisBottom(xScale))
       .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-0.5em")
       .attr("dy", "0.5em")
       .attr("transform", "rotate(-45)")
-      .style("fill", "#4a5568") // X-axis label color
+      .style("fill", "#6b7280") // X-axis label color
       .style("font-size", "12px");
 
-    svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale));
+    svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`).transition().duration(1000).call(d3.axisLeft(yScale));
 
     svg
       .append("text")
@@ -147,11 +148,10 @@ function Dashboard() {
       .attr("transform", `translate(${width / 2}, ${height + margin.bottom / 2})`)
       .style("text-anchor", "middle")
       .style("font-style", "italic")
-      .style("fill", "#4a5568") // X-axis label color
-      .style("font-size", "14px")
-      .text("Nama Jurusan");
+      .style("fill", "#6b7280") // X-axis label color
+      .style("font-size", "14px");
 
-    svg.append("path").datum(data).attr("fill", "#B0EBB4").attr("d", area); // Area color
+    svg.append("path").datum(data).attr("fill", "none").attr("stroke", "#8b5cf6").attr("stroke-width", 2).attr("d", line); // Line color and width
 
     svg
       .selectAll(".dot")
@@ -161,18 +161,19 @@ function Dashboard() {
       .attr("class", "dot")
       .attr("cx", (d) => xScale(d.faculty) + xScale.bandwidth() / 2)
       .attr("cy", (d) => yScale(d.count))
-      .attr("r", 6) // Dot size
-      .style("fill", "#38b2ac") // Dot color
+      .attr("r", 0) // Dot size initially set to 0
+      .style("fill", "#6d28d9") // Dot color
       .on("mouseover", function (event, d) {
         d3.select(this).transition().duration("50").attr("r", 8); // Increase dot size on hover
         // Add tooltip or other interactivity
       })
       .on("mouseout", function (event, d) {
-        d3.select(this).transition().duration("50").attr("r", 6); // Revert dot size on mouseout
+        d3.select(this).transition().duration("50").attr("r", 0); // Revert dot size on mouseout
         // Remove tooltip or other interactivity
-      });
-
-    svg.selectAll(".dot").transition().duration(1000).attr("opacity", 1);
+      })
+      .transition()
+      .duration(1000)
+      .attr("r", 6); // Dot size transition
 
     svg.selectAll(".grid-line").remove();
     svg
@@ -185,7 +186,7 @@ function Dashboard() {
       .attr("x2", width - margin.right)
       .attr("y1", (d) => yScale(d))
       .attr("y2", (d) => yScale(d))
-      .style("stroke", "#FFE0B5") // Grid line color
+      .style("stroke", "#cbd5e0") // Grid line color
       .style("stroke-dasharray", "2,2");
 
     svg
@@ -198,7 +199,7 @@ function Dashboard() {
       .attr("x2", (d) => xScale(d) + xScale.bandwidth() / 2)
       .attr("y1", yScale(0))
       .attr("y2", yScale(d3.max(data, (entry) => entry.count)))
-      .style("stroke", "#FFE0B5")
+      .style("stroke", "#cbd5e0") // Grid line color
       .style("stroke-dasharray", "2,2");
   }, [independentAchievements, selectedYear]);
 
@@ -210,7 +211,7 @@ function Dashboard() {
   useEffect(() => {
     if (validatedSkpiData.length === 0) return;
 
-    const skpiByMajor = countSkpiByMajor(validatedSkpiData, selectedStatus);
+    const skpiByFaculty = countSkpiByFaculty(validatedSkpiData, selectedStatus);
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -219,19 +220,19 @@ function Dashboard() {
     const margin = { top: 50, right: 50, bottom: 70, left: 100 };
     const xScale = d3
       .scaleBand()
-      .domain(Object.keys(skpiByMajor))
+      .domain(Object.keys(skpiByFaculty))
       .range([margin.left, width - margin.right])
       .padding(selectedStatus === "Semua" ? 0.5 : 0.2);
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(Object.values(skpiByMajor))])
+      .domain([0, d3.max(Object.values(skpiByFaculty))])
       .nice()
       .range([height - margin.bottom, margin.top]);
 
     const colorScale = d3
       .scaleOrdinal()
-      .domain(Object.keys(skpiByMajor))
-      .range(Object.values(getColorScheme(skpiByMajor)));
+      .domain(Object.keys(skpiByFaculty))
+      .range(Object.values(getColorScheme(skpiByFaculty)));
 
     svg.attr("width", width).attr("height", height).style("background-color", "white");
 
@@ -249,7 +250,7 @@ function Dashboard() {
 
     svg
       .selectAll(".bar")
-      .data(Object.entries(skpiByMajor))
+      .data(Object.entries(skpiByFaculty))
       .enter()
       .append("rect")
       .attr("class", "bar")
@@ -270,7 +271,7 @@ function Dashboard() {
 
     svg
       .selectAll(".bar-label")
-      .data(Object.entries(skpiByMajor))
+      .data(Object.entries(skpiByFaculty))
       .enter()
       .append("text")
       .attr("class", "bar-label")
@@ -283,15 +284,15 @@ function Dashboard() {
       .style("font-family", "Arial, sans-serif");
   }, [validatedSkpiData, selectedStatus]);
 
-  const countSkpiByMajor = (skpiData, status) => {
-    const skpiByMajor = {};
+  const countSkpiByFaculty = (skpiData, status) => {
+    const skpiByFaculty = {};
     skpiData.forEach((skpi) => {
-      if ((!status || isStatusAccepted(skpi.status, status)) && skpi.owner && skpi.owner.major) {
-        const major = skpi.owner.major.trim();
-        skpiByMajor[major] = (skpiByMajor[major] || 0) + 1;
+      if ((!status || isStatusAccepted(skpi.status, status)) && skpi.owner && skpi.owner.faculty) {
+        const faculty = skpi.owner.faculty.trim();
+        skpiByFaculty[faculty] = (skpiByFaculty[faculty] || 0) + 1;
       }
     });
-    return skpiByMajor;
+    return skpiByFaculty;
   };
 
   const isStatusAccepted = (skpiStatus, selectedStatus) => {
@@ -323,16 +324,19 @@ function Dashboard() {
   const getColorScheme = (data) => {
     const colors = ["brown", "teal", "orange"];
     const colorScheme = {};
-    const values = Object.values(data).sort((a, b) => b - a);
+    const values = Object.values(data);
+    const maxValue = Math.max(...values);
+    const minValue = Math.min(...values);
 
-    Object.keys(data).forEach((key, index) => {
+    Object.keys(data).forEach((key) => {
+      const percentage = (data[key] - minValue) / (maxValue - minValue);
       let colorIndex;
-      if (values[index] === Math.max(...values)) {
-        colorIndex = 2;
-      } else if (values[index] === Math.min(...values)) {
-        colorIndex = 0;
+      if (percentage === 1) {
+        colorIndex = 2; // Orange untuk nilai tertinggi
+      } else if (percentage === 0) {
+        colorIndex = 0; // Brown untuk nilai terendah
       } else {
-        colorIndex = 1;
+        colorIndex = 1; // Teal untuk nilai di tengah
       }
       colorScheme[key] = colors[colorIndex];
     });
@@ -363,7 +367,7 @@ function Dashboard() {
         });
         setSelectedStatus(status);
       }
-      setValidatedSkpiData(response.data.data.skpi.filter((skpi) => skpi.owner.major)); // Filter data yang memiliki jurusan
+      setValidatedSkpiData(response.data.data.skpi.filter((skpi) => skpi.owner.faculty)); // Filter data yang memiliki jurusan
     } catch (error) {
       setError(error.message);
     }
@@ -378,7 +382,7 @@ function Dashboard() {
       <h1 className="font-semibold text-gray-700 font-poppins">Dashboard</h1>
       <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow bg-slate-50">
         <div className="grid grid-cols-1 gap-4 mb-6 info-box-container md:grid-cols-3">
-          <div className="p-4 text-gray-800 transition-transform transform border border-blue-300 rounded-lg shadow-md bg-gradient-to-r from-blue-100 to-blue-200 info-box hover:scale-105">
+          <div className="p-4 text-gray-800 transition-transform transform border border-blue-300 rounded-lg shadow-md bg-gradient-to-r from-indigo-200 to-indigo-300 info-box hover:scale-105">
             <div className="flex items-center">
               <FaCheckCircle className="mr-4 text-[27px] text-indigo-500" />
               <div className="py-4">

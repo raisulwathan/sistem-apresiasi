@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { getToken } from "../../../../utils/Config";
 import SignatureCanvas from "react-signature-canvas";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 function Skpi() {
   const [skpiData, setSkpiData] = useState([]);
@@ -14,6 +15,14 @@ function Skpi() {
   const [signatureImage, setSignatureImage] = useState("");
   const signatureRef = useRef(null);
   const [ttdExist, setTtdExist] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessMessageAll, setShowSuccessMessageAll] = useState(false);
+  const [showErrorMessageAll, setShowErrorMessageAll] = useState(false);
+  const [errorMessageAll, setErrorMessageAll] = useState("");
+  const [showDetailConfirmation, setShowDetailConfirmation] = useState(false);
+  const [currentPageUnvalidate, setCurrentPageUnvalidate] = useState(1);
+  const [currentPageValidated, setCurrentPageValidated] = useState(1);
+  const [itemsPerPage] = useState(4);
 
   const handleGetSkpi = async () => {
     try {
@@ -96,31 +105,60 @@ function Skpi() {
       handleGetSkpi();
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleValidate = async () => {
     setShowConfirmation(false);
+    setIsLoading(true);
     try {
       handleSaveSignature();
       await handleUpload();
       await handleValidation(detailKegiatan.id);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleValidateAll = async () => {
-    setShowConfirmation(false);
     try {
-      for (let i = 0; i < unvalidateSkpi.length; i++) {
-        const skpi = unvalidateSkpi[i];
-        handleSaveSignature();
-        await handleUpload();
-        await handleValidation(skpi.id);
-      }
+      setShowConfirmation(true);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error:", error.response ? error.response.data : error.message);
+    }
+  };
+
+  const handleValidateAllConfirmed = async () => {
+    setShowConfirmation(false);
+    setIsLoading(true);
+
+    try {
+      await Promise.all(
+        unvalidateSkpi.map(async (skpi) => {
+          handleSaveSignature();
+          await handleUpload();
+          await handleValidation(skpi.id);
+        })
+      );
+
+      setShowSuccessMessageAll(true);
+      setTimeout(() => {
+        setShowSuccessMessageAll(false);
+      }, 2000);
+    } catch (error) {
+      setShowErrorMessageAll(true);
+      setErrorMessageAll(error.message);
+
+      setTimeout(() => {
+        setShowErrorMessageAll(false);
+      }, 2000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,85 +179,122 @@ function Skpi() {
   const unvalidateSkpi = skpiData.filter((skpi) => skpi.status === "accepted by ADMIN");
   const validatedSkpi = skpiData.filter((skpi) => skpi.status === "completed");
 
+  const indexOfLastItemUnvalidate = currentPageUnvalidate * itemsPerPage;
+  const indexOfFirstItemUnvalidate = indexOfLastItemUnvalidate - itemsPerPage;
+  const currentUnvalidateSkpi = unvalidateSkpi.slice(indexOfFirstItemUnvalidate, indexOfLastItemUnvalidate);
+
+  const indexOfLastItemValidated = currentPageValidated * itemsPerPage;
+  const indexOfFirstItemValidated = indexOfLastItemValidated - itemsPerPage;
+  const currentValidatedSkpi = validatedSkpi.slice(indexOfFirstItemValidated, indexOfLastItemValidated);
+
+  const paginateUnvalidate = (pageNumber) => setCurrentPageUnvalidate(pageNumber);
+
+  const paginateValidated = (pageNumber) => setCurrentPageValidated(pageNumber);
+
   return (
-    <div className="h-screen pt-3 overflow-y-auto">
-      <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
-        {!ttdExist && (
-          <>
-            <div className="mt-4">
-              <SignatureCanvas ref={signatureRef} canvasProps={{ width: 500, height: 200, className: "signature-canvas" }} />
-            </div>
-            <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleSaveSignature}>
-              Simpan Tanda Tangan
-            </button>
-            <button className="px-2 py-4 mt-4 text-white rounded-lg bg-primary" onClick={handleUpload}>
-              Kirim Tanda Tangan
-            </button>
-          </>
-        )}
-
-        <button className="px-2 py-4 mt-4 ml-4 text-white rounded-lg bg-secondary" onClick={handleValidateAll}>
-          Validasi Semua
-        </button>
-
-        {error ? (
-          <p>Terjadi kesalahan: {error}</p>
-        ) : (
-          <div>
-            <h2 className="mt-8">Belum Diterima</h2>
-            <table className="w-full">
+    <div className="pt-3 overflow-y-auto ">
+      <h2 className="ml-4 font-semibold text-gray-700 font-poppins lg:ml-0">SKPI</h2>
+      <div className="h-screen overflow-y-auto p-7 lg:p-10 bg-slate-50 lg:h-screen mt-9 shadow-boxShadow">
+        <div className="border w-auto shadow-lg p-[27px] ">
+          {!ttdExist && (
+            <>
+              <div className="mt-4">
+                <SignatureCanvas ref={signatureRef} canvasProps={{ width: 500, height: 200, className: "signature-canvas border " }} />
+              </div>
+              <button className="px-4 py-2 mt-4 text-white border rounded-lg border-amber-500" onClick={handleSaveSignature}>
+                Simpan Tanda Tangan
+              </button>
+              <button className="px-4 py-2 mt-4 text-white border rounded-lg border-amber-500" onClick={handleUpload}>
+                Kirim Tanda Tangan
+              </button>
+            </>
+          )}
+          <button className="px-3 py-1 text-[14px] rounded-md border border-amber-500 hover:bg-amber-700 hover:text-white cursor-pointer" onClick={handleValidateAll}>
+            Validasi Semua
+          </button>
+          <div className="p-5 mt-4 sm:overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead>
-                <tr className="border-b-2 border-secondary">
-                  <th className="px-4 py-2 text-left">Nama</th>
-                  <th className="px-4 py-2 text-left">NPM</th>
-                  <th className="px-4 py-2 text-left">Fakultas</th>
-                  <th className="px-4 py-2 text-left">Detail</th>
+                <tr>
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50">Nama</th>
+                  <th className="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 sm:table-cell">NPM</th>
+                  <th className="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 sm:table-cell">Fakultas</th>
+                  <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {unvalidateSkpi.map((item, index) => (
-                  <tr key={index} className="">
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.name}</td>
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.npm}</td>
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.faculty}</td>
-                    <td className="py-2">
-                      <button onClick={() => handleLihatDetail(item.id)} className="text-secondary hover:underline focus:outline-none">
+                {currentUnvalidateSkpi.map((item, index) => (
+                  <tr key={index} className="bg-white divide-y divide-gray-200">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">{item.owner.name}</div>
+                    </td>
+                    <td className="hidden px-6 py-4 whitespace-nowrap sm:table-cell">
+                      <div className="text-sm text-gray-900">{item.owner.npm}</div>
+                    </td>
+                    <td className="hidden px-6 py-4 whitespace-nowrap sm:table-cell">
+                      <div className="text-sm text-gray-900">{item.owner.faculty}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm font-medium text-left whitespace-nowrap">
+                      <button onClick={() => handleLihatDetail(item.id)} className="text-amber-500 hover:text-amber-700 hover:underline focus:outline-none">
                         Detail
                       </button>
                     </td>
                   </tr>
                 ))}
-                {unvalidateSkpi.length === 0 && (
-                  <tr>
-                    <td colSpan="4" className="px-4 py-2 text-center">
+                {currentUnvalidateSkpi.length === 0 && (
+                  <tr className="bg-white divide-y divide-gray-200">
+                    <td className="px-6 py-4 text-sm text-center whitespace-nowrap" colSpan="4">
                       Data tidak tersedia.
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
-
-            <h2 className="mt-8">Sudah Diterima</h2>
-            <table className="w-full">
+          </div>
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => paginateUnvalidate(currentPageUnvalidate - 1)}
+              className={`px-4 py-1 text-sm mr-1 rounded-lg ${currentPageUnvalidate === 1 ? "bg-gray-100 border border-amber-500 cursor-not-allowed" : "bg-amber-500 hover:bg-amber-700 text-white"}`}
+              disabled={currentPageUnvalidate === 1}
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => paginateUnvalidate(currentPageUnvalidate + 1)}
+              className={`px-4 py-1 ml-1 text-sm rounded-lg ${currentUnvalidateSkpi.length < itemsPerPage ? "bg-gray-100 border border-amber-500 cursor-not-allowed" : "bg-amber-500 hover:bg-amber-700 text-white"}`}
+              disabled={currentUnvalidateSkpi.length < itemsPerPage}
+            >
+              Next
+            </button>
+          </div>
+          <h2 className="mb-5 text-base font-medium text-gray-800 mt-11">Diterima</h2>
+          <div className="mt-4 lg:p-5 sm:overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead>
-                <tr className="border-b-2 border-secondary">
-                  <th className="px-4 py-2 text-left">Nama</th>
-                  <th className="px-4 py-2 text-left">NPM</th>
-                  <th className="px-4 py-2 text-left">Fakultas</th>
+                <tr className="bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Nama</th>
+                  <th className="hidden px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase sm:table-cell">NPM</th>
+                  <th className="hidden px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase sm:table-cell">Fakultas</th>
                 </tr>
               </thead>
-              <tbody>
-                {validatedSkpi.map((item, index) => (
-                  <tr key={index} className="">
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.name}</td>
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.npm}</td>
-                    <td className="px-4 py-2 border-b-2 border-gray-300">{item.owner.faculty}</td>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {currentValidatedSkpi.map((item, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <p className="text-sm font-medium text-gray-700">{item.owner.name}</p>
+                      <p className="mt-1 text-xs text-gray-500 sm:hidden">{item.owner.npm}</p>
+                    </td>
+                    <td className="hidden px-6 py-4 whitespace-nowrap sm:table-cell">
+                      <p className="text-sm text-gray-700">{item.owner.npm}</p>
+                    </td>
+                    <td className="hidden px-6 py-4 whitespace-nowrap sm:table-cell">
+                      <p className="text-sm text-gray-700">{item.owner.faculty}</p>
+                    </td>
                   </tr>
                 ))}
-                {validatedSkpi.length === 0 && (
+                {currentValidatedSkpi.length === 0 && (
                   <tr>
-                    <td colSpan="3" className="px-4 py-2 text-center">
+                    <td className="px-6 py-4 text-sm text-center whitespace-nowrap" colSpan="3">
                       Data tidak tersedia.
                     </td>
                   </tr>
@@ -227,60 +302,147 @@ function Skpi() {
               </tbody>
             </table>
           </div>
-        )}
+          <div className="flex justify-center mt-10 mb-24 ">
+            <button
+              onClick={() => paginateValidated(currentPageValidated - 1)}
+              className={`px-4 py-1 mr-1 text-sm rounded-lg ${currentPageValidated === 1 ? "bg-gray-100 border border-amber-500 cursor-not-allowed" : "bg-amber-500 hover:bg-amber-700 text-white"}`}
+              disabled={currentPageValidated === 1}
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => paginateValidated(currentPageValidated + 1)}
+              className={`px-4 py-1 ml-1 text-sm rounded-lg ${currentValidatedSkpi.length < itemsPerPage ? "bg-gray-100 border border-amber-500 cursor-not-allowed" : "bg-amber-500 hover:bg-amber-700 text-white"}`}
+              disabled={currentValidatedSkpi.length < itemsPerPage}
+            >
+              Next
+            </button>
+          </div>
+        </div>
 
         {showDetail && (
-          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "50vw" }}>
-              <h3 className="underline">Detail Kegiatan</h3>
-              <div className="p-5">
-                <p>Mandatory Points: {detailKegiatan.mandatoryPoints}</p>
-                <p>Charity Points: {detailKegiatan.charityPoints}</p>
-                <p>Scientific Points: {detailKegiatan.scientificPoints}</p>
-                <p>Talent Points: {detailKegiatan.talentPoints}</p>
-                <p>Organization Points: {detailKegiatan.organizationPoints}</p>
-                <p>Other Points: {detailKegiatan.otherPoints}</p>
-                <p>Status: {detailKegiatan.status}</p>
-
-                <p className="mt-4">Mahasiswa:</p>
-                <div className="pl-6">
-                  <p>Nama: {detailKegiatan.owner.name}</p>
-                  <p>NPM: {detailKegiatan.owner.npm}</p>
-                  <p>Fakultas: {detailKegiatan.owner.faculty}</p>
-                </div>
+          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50">
+            <div className="relative w-full max-w-md p-8 mx-auto bg-white rounded-lg shadow-lg">
+              <button
+                className="absolute text-2xl text-gray-600 top-3 right-3 hover:text-gray-900"
+                onClick={() => {
+                  setShowDetail(false);
+                  setDetailKegiatan({});
+                }}
+              >
+                <IoMdCloseCircleOutline />
+              </button>
+              <h2 className="mb-4 text-lg font-medium text-gray-700">Detail Kegiatan</h2>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Nama:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.owner.name}</p>
               </div>
 
-              <button onClick={() => setShowDetail(false)} className="absolute text-gray-700 top-2 right-2 hover:text-gray-900">
-                <span className="sr-only">Close</span>
-                &#215;
-              </button>
-              <button className="px-2 py-3 mt-4 rounded-lg bg-secondary" onClick={() => setShowConfirmation(true)}>
-                Validasi
-              </button>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Jurusan:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.owner.major}</p>
+              </div>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">NPM:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.owner.npm}</p>
+              </div>
+
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Point Mandatory:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.mandatoryPoints}</p>
+              </div>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Point Scientific:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.scientificPoints}</p>
+              </div>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Point Organization:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.organizationPoints}</p>
+              </div>
+              <div className="mb-2">
+                <p className="text-sm font-medium text-gray-600">Point Other:</p>
+                <p className="text-sm text-gray-800">{detailKegiatan.otherPoints}</p>
+              </div>
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => {
+                    setShowDetailConfirmation(true);
+                    setShowDetail(false);
+                  }}
+                  className={`px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-700 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "" : "Validasi"}
+                </button>
+              </div>
             </div>
           </div>
         )}
-
         {showConfirmation && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "30vw" }}>
-              <p>Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
-              <div className="p-3 mx-auto">
-                <button className="px-4 py-2 rounded-lg bg-secondary" onClick={handleValidate}>
-                  Ya
+            <div className="relative w-3/4 p-8 mx-auto bg-white rounded-lg shadow-lg sm:w-96">
+              <h2 className="mb-4 text-lg font-medium text-gray-700">Konfirmasi Validasi Semua</h2>
+              <p className="mb-4 text-sm text-gray-600">Apakah Anda yakin ingin memvalidasi semua kegiatan?</p>
+              <div className="flex justify-center space-x-4">
+                <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400">
+                  Batal
                 </button>
-                <button className="px-4 py-2 ml-4 bg-red-600 rounded-lg" onClick={() => setShowConfirmation(false)}>
-                  Tidak
+                <button onClick={handleValidateAllConfirmed} className="px-4 py-2 text-sm font-medium text-white rounded-lg bg-amber-500 hover:bg-amber-700">
+                  Ya
                 </button>
               </div>
             </div>
           </div>
         )}
-
+        {showDetailConfirmation && (
+          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="relative w-3/4 p-8 mx-auto bg-white rounded-lg shadow-lg sm:w-96">
+              <h2 className="mb-4 text-lg font-medium text-gray-700">Konfirmasi Validasi</h2>
+              <p className="mb-4 text-sm text-gray-600">Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
+              <div className="flex justify-center space-x-4">
+                <button onClick={() => setShowDetailConfirmation(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 rounded-lg hover:bg-gray-400">
+                  Batal
+                </button>
+                <button
+                  onClick={() => {
+                    handleValidate(detailKegiatan.id);
+                    setShowDetailConfirmation(false);
+                    setDetailKegiatan({});
+                  }}
+                  className="px-4 py-2 text-sm font-medium text-white rounded-lg bg-amber-500 hover:bg-amber-700"
+                >
+                  Ya
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {showSuccessMessage && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "30vw" }}>
-              <p>Kegiatan berhasil divalidasi!</p>
+            <div className="relative w-3/4 p-8 mx-auto bg-white rounded-lg shadow-lg sm:w-96">
+              <p className="text-sm text-center text-gray-600">Validasi berhasil!</p>
+            </div>
+          </div>
+        )}
+        {showSuccessMessageAll && (
+          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="relative w-3/4 p-8 mx-auto bg-white rounded-lg shadow-lg sm:w-96">
+              <p className="text-sm text-center text-gray-600">Validasi semua berhasil!</p>
+            </div>
+          </div>
+        )}
+        {showErrorMessageAll && (
+          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+            <div className="relative w-3/4 p-8 mx-auto bg-white rounded-lg shadow-lg sm:w-96">
+              <p className="text-sm text-center text-red-600">{errorMessageAll}</p>
+            </div>
+          </div>
+        )}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="p-8 text-center bg-white rounded-lg">
+              <p>Loading...</p>
+              <div className="loader"></div>
             </div>
           </div>
         )}
