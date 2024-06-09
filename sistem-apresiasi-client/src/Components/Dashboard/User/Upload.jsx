@@ -174,7 +174,7 @@ const Upload = () => {
     <div className="max-h-[887px] h-[878px] overflow-auto my-2 mr-[3px] lg:my-0 lg:mr-0 lg:mt-6 bg-white lg:p-14 lg:pb-3 lg:w-[98.5%] rounded-lg ">
       <h2 className="mb-6 lg:text-[37px] text-[25px] font-medium text-gray-800  p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Upload Kegiatan</h2>
       <div className="border bg-slate-300 rounded-md mt-10 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
-      <div className="ml-8 lg:ml-0">
+      <div className="h-screen ml-8 lg:ml-0">
         <div className=" mt-11 lg:mt-20 lg:flex">
           <label className="block text-lg font-poppins" htmlFor="category">
             Kategori :

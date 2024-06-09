@@ -42,88 +42,90 @@ const Profile = () => {
 
   return (
     <div className="lg:flex max-h-[887px] h-[878px] overflow-auto my-3 mr-[4px] lg:mr-0 lg:my-0  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
-      <div className="lg:w-1/2">
-        <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Profil</h2>
+      <div className="flex h-screen gap-[120px] justify-evenly">
+        <div className="">
+          <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Profil</h2>
 
-        <div className="border bg-slate-300 rounded-md mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
+          <div className="border bg-slate-300 rounded-md mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
 
-        <div className="ml-8 mt-9">
-          <div className="px-3  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
-            <div className="mr-4 ">
-              <img src="./src/assets/List.png" alt="Logo" className="w-[48px] h-auto" />
+          <div className="ml-8 mt-9">
+            <div className="px-3  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
+              <div className="mr-4 ">
+                <img src="./src/assets/List.png" alt="Logo" className="w-[48px] h-auto" />
+              </div>
+              <div>
+                <h3 className="mb-1 font-semibold ">Nama</h3>
+                <p className="text-gray-400 ">{data.name}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="mb-1 font-semibold ">Nama</h3>
-              <p className="text-gray-400 ">{data.name}</p>
-            </div>
-          </div>
 
-          <div className="px-3 rounded-lg w-[270px] lg:w-[300px] flex">
-            <div className="mr-4 ">
-              <img src="./src/assets/npmm.png" alt="Logo" className="w-[48px] h-auto" />
+            <div className="px-3 rounded-lg w-[270px] lg:w-[300px] flex">
+              <div className="mr-4 ">
+                <img src="./src/assets/npmm.png" alt="Logo" className="w-[48px] h-auto" />
+              </div>
+              <div>
+                <h3 className="mb-1 font-semibold ">Npm</h3>
+                <p className="text-gray-400">{data.npm}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="mb-1 font-semibold ">Npm</h3>
-              <p className="text-gray-400">{data.npm}</p>
-            </div>
-          </div>
 
-          <div className="border bg-slate-300 rounded-md mt-20 w-[250px]  h-1 lg:w-[600px]"></div>
+            <div className="border bg-slate-300 rounded-md mt-20 w-[250px]  h-1 lg:w-[600px]"></div>
 
-          <div className="px-3 mt-9  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
-            <div className="mr-4 ">
-              <img src="./src/assets/fakultas.png" alt="Logo" className="w-[48px] h-auto" />
+            <div className="px-3 mt-9  mb-4 w-[270px] rounded-lg lg:w-[300px] flex">
+              <div className="mr-4 ">
+                <img src="./src/assets/fakultas.png" alt="Logo" className="w-[48px] h-auto" />
+              </div>
+              <div>
+                <h3 className="mb-1 font-semibold ">Fakultas</h3>
+                <p className="text-gray-400 ">{data.faculty}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="mb-1 font-semibold ">Fakultas</h3>
-              <p className="text-gray-400 ">{data.faculty}</p>
-            </div>
-          </div>
 
-          <div className="px-3  w-[270px] rounded-lg lg:w-[300px] flex">
-            <div className="mr-4 ">
-              <img src="./src/assets/prodi.png" alt="Logo" className="w-[48px] h-auto" />
-            </div>
-            <div>
-              <h3 className="mb-1 font-semibold ">Prodi</h3>
-              <p className="text-gray-400">{data.major}</p>
+            <div className="px-3  w-[270px] rounded-lg lg:w-[300px] flex">
+              <div className="mr-4 ">
+                <img src="./src/assets/prodi.png" alt="Logo" className="w-[48px] h-auto" />
+              </div>
+              <div>
+                <h3 className="mb-1 font-semibold ">Prodi</h3>
+                <p className="text-gray-400">{data.major}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex justify-center mx-2 mt-24 lg:mt-0 lg:justify-end lg:w-1/2 ">
-        <table className="mt-6 overflow-hidden bg-gray-200 rounded-xl font-poppins">
-          <tbody className="">
-            <tr>
-              <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
-              <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
-              <td className="px-6 py-4">{skpi.organizationPoints}</td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
-              <td className="px-6 py-4">{skpi.scientificPoints}</td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-base">Minat dan Bakat</td>
-              <td className="px-6 py-4">{skpi.talentPoints}</td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
-              <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
-              <td className="px-6 py-4">{skpi.otherPoints}</td>
-            </tr>
-          </tbody>
-          <div className="mt-20 ml-16 text-[14px] ">
-            <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
-          </div>
-        </table>
+        <div className="mx-6 mt-24 lg:mt-12 ">
+          <table className="mt-6 overflow-hidden bg-gray-200 rounded-xl font-poppins">
+            <tbody className="">
+              <tr>
+                <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
+                <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
+                <td className="px-6 py-4">{skpi.organizationPoints}</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
+                <td className="px-6 py-4">{skpi.scientificPoints}</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 text-base">Minat dan Bakat</td>
+                <td className="px-6 py-4">{skpi.talentPoints}</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
+                <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
+                <td className="px-6 py-4">{skpi.otherPoints}</td>
+              </tr>
+            </tbody>
+            <div className="mt-20 ml-16 text-[14px] ">
+              <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
+            </div>
+          </table>
+        </div>
       </div>
     </div>
   );
