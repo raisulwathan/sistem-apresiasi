@@ -93,7 +93,7 @@ export async function login(npm, password) {
     if (!user) {
         const mhsUsk = await getUserFromWebService(npm)
 
-        const newHashedPassword = await bcrypt.hash("test123", 12)
+        const newHashedPassword = await bcrypt.hash("test1234", 12)
 
         const newUser = await prisma.user.create({
             data: {
