@@ -43,10 +43,7 @@ export async function create({
 
     await MailHelper.pushEmailNotificationFaculty(owner, "OPERATOR")
 
-    return {
-        skpiId: newSkpi.id,
-        ownerId: newSkpi.ownerId,
-    }
+    return newSkpi
 }
 
 export async function getAll() {
