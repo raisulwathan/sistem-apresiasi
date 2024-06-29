@@ -17,10 +17,11 @@ const SideBarWd3 = () => {
   const [username, setUsername] = useState("");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("Dashboard");
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleMenuClick = (menu) => {
+    setActiveMenu(menu);
+    setSelectedMenu(menu);
   };
 
   useEffect(() => {
@@ -62,52 +63,61 @@ const SideBarWd3 = () => {
     }
   };
 
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case "Dashboard":
+        return <Dashboard />;
+      case "Skpi":
+        return <Skpi />;
+      case "Kegiatan Mahasiswa":
+        return <KegiatanMahasiswa />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="flex bg-white font-poppins">
-      <div className={`lg:p-8 lg:w-[285px] pt-11 relative`}>
+    <div className="flex h-screen w-full  bg-[#313347] font-poppins">
+      <div className="flex flex-col p-7  bg-[#313347]">
         <div className="flex items-center mb-6 gap-x-4">
-          <img src="./src/assets/logousk.png" className="w-[60px] h-[60px] cursor-pointer hidden lg:block" alt="Logo" />
-          <h1 className="hidden text-xl font-medium text-black duration-200 origin-left lg:block">APRESIASI</h1>
+          <img src="./src/assets/logousk.png" className="hidden w-12 h-12 cursor-pointer lg:block" alt="Logo" />
+          <h1 className="hidden font-medium text-slate-300  text-[18px] font-poppins duration-200 origin-left lg:block">APRESIASI</h1>
           <button onClick={toggleMobileSidebar} className="pl-5 lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-black cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           </button>
         </div>
-        <ul className="pt-10 pl-5 lg:pl-0 lg:block">
-          <li onClick={() => setSelectedMenu("Dashboard")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Dashboard" ? " text-amber-500 " : ""}`}>
-            <RxDashboard size={27} />
-            <span className={`${isMobileSidebarOpen ? "block" : "hidden"} hidden  md:block text-[15px]}`}>Dashboard</span>
+        <hr className="border-t border-gray-600 mb-7"></hr>
+        <ul className="flex-1 pt-10 lg:block">
+          <li onClick={() => handleMenuClick("Dashboard")} className={`flex text-slate-300 py-2 px-1 rounded-lg items-center gap-3 cursor-pointer mb-7 ${activeMenu === "Dashboard" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+            <RxDashboard size={25} />
+            <span className="hidden text-sm md:block">Dashboard</span>
           </li>
-          <li onClick={() => setSelectedMenu("Kegiatan Mahasiswa")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "Kegiatan Mahasiswa" ? " text-amber-500 " : ""}`}>
-            <GoFile size={27} />
-            <span className="hidden  md:block text-[15px]">Kegiatan Mahasiswa</span>
-          </li>
-          <li onClick={() => setSelectedMenu("SKPI")} className={`cursor-pointer mb-7 flex gap-3 items-center ${selectedMenu === "SKPI" ? " text-amber-500 " : ""}`}>
-            <GoFileSymlinkFile size={27} />
-            <span className="hidden  md:block text-[15px]">SKPI</span>
-          </li>
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <>
+              <li
+                onClick={() => handleMenuClick("Kegiatan Mahasiswa")}
+                className={`flex text-slate-300 items-center gap-3 py-2 px-1 rounded-lg cursor-pointer mb-7 ${activeMenu === "Kegiatan Mahasiswa" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}
+              >
+                <GoFile size={25} />
+                <span className="hidden text-sm md:block">Kegiatan Mahasiswa</span>
+              </li>
+              <li onClick={() => handleMenuClick("Skpi")} className={`flex items-center py-2 px-1 rounded-lg text-slate-300 gap-3 cursor-pointer mb-7 ${activeMenu === "Skpi" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+                <GoFileSymlinkFile size={25} />
+                <span className="hidden text-sm md:block">SKPI</span>
+              </li>
+            </>
+          )}
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <li onClick={handleLogout} className="flex items-center hover:bg-[#0F6292] gap-3 px-1 py-2 rounded-lg cursor-pointer text-slate-300 mb-7">
+              <IoIosLogOut size={25} />
+              <span className="hidden text-sm text-slate-300 md:block">Log Out</span>
+            </li>
+          )}
         </ul>
-
-        <div className="hidden lg:block">
-          <li className="relative mx-1 hover:text-amber-500 mt-[380px] rounded-lg" onClick={toggleDropdown}>
-            <div className="flex items-center cursor-pointer">
-              <LuUsers size={27} />
-              <span className={`pl-4 pt-2 duration-400`}>{username}</span>
-            </div>
-
-            {isDropdownOpen && (
-              <ul className={`absolute left-0 mt-2 bg-white border w-40 border-slate-700 rounded-lg z-10`}>
-                <li className="cursor-pointer" onClick={handleLogout}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-amber-500">
-                    <IoIosLogOut size={27} color="gray" />
-                    <h1 className="text-gray-700 lg:pl-3">Log Out</h1>
-                  </div>
-                </li>
-              </ul>
-            )}
-          </li>
-        </div>
       </div>
 
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border border-secondary overflow-y-auto transform transition-transform lg:hidden ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
@@ -152,12 +162,7 @@ const SideBarWd3 = () => {
           </button>
         </div>
       </div>
-
-      <div className="h-screen p-8 text-lg lg:flex-1">
-        {selectedMenu === "Dashboard" && <Dashboard />}
-        {selectedMenu === "Kegiatan Mahasiswa" && <KegiatanMahasiswa />}
-        {selectedMenu === "SKPI" && <Skpi />}
-      </div>
+      <div className="flex-1 text-base ">{renderContent()}</div>
     </div>
   );
 };

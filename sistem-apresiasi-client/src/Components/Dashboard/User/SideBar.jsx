@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { PiUserDuotone } from "react-icons/pi";
 import Profile from "./Profile";
 import Upload from "./Upload";
 import Transkrip from "./Transkrip";
@@ -7,29 +6,45 @@ import History from "./History";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getToken, getUserId } from "../../../utils/Config";
-import { FaUser, FaUpload, FaClipboard, FaHistory } from "react-icons/fa";
-import { TbHistory } from "react-icons/tb";
-import { FiUserCheck } from "react-icons/fi";
-import { TbHistoryToggle } from "react-icons/tb";
-import { SlDocs } from "react-icons/sl";
-import { HiOutlineDocumentArrowDown } from "react-icons/hi2";
+import { RiUserLocationLine } from "react-icons/ri";
+import { SlCloudUpload } from "react-icons/sl";
+import { GrDocumentTime } from "react-icons/gr";
+import { TbHistory, TbScanPosition } from "react-icons/tb";
+import { IoIosLogOut } from "react-icons/io";
+import { FaUserGraduate } from "react-icons/fa6";
 
 const SideBar = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [npm, setNpm] = useState("");
   const navigate = useNavigate();
+  const [activeMenu, setActiveMenu] = useState("Profile");
+  const [selectedMenu, setSelectedMenu] = useState("Profile");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  const Menus = [
-    { title: "Profile", src: "Profile", content: <Profile />, icon: <FiUserCheck size={30} /> },
-    { title: "Upload Kegiatan", src: "Upload", content: <Upload />, icon: <HiOutlineDocumentArrowDown size={30} /> },
-    { title: "Transkrip SKPI", src: "Transkrip", content: <Transkrip />, icon: <SlDocs size={27} /> },
-    { title: "Riwayat", src: "History", content: <History />, icon: <TbHistoryToggle size={30} /> },
-  ];
+  const handleMenuClick = (menu) => {
+    setActiveMenu(menu);
+    setSelectedMenu(menu);
+  };
 
-  const [selectedMenu, setSelectedMenu] = useState(Menus[0]);
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case "Profile":
+        return <Profile />;
+      case "Upload":
+        return <Upload />;
+      case "Transkrip":
+        return <Transkrip />;
+      case "History":
+        return <History />;
+      default:
+        return null;
+    }
+  };
+
+  const toggleMobileSidebar = () => {
+    setIsMobileSidebarOpen(!isMobileSidebarOpen);
+  };
 
   useEffect(() => {
     const token = getToken();
@@ -61,36 +76,67 @@ const SideBar = () => {
     fetchDataUser();
   }, []);
 
-  const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/login");
   };
 
-  const toggleUserDropdown = () => {
-    setUserDropdownOpen(!userDropdownOpen);
-  };
-
-  const handleResize = () => {
-    setSidebarOpen(window.innerWidth > 768);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   return (
-    <div className="flex w-full h-screen bg-black">
-      <div className={`fixed inset-y-0 left-0 z-50 w-[400px] bg-white shadow-xl border border-black overflow-y-auto transform transition-transform lg:hidden ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+    <div className="flex w-full h-screen bg-[#0f172a]">
+      <div className="flex flex-col p-7 bg-[#0f172a] ">
+        <div className="flex items-center mb-6 gap-x-4">
+          <img src="./src/assets/logoApresiasi.png" className="hidden w-8 h-8 cursor-pointer lg:block" alt="Logo" />
+          <h1 className="hidden font-medium text-slate-300  text-[18px] font-poppins duration-200 origin-left lg:block">APRESIASI</h1>
+          <button onClick={toggleMobileSidebar} className="pl-5 lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-gray-300 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+        <hr className="border-t border-gray-600 mb-7"></hr>
+        <div className=" text-center p-3 hidden lg:block rounded-lg opacity-60 bg-[#1A4057] ">
+          <h1 className="text-lg font-medium text-slate-300">{username}</h1>
+          <p className="text-sm text-slate-300">{npm}</p>
+        </div>
+        <ul className="flex-1 pt-10 lg:block">
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <>
+              <li onClick={() => handleMenuClick("Profile")} className={`flex text-gray-300 py-3 px-1 rounded-md items-center gap-3 cursor-pointer mb-7 ${activeMenu === "Profile" ? "bg-[#1A4057] text-[#77b5c5] " : " hover:bg-[#1A4057]"}`}>
+                <RiUserLocationLine size={24} />
+                <span className="hidden text-sm md:block">Profil</span>
+              </li>
+              <li onClick={() => handleMenuClick("Upload")} className={`flex items-center py-3 px-1 rounded-md text-gray-300 gap-3 cursor-pointer mb-7 ${activeMenu === "Upload" ? "bg-[#1A4057] text-[#77b5c5] " : " hover:bg-[#1A4057]"}`}>
+                <SlCloudUpload size={24} />
+                <span className="hidden text-sm md:block">Upload Kegiatan </span>
+              </li>
+              <li
+                onClick={() => handleMenuClick("Transkrip")}
+                className={`flex items-center py-3 px-1 rounded-md text-gray-300 gap-3 cursor-pointer mb-7 ${activeMenu === "Transkrip" ? "bg-[#1A4057] text-[#77b5c5]" : " hover:bg-[#1A4057]"}`}
+              >
+                <GrDocumentTime size={24} />
+                <span className="hidden text-sm md:block">Transkrip Mahasiswa </span>
+              </li>
+              <li onClick={() => handleMenuClick("History")} className={`flex items-center py-3 px-1 rounded-md text-gray-300 gap-3 cursor-pointer mb-7 ${activeMenu === "History" ? "bg-[#1A4057] text-[#77b5c5]" : " hover:bg-[#1A4057]"}`}>
+                <TbHistory size={24} />
+                <span className="hidden text-sm md:block">Riwayat Kegiatan</span>
+              </li>
+            </>
+          )}
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <li onClick={handleLogout} className="flex items-center hover:bg-[#1A4057] gap-3 px-1 py-3 rounded-md cursor-pointer text-gray-300 mb-7">
+              <IoIosLogOut size={24} />
+              <span className="hidden text-sm text-slate-300 md:block">Log Out</span>
+            </li>
+          )}
+        </ul>
+      </div>
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0f172a] shadow-xl  overflow-y-auto transform transition-transform lg:hidden ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {/* Konten Sidebar Mobile */}
         <div className="p-4">
-          <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-black hover:text-red-600 focus:outline-none">
+          <button onClick={toggleMobileSidebar} className="text-secondary hover:text-gray-900 focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
@@ -100,71 +146,36 @@ const SideBar = () => {
             </svg>
           </button>
         </div>
-        <div className="p-4">
+        <div className={`${isMobileSidebarOpen ? "block" : "hidden"} p-4`}>
           <ul>
-            {Menus.map((menu, index) => (
-              <li key={index} className="mb-4 ">
-                <button onClick={() => handleMenuClick(menu)} className={`text-gray-900 flex font-medium hover:text-secondary focus:outline-none ${selectedMenu === menu ? "text-secondary" : ""}`}>
-                  {menu.title}
-                </button>
-              </li>
-            ))}
+            <li className="mb-4 ">
+              <button onClick={() => setSelectedMenu("Upload")} className={`text-gray-300 flex font-medium hover:bg-[#1A4057] focus:outline-none ${selectedMenu === "Upload" ? "text-gray-300" : ""}`}>
+                <SlCloudUpload size={24} />
+                <h4 className="mt-1 ml-2 text-gray-300">Upload Kegiatan</h4>
+              </button>
+            </li>
+            <li className="mb-4 ">
+              <button onClick={() => setSelectedMenu("Transkrip")} className={`text-gray-300 flex font-medium hover:bg-[#1A4057] focus:outline-none ${selectedMenu === "Transkrip" ? "text-gray-300" : ""}`}>
+                <GrDocumentTime size={24} />
+                <h4 className="mt-1 ml-2 ">Transkrip</h4>
+              </button>
+            </li>
+            <li className="mt-8 mb-4 ">
+              <button onClick={() => setSelectedMenu("History")} className={`text-gray-300 flex font-medium hover:bg-[#1A4057] focus:outline-none ${selectedMenu === "History" ? "text-gray-300" : ""}`}>
+                <TbHistory size={24} />
+                <p className="mt-1 ml-2">Riwayat</p>
+              </button>
+            </li>
           </ul>
         </div>
-        <div className="absolute bottom-0 w-full">
-          <button onClick={handleLogout} className="block w-full py-2 font-bold text-center text-white bg-slate-800 hover:bg-gray-300 focus:outline-none">
+
+        <div className={`${isMobileSidebarOpen ? "block" : "hidden"} absolute bottom-0 w-full`}>
+          <button onClick={handleLogout} className="block w-full py-2 font-bold text-center text-gray-900 bg-secondary hover:bg-gray-300 focus:outline-none">
             Log Out
           </button>
         </div>
       </div>
-      {!isSidebarOpen && (
-        <button onClick={() => setSidebarOpen(true)} className="fixed p-2 text-white rounded-full left-2 lg:hidden top-10 focus:outline-none">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-white cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
-        </button>
-      )}
-      <div className={`lg:flex lg:flex-col w-auto p-4  lg:w-80 lg:m-4 lg:rounded-lg lg:p-8 lg:pt-8 lg:relative lg:duration-300 ${!isSidebarOpen && ""}`}>
-        <ul className="lg:pt-6">
-          <li className="relative hidden py-2 mx-1 mt-20 mb-24 text-white rounded-lg lg:block hover:bg-dimBlue">
-            <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-              <div className={`flex flex-col items-start pt-2 duration-400`}>
-                <PiUserDuotone size={50} />
-                <span className="text-[30px] hidden lg:block">{username}</span>
-                <span className="hidden text-base text-gray-500 lg:block">{npm}</span>
-              </div>
-              <ul className={`absolute left-0 ${userDropdownOpen ? "" : "hidden"} mt-[230px] bg-white border w-40 text-black rounded-lg`}>
-                <li className="cursor-pointer " onClick={() => handleMenuClick(Menus[0])}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue ">
-                    {" "}
-                    <h1 className="lg:pl-3">Profile</h1>
-                  </div>
-                </li>
-                <li className="cursor-pointer " onClick={handleLogout}>
-                  <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue ">
-                    {" "}
-                    <h1 className="lg:pl-3">Log Out</h1>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <div className="mt-32 lg:mt-0">
-            {Menus.map((menu, index) => (
-              <li key={index} className="mb-4 ">
-                <button
-                  onClick={() => handleMenuClick(menu)}
-                  className={`flex rounded-md p-2 text-[25px] text-slate-600 cursor-pointer hover:text-white hover:text-[27px] items-center gap-x-4 ${selectedMenu === menu ? "bg-light-white" : ""}`}
-                >
-                  {!isSidebarOpen && menu.icon}
-                  {isSidebarOpen && menu.title}
-                </button>
-              </li>
-            ))}
-          </div>
-        </ul>
-      </div>
-      <div className="flex-1 h-screen text-lg">{selectedMenu.content}</div>
+      <div className="flex-1 text-base ">{renderContent()}</div>
     </div>
   );
 };

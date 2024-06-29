@@ -4,6 +4,7 @@ import axios from "axios";
 import { getUserId } from "../../../utils/Config";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import SkpiStatus from "./DataVisualisation/SkpiStatus";
 
 const Transkrip = () => {
   const [kegiatanWajib, setKegiatanWajib] = useState([]);
@@ -267,230 +268,238 @@ const Transkrip = () => {
   const totalPoint = totalPointWajib + totalPointPilihan;
 
   return (
-    <div className="max-h-[887px] h-[878px] overflow-auto mr-[3px] my-2 lg:my-0 lg:mr-0 lg:mt-6 bg-white lg:p-14 lg:pb-3 lg:w-[98.5%] rounded-lg">
-      <div className="h-screen">
-        <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Transkrip</h2>
-        <div className="border bg-slate-300 rounded-md mt-10 lg:mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
-        <div className="p-4 mx-2 mt-24 mb-6 overflow-x-auto border border-gray-400 rounded-md lg:mx-0">
+    <div className="h-screen p-6 lg:p-16 bg-[#1d2638] overflow-y-auto">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Transkrip</h2>
+      <div className="gap-5 mt-24 lg:flex lg:mt-12">
+        <div className="lg:w-[50%]">
+          <div className="p-6 mt-6 overflow-hidden shadow-xl bg-[#1A4057] text-gray-300 rounded-lg font-poppins">
+            <h1 className="mb-4 text-[18px] font-mono "> Bobot SKP yang telah terkumpul </h1>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Kegiatan Wajib</span>
+              <span>{skpi.mandatoryPoints}</span>
+            </div>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Organisasi dan Kepemimpinan</span>
+              <span className="text-gray-300">{skpi.organizationPoints}</span>
+            </div>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Penalaran dan Keilmuan</span>
+              <span className="text-gray-300">{skpi.scientificPoints}</span>
+            </div>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Minat dan Bakat</span>
+              <span className="text-gray-300">{skpi.talentPoints}</span>
+            </div>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Kepedulian Sosial</span>
+              <span className="text-gray-300">{skpi.charityPoints}</span>
+            </div>
+            <div className="flex justify-between py-4">
+              <span className="text-gray-400">Kegiatan Lainnya</span>
+              <span className="text-gray-300">{skpi.otherPoints}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex mt-6 rounded-lg lg:w-[30%] shadow-xl p-2 justify-center bg-[#1A4057] relative">
+          <h1 className="text-gray-300 flex  text-start text-[17px] font-mono absolute top-2 left-2 p-2">
+            Status SKPI :{" "}
+            <span>
+              <h2 className="text-gray-300 text-[14px]">{skpi.status}</h2>
+            </span>{" "}
+          </h1>
+          <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center lg:mt-0 mt-11">
+              <SkpiStatus skpi={skpi} />
+            </div>
+          </div>
+        </div>
+        <div className="bg-[#1A4057] lg:w-[20%] shadow-xl mt-6 p-5 rounded-lg inline-block">
+          <h2 className=" font-mono  text-[17px] text-gray-300 ">Total Point</h2>
+          <div className="py-20 mt-20 text-center rounded-full bg-[#1d2638] ">
+            <p className="text-[30px]  font-bold text-gray-300 ">{totalPoint}</p>
+          </div>
+          {skpi.status ? (
+            <div>
+              {skpi.status === "completed" ? (
+                <div className="mt-4 text-center ">
+                  <button onClick={generatePDF} className="px-4 py-2 font-normal  text-[16px] hover:bg-[#305a73] mt-7 text-gray-300 rounded-md bg-[#1d2638]">
+                    Cetak Sertifikat SKPI
+                  </button>
+                </div>
+              ) : (
+                <h3 className=" text-base text-[16px] mt-4 ">SKPI Dalam Proses</h3>
+              )}
+            </div>
+          ) : (
+            <div className="mt-2 ">
+              <p className="mt-2">Status</p>
+              <button onClick={handleAjukanSkpi} className="block w-full mt-2 px-4 py-2 font-normal hover:bg-[#305a73] text-[16px] text-gray-300 rounded-md bg-[#1d2638]hover:bg-purple-500">
+                Ajukan SKPI
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="gap-6 mt-16 lg:flex">
+        <div className="p-4 mx-2  mb-6 overflow-x-auto bg-[#1A4057] shadow-xl lg:w-[40%] rounded-md lg:mx-0">
           <div className="flex items-center">
             <img src="./src/assets/kegiatan_wajib.png" className="mr-2 w-14 h-14" alt="asteriks" />
-            <h2 className="ml-2 text-lg font-medium font-poppins">Kegiatan Wajib</h2>
+            <h2 className="ml-2 font-mono text-gray-300 ">Kegiatan Wajib</h2>
           </div>
           <table className="w-full mt-3 font-poppins">
             <thead>
-              <tr>
-                <th className="py-2 pl-2 pr-8 font-normal text-left text-black bg-sky-50">Kegiatan</th>
-                <th className="py-2 pr-2 font-normal text-left text-black bg-sky-50">Point</th>
+              <tr className="text-gray-300 text-[15px] border-b border-gray-600 bg-[#173344]">
+                <th className="py-2 pl-2 pr-8 font-normal text-left ">Kegiatan</th>
+                <th className="py-2 pr-2 font-normal text-left ">Point</th>
               </tr>
             </thead>
             <tbody>
               {kegiatanWajib.map((activity, index) => (
-                <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-sky-50"}>
-                  <td className="py-2 pl-2 pr-8 text-[16px] text-base">{activity.activity}</td>
-                  <td className="py-2 pr-2 text-[16px] text-base">{activity.points}</td>
+                <tr key={index} className="text-gray-400 border-b text-[14px] border-gray-600 bg-[#173344] rounded-lg">
+                  <td className="py-2 pl-2 pr-8 ">{activity.activity}</td>
+                  <td className="py-2 pr-2 ">{activity.points}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <div className="p-4 mx-2 mt-12 mb-6 border border-gray-400 rounded-md lg:mx-0">
-          <div>
-            <div className="flex items-center">
-              <img src="./src/assets/kegiatan_pilihan.png" className="mr-2 w-14 h-14" alt="choise" />
-              <h2 className="ml-2 text-lg font-medium font-poppins">Kegiatan Pilihan</h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full mt-3 font-poppins">
-                <thead>
-                  <tr>
-                    <th className="py-2 pl-2 font-normal text-left text-black bg-sky-50">Kegiatan</th>
-                    <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Nama Kegiatan</th>
-                    <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Point</th>
-                    <th className="hidden py-2 font-normal text-left text-black lg:table-cell bg-sky-50">Status</th>
-                    <th className="py-2 font-normal text-left text-black bg-sky-50">Detail</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {kegiatanPilihan.map((activity, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-sky-50"}>
-                      <td className="py-2 pl-2 text-base">{activity.activity}</td>
-                      <td className="hidden py-2 text-base lg:table-cell">{activity.name}</td>
-                      <td className="hidden py-2 text-base lg:table-cell">{activity.points}</td>
-                      <td className="hidden py-2 text-base lg:table-cell">{activity.status}</td>
-                      <td className="py-2">
-                        <button onClick={() => handleLihatDetail(activity.id)} className="text-base text-lime-500 hover:underline focus:outline-none">
-                          Detail
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+        <div className="p-4 mx-2  mb-6 overflow-x-auto shadow-xl bg-[#1A4057] lg:w-[60%]  rounded-md lg:mx-0">
+          <div className="flex items-center">
+            <img src="./src/assets/kegiatan_pilihan.png" className="mr-2 w-14 h-14" alt="choise" />
+            <h2 className="ml-2 font-mono text-gray-300 ">Kegiatan Pilihan</h2>
           </div>
-
-          {showModal && (
-            <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen overflow-auto bg-black bg-opacity-75">
-              <div className=" w-[800px] p-6 mx-auto h-[890px] overflow-y-auto bg-white rounded-lg shadow-lg">
-                <h3 className="mb-4 text-xl font-semibold text-center text-gray-800">Detail Kegiatan</h3>
-                <div className="text-gray-700">
-                  <div className="">
-                    <p className="font-semibold">Nama Kegiatan :</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.activity || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Kategori Kegiatan:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.fieldsActivity || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Sertifikat:</p>
-                    {detailKegiatan.activity.fileUrl ? (
-                      <a href={detailKegiatan.activity.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-4 py-2 rounded-lg text-secondary bg-dimBlue hover:bg-blue-500">
-                        Lihat
-                      </a>
-                    ) : (
-                      <p className="px-4 py-2 rounded-lg bg-dimBlue">-</p>
-                    )}
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Tingkat:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.levels || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Nama Kegiatan:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.name || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Point:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.points || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Harapan:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.possitions_achievements || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Status:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.status || "-"}</p>
-                  </div>
-                  <div className="mt-4">
-                    <p className="font-semibold">Tahun:</p>
-                    <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.years || "-"}</p>
-                  </div>
-                </div>
-                <button onClick={() => setShowModal(false)} className="block w-full py-2 mt-6 font-semibold text-white rounded-md bg-secondary hover:bg-secondary-dark focus:outline-none">
-                  Tutup
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="pt-6 mt-12 text-center lg:text-left ">
-          <div className="bg-indigo-50 w-[200px] p-5 rounded-3xl shadow-lg inline-block">
-            <h2 className=" font-poppins text-base text-[16px] ">Total Point :</h2>
-            <p className="mt-3 text-2xl font-bold text-gray-700">{totalPoint}</p>
-            {skpi.status ? (
-              <div>
-                {skpi.status === "completed" ? (
-                  <div className="mt-4 ">
-                    <button onClick={generatePDF} className="px-4 py-2 font-normal text-[16px] text-white rounded-md bg-customPurple hover:bg-purple-500">
-                      Cetak SKPI
-                    </button>
-                  </div>
-                ) : (
-                  <h3 className=" text-base text-[16px] mt-4 ">{skpi.status}</h3>
-                )}
-              </div>
-            ) : (
-              <div className="mt-2 ">
-                <p className="mt-2">Status</p>
-                <button onClick={handleAjukanSkpi} className="block w-full mt-2 px-4 py-2 font-normal text-[16px] text-white rounded-md bg-customPurple hover:bg-purple-500">
-                  Ajukan SKPI
-                </button>
-              </div>
-            )}
-          </div>
-          <div className="mt-10">
-            <table className="mx-2 my-2 overflow-hidden bg-gray-200 lg:my-0 lg:mx-0 rounded-xl font-poppins">
+          <div className="overflow-x-auto">
+            <table className="w-full mt-3 font-poppins">
+              <thead>
+                <tr className="text-gray-300 text-[15px] border-b border-gray-600 bg-[#173344]">
+                  <th className="py-2 pl-2 font-normal text-left ">Kegiatan</th>
+                  <th className="hidden py-2 font-normal text-left lg:table-cell ">Nama Kegiatan</th>
+                  <th className="hidden py-2 font-normal text-left lg:table-cell ">Point</th>
+                  <th className="hidden py-2 font-normal text-left lg:table-cell ">Status</th>
+                  <th className="py-2 font-normal text-left ">Detail</th>
+                </tr>
+              </thead>
               <tbody>
-                <tr>
-                  <td className="px-6 py-4 text-base">Kegiatan Wajib</td>
-                  <td className="px-6 py-4">{skpi.mandatoryPoints}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-base">Organisasi dan Kepemimpinan</td>
-                  <td className="px-6 py-4">{skpi.organizationPoints}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-base">Penalaran dan Keilmuan</td>
-                  <td className="px-6 py-4">{skpi.scientificPoints}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-base">Minat dan Bakat</td>
-                  <td className="px-6 py-4">{skpi.talentPoints}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-base">Kepedulian Sosial</td>
-                  <td className="px-6 py-4 text-base">{skpi.charityPoints}</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-base">Kegiatan Lainnya</td>
-                  <td className="px-6 py-4">{skpi.otherPoints}</td>
-                </tr>
+                {kegiatanPilihan.map((activity, index) => (
+                  <tr key={index} className="text-gray-400 border-b text-[14px] border-gray-600 bg-[#173344] rounded-lg">
+                    <td className="py-2 pl-2 ">{activity.activity}</td>
+                    <td className="hidden py-2 lg:table-cell">{activity.name}</td>
+                    <td className="hidden py-2 lg:table-cell">{activity.points}</td>
+                    <td className="hidden py-2 lg:table-cell">{activity.status}</td>
+                    <td className="py-2">
+                      <button onClick={() => handleLihatDetail(activity.id)} className=" text-gray-300 bg-[#1d2638] px-2 py-1 rounded-lg hover:bg-[#305a73] focus:outline-none">
+                        Detail
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
-              <div className="mt-20 ml-16">
-                <img src="./src/assets/cardprofil.png" alt="Logo" className="" />
-              </div>
             </table>
           </div>
-
-          {showInsufficientPointsPopup && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-                <p>Point Anda belum mencukupi!</p>
-                <button onClick={() => setShowInsufficientPointsPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-secondary">
-                  Tutup
-                </button>
-              </div>
-            </div>
-          )}
-          {showPopup && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-                <p>Data berhasil dikirim!</p>
-                <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-customPurple">
-                  Tutup
-                </button>
-              </div>
-            </div>
-          )}
-
-          {showConfirmation && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-                <p>Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
-                <div className="mt-4 space-x-4">
-                  <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-customPurple">
-                    Ya
-                  </button>
-                  <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-white bg-red-600 rounded-lg">
-                    Tidak
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {isLoading && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="p-8 text-center bg-white rounded-lg">
-                <p>Loading...</p>
-                <div className="loader"></div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-screen overflow-auto bg-black bg-opacity-75">
+          <div className=" w-[800px] p-6 mx-auto h-[890px] overflow-y-auto bg-white rounded-lg shadow-lg">
+            <h3 className="mb-4 text-xl font-semibold text-center text-gray-800">Detail Kegiatan</h3>
+            <div className="text-gray-700">
+              <div className="">
+                <p className="font-semibold">Nama Kegiatan :</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.activity || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Kategori Kegiatan:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.fieldsActivity || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Sertifikat:</p>
+                {detailKegiatan.activity.fileUrl ? (
+                  <a href={detailKegiatan.activity.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-4 py-2 rounded-lg text-secondary bg-dimBlue hover:bg-blue-500">
+                    Lihat
+                  </a>
+                ) : (
+                  <p className="px-4 py-2 rounded-lg bg-dimBlue">-</p>
+                )}
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Tingkat:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.levels || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Nama Kegiatan:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.name || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Point:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.points || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Harapan:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.possitions_achievements || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Status:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.activity.status || "-"}</p>
+              </div>
+              <div className="mt-4">
+                <p className="font-semibold">Tahun:</p>
+                <p className="px-4 py-2 rounded-lg bg-dimBlue">{detailKegiatan.years || "-"}</p>
+              </div>
+            </div>
+            <button onClick={() => setShowModal(false)} className="block w-full py-2 mt-6 font-semibold text-white rounded-md bg-secondary hover:bg-secondary-dark focus:outline-none">
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showInsufficientPointsPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+            <p>Point Anda belum mencukupi!</p>
+            <button onClick={() => setShowInsufficientPointsPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-secondary">
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+            <p>Data berhasil dikirim!</p>
+            <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-customPurple">
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showConfirmation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+            <p>Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
+            <div className="mt-4 space-x-4">
+              <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-customPurple">
+                Ya
+              </button>
+              <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 text-white bg-red-600 rounded-lg">
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="p-8 text-center bg-white rounded-lg">
+            <p>Loading...</p>
+            <div className="loader"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

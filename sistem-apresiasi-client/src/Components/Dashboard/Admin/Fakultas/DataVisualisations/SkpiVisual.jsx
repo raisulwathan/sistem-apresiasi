@@ -13,8 +13,8 @@ const SkpiVisual = ({ validatedSkpiData }) => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const width = 900;
-    const height = 500;
+    const width = 850;
+    const height = 600;
     const margin = { top: 50, right: 50, bottom: 70, left: 100 };
     const xScale = d3
       .scaleBand()
@@ -32,19 +32,20 @@ const SkpiVisual = ({ validatedSkpiData }) => {
       .domain(Object.keys(skpiByMajor))
       .range(Object.values(getColorScheme(skpiByMajor)));
 
-    svg.attr("width", width).attr("height", height).style("background-color", "white");
+    svg.attr("width", width).attr("height", height).style("background-color", "#313347");
 
     svg
       .append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(xScale))
       .selectAll("text")
-      .style("text-anchor", "middle")
-      .attr("dx", "-0.5em")
+      .style("text-anchor", "start") // Use "start" for better alignment with rotation
+      .style("color", "#d1d5db")
+      .attr("dx", "0.5em")
       .attr("dy", "0.5em")
-      .attr("transform");
+      .attr("transform", "rotate(25)"); // Adjust the angle as needed
 
-    svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale).ticks(5).tickSizeOuter(0)).style("color", "#333").style("font-family", "Arial, sans-serif").style("font-size", "12px");
+    svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yScale).ticks(5).tickSizeOuter(0)).style("color", "#d1d5db").style("font-family", "Arial, sans-serif").style("font-size", "12px");
 
     svg
       .selectAll(".bar")
@@ -76,7 +77,7 @@ const SkpiVisual = ({ validatedSkpiData }) => {
       .attr("x", (d) => xScale(d[0]) + xScale.bandwidth() / 2)
       .attr("y", (d) => yScale(d[1]) - 8)
       .text((d) => d[1])
-      .attr("fill", "#333")
+      .attr("fill", "#d1d5db")
       .attr("font-size", "12px")
       .attr("text-anchor", "middle")
       .style("font-family", "Arial, sans-serif");
@@ -111,7 +112,7 @@ const SkpiVisual = ({ validatedSkpiData }) => {
   };
 
   const getColorScheme = (data) => {
-    const colors = ["brown", "teal", "orange"];
+    const colors = ["brown", "#dcfce7", "#0F6292"];
     const colorScheme = {};
     const values = Object.values(data);
     const maxValue = Math.max(...values);

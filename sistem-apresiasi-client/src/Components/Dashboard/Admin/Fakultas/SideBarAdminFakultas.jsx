@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logoDark, cup, Upload, nonlomba, next } from "../../../../assets";
 import KegiatanLomba from "./KegiatanLomba";
 import KegiatanMahasiswa from "./KegiatanMahasiswa";
 import Formulir from "./Formulir";
@@ -13,16 +12,14 @@ import { RxDashboard } from "react-icons/rx";
 import { GoFile } from "react-icons/go";
 import { TfiCup } from "react-icons/tfi";
 import { LiaFileUploadSolid } from "react-icons/lia";
-import { LuUsers } from "react-icons/lu";
 import { IoIosLogOut } from "react-icons/io";
+
 const SideBarAdminFakultas = () => {
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
-  const [subMenuOpenMandiri, setSubMenuOpenMandiri] = useState(false);
-  const [subMenuOpenNonLomba, setSubMenuOpenNonLomba] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  const [activeMenu, setActiveMenu] = useState("Dashboard");
 
   useEffect(() => {
     setSelectedMenu("Dashboard");
@@ -38,32 +35,20 @@ const SideBarAdminFakultas = () => {
   }, []);
 
   const handleMenuClick = (menu) => {
-    if (menu === "Kegiatan Mandiri") {
-      setSubMenuOpenMandiri(!subMenuOpenMandiri);
-    } else if (menu === "Kegiatan Non Lomba") {
-      setSubMenuOpenNonLomba(!subMenuOpenNonLomba);
-    } else {
-      setSelectedMenu(menu);
-      setSubMenuOpenMandiri(false);
-      setSubMenuOpenNonLomba(false);
-    }
+    setActiveMenu(menu);
+    setSelectedMenu(menu);
   };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/login");
   };
 
-  const toggleUserDropdown = () => {
-    setUserDropdownOpen(!userDropdownOpen);
-  };
-
   const fetchUserData = async (userId) => {
     try {
       const response = await axios.get(`http://localhost:5001/api/v1/users/${userId}`);
-
       const userRole = response.data.data.user.role;
-
       if (userRole !== "OPERATOR") {
         navigate("/forbidden");
       }
@@ -92,60 +77,54 @@ const SideBarAdminFakultas = () => {
   };
 
   return (
-    <div className="flex h-screen bg-white font-poppins">
-      <div className="w-full p-4 md:w-64 md:p-6">
+    <div className="flex h-screen w-full  bg-[#313347] font-poppins">
+      <div className="flex flex-col p-7  bg-[#313347]">
         <div className="flex items-center mb-6 gap-x-4">
-          <img src="./src/assets/logousk.png" className="w-[60px] cursor-pointer h-[60px] " alt="Logo" />
-          <h1 className="text-xl font-medium text-black duration-200 origin-left">APRESIASI</h1>
+          <img src="./src/assets/logousk.png" className="w-12 h-12 cursor-pointer" alt="Logo" />
+          <h1 className="font-medium text-slate-300 duration-200 origin-left text-[18px] font-poppins">APRESIASI</h1>
         </div>
-        <ul className="pt-10">
-          <li onClick={() => handleMenuClick("Dashboard")} className="flex items-center gap-3 cursor-pointer mb-7">
-            <RxDashboard size={27} />
-            <span className="hidden  md:block text-[15px]">Dashboard</span>
+        <hr className="border-t border-gray-600 mb-7"></hr>
+        <ul className="flex-1 pt-10">
+          <li onClick={() => handleMenuClick("Dashboard")} className={`flex text-slate-300 py-2 px-1 rounded-lg items-center gap-3 cursor-pointer mb-7 ${activeMenu === "Dashboard" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+            <RxDashboard size={25} />
+            <span className="hidden text-sm md:block">Dashboard</span>
           </li>
-          <div>
-            <h3 className=" ml-2 text-[14px] text-slate-600 lg:ml-5 ">Manajement Berkas</h3>
-          </div>
-          <li onClick={() => handleMenuClick("Skpi")} className="flex items-center gap-3 mt-4 cursor-pointer mb-7">
-            <GoFileSymlinkFile size={27} />
-            <span className="hidden  md:block text-[15px]">SKPI</span>
-          </li>
-          <li onClick={() => handleMenuClick("Kegiatan Mahasiswa")} className="flex items-center gap-3 cursor-pointer mb-7">
-            <GoFile size={27} />
-            <span className="hidden  md:block text-[15px]">Kegiatan Mahasiswa</span>
-          </li>
-          <div>
-            <h3 className=" ml-2 text-[14px] text-slate-600 lg:ml-5 ">Kegiatan Mandiri</h3>
-          </div>
-          <li onClick={() => handleMenuClick("Kegiatan Lomba")} className="flex items-center gap-3 mt-4 cursor-pointer mb-7">
-            <TfiCup size={27} />
-            <span className="hidden  md:block text-[15px]">Kegiatan Lomba</span>
-          </li>
-          <li onClick={() => handleMenuClick("Formulir")} className="flex items-center gap-3 cursor-pointer mb-7 ">
-            <LiaFileUploadSolid size={33} />
-            <span className="hidden  md:block text-[15px]">Formulir</span>
-          </li>
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <>
+              <li
+                onClick={() => handleMenuClick("Kegiatan Mahasiswa")}
+                className={`flex text-slate-300 items-center gap-3 py-2 px-1 rounded-lg cursor-pointer mb-7 ${activeMenu === "Kegiatan Mahasiswa" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}
+              >
+                <GoFile size={25} />
+                <span className="hidden text-sm md:block">Kegiatan Mahasiswa</span>
+              </li>
+              <li onClick={() => handleMenuClick("Skpi")} className={`flex items-center py-2 px-1 rounded-lg text-slate-300 gap-3 cursor-pointer mb-7 ${activeMenu === "Skpi" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+                <GoFileSymlinkFile size={25} />
+                <span className="hidden text-sm md:block">SKPI</span>
+              </li>
 
-          <div className=" mt-[250px]">
-            <div className="flex items-center cursor-pointer" onClick={toggleUserDropdown}>
-              <LuUsers size={27} />
-              <span className="hidden pt-2 pl-4 text-[15px] md:block duration-400">{username}</span>
-              {userDropdownOpen && (
-                <ul className="absolute z-10 w-40 mt-32 bg-white border rounded-lg left-7 border-slate-700">
-                  <li className="cursor-pointer" onClick={handleLogout}>
-                    <div className="flex items-center p-2 rounded-lg hover:bg-dimBlue hover:text-secondary">
-                      <IoIosLogOut size={27} />
-                      <h1 className="lg:pl-3">Log Out</h1>
-                    </div>
-                  </li>
-                </ul>
-              )}
-            </div>
-          </div>
+              <li onClick={() => handleMenuClick("Kegiatan Lomba")} className={`flex text-slate-300 items-center gap-3 py-2 px-1 rounded-lg cursor-pointer mb-7 ${activeMenu === "Kegiatan Lomba" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+                <TfiCup size={25} />
+                <span className="hidden text-sm md:block">Kegiatan Lomba</span>
+              </li>
+              <li onClick={() => handleMenuClick("Formulir")} className={`flex text-slate-300 py-2 px-1 rounded-lg items-center gap-3 cursor-pointer mb-7 ${activeMenu === "Formulir" ? "bg-[#0F6292] " : " hover:bg-[#0F6292]"}`}>
+                <LiaFileUploadSolid size={25} />
+                <span className="hidden text-sm md:block">Formulir</span>
+              </li>
+            </>
+          )}
+          <hr className="border-t border-gray-600 mb-7"></hr>
+          {isLoggedIn && (
+            <li onClick={handleLogout} className="flex items-center hover:bg-[#0F6292] gap-3 px-1 py-2 rounded-lg cursor-pointer text-slate-300 mb-7">
+              <IoIosLogOut size={25} />
+              <span className="hidden text-sm text-slate-300 md:block">Log Out</span>
+            </li>
+          )}
         </ul>
       </div>
 
-      <div className="flex-1 p-8 text-lg">{renderContent()}</div>
+      <div className="flex-1 text-base ">{renderContent()}</div>
     </div>
   );
 };

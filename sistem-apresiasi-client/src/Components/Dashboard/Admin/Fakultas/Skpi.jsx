@@ -12,7 +12,7 @@ function Skpi() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [validating, setValidating] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(8);
   const [unvalidatedSkpiData, setUnvalidatedSkpiData] = useState([]);
   const [validatedSkpiData, setValidatedSkpiData] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("unvalidated");
@@ -109,40 +109,40 @@ function Skpi() {
   };
 
   return (
-    <div className="pt-3 overflow-y-auto ">
-      <h2 className="font-semibold text-gray-700 font-poppins">SKPI</h2>
-      <div className="h-screen p-10 mt-9 shadow-boxShadow">
+    <div className="h-screen p-16 bg-[#424461] overflow-y-auto ">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">SKPI</h2>
+      <div className=" bg-[#313347] p-14 rounded-lg shadow-2xl mt-9 ">
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
           <div>
             <div className="flex justify-center rounded-md">
-              <button onClick={() => setCurrentCategory("unvalidated")} className={`px-4 py-2 border rounded-l ${currentCategory === "unvalidated" ? "bg-amber-500 text-white" : "bg-white text-gray-700"}`}>
-                <p className=" text-[14px] ">Belum Diterima</p>
+              <button onClick={() => setCurrentCategory("unvalidated")} className={`px-4 py-2 border border-[#424461] rounded-l ${currentCategory === "unvalidated" ? "bg-[#0F6292] text-gray-300" : "bg-[#313347] text-gray-300"}`}>
+                <p className=" text-[14px] text-gray-300 ">Belum Diterima</p>
               </button>
-              <button onClick={() => setCurrentCategory("validated")} className={`px-4 py-2 border rounded-r ${currentCategory === "validated" ? "bg-amber-500 text-white" : "bg-white text-gray-700"}`}>
-                <p className=" text-[14px] ">Telah Diterima</p>
+              <button onClick={() => setCurrentCategory("validated")} className={`px-4 py-2 border border-[#424461] rounded-r ${currentCategory === "validated" ? "bg-[#0F6292] text-gray-300" : "bg-[#313347] text-gray-300"}`}>
+                <p className=" text-[14px] text-gray-300 ">Telah Diterima</p>
               </button>
             </div>
-            <h2 className="mt-8 ">{currentCategory === "unvalidated" ? "Belum Diterima" : "Telah Diterima"}</h2>
-            <table className="w-full mt-5">
+            <h2 className="mt-8 font-mono text-gray-300 ">{currentCategory === "unvalidated" ? "Belum Diterima" : "Telah Diterima"}</h2>
+            <table className="w-full mt-5 ">
               <thead>
-                <tr className="border border-gray-600 ">
+                <tr className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] ">
                   <th className="px-4 py-2 font-normal  text-left text-[15px]">Nama</th>
                   <th className="px-4 py-2 text-left font-normal text-[15px]">NPM</th>
                   <th className="px-4 py-2 text-left font-normal text-[15px]">Fakultas</th>
-                  <th className="px-4 py-2 text-left font-normal text-[15px]">Detail</th>
+                  {currentCategory === "unvalidated" && <th className="px-4 py-2 text-left font-normal text-[15px]">Detail</th>}
                 </tr>
               </thead>
               <tbody>
                 {(currentCategory === "unvalidated" ? unvalidatedSkpiData : validatedSkpiData).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, index) => (
-                  <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  <tr key={index} className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] rounded-lg">
                     <td className="px-4 py-2 text-[14px]">{item.owner.name}</td>
                     <td className="px-4 py-2 text-[14px]">{item.owner.npm}</td>
                     <td className="px-4 py-2 text-[14px]">{item.owner.faculty}</td>
                     {currentCategory === "unvalidated" && (
                       <td className="px-4 py-2 text-base">
-                        <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-[14px] text-white rounded bg-amber-500 hover:bg-amber-700">
+                        <button onClick={() => handleLihatDetail(item.id)} className="px-2 py-1 text-[14px] text-gray-300 rounded bg-[#0F6292] hover:bg-[#274e64]">
                           Lihat
                         </button>
                       </td>
@@ -152,12 +152,12 @@ function Skpi() {
               </tbody>
             </table>
             {currentCategory === "unvalidated" && (
-              <div className="px-4 py-2">
-                <button className="px-3 py-1 text-sm text-[13px] border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <div className="px-4 py-2 mt-7 ">
+                <button className="px-3 py-1 text-sm text-[13px] text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]" onClick={handlePreviousPage} disabled={currentPage === 1}>
                   Previous Page
                 </button>
                 <button
-                  className="px-3 py-1 ml-5 text-[13px] text-sm border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-amber-500"
+                  className="px-3 py-1 ml-5 text-[13px] text-sm text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
                   onClick={handleNextPage}
                   disabled={(currentPage - 1) * itemsPerPage + itemsPerPage >= unvalidatedSkpiData.length}
                 >
@@ -166,12 +166,12 @@ function Skpi() {
               </div>
             )}
             {currentCategory === "validated" && (
-              <div className="px-4 py-2">
-                <button className="px-3 py-1 text-sm text-[13px] border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={handlePreviousPageValidated} disabled={currentPage === 1}>
+              <div className="px-4 py-2 mt-7">
+                <button className="px-3 py-1 text-sm text-[13px] text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]" onClick={handlePreviousPageValidated} disabled={currentPage === 1}>
                   Previous Page
                 </button>
                 <button
-                  className="px-3 py-1 ml-5 text-[13px] text-sm border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-amber-500"
+                  className="px-3 py-1 ml-5 text-[13px] text-sm text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
                   onClick={handleNextPageValidated}
                   disabled={(currentPage - 1) * itemsPerPage + itemsPerPage >= validatedSkpiData.length}
                 >
@@ -182,15 +182,15 @@ function Skpi() {
 
             {showConfirmationPopup && (
               <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "50vw" }}>
-                  <h3 className="underline">Konfirmasi Validasi</h3>
+                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#424461] rounded-lg" style={{ width: "50vw" }}>
+                  <h3 className="text-gray-300 ">Konfirmasi Validasi</h3>
                   <div className="p-5">
-                    <p>Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
+                    <p className="text-gray-300 ">Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
                     <div className="flex justify-end mt-4">
                       <button onClick={() => setShowConfirmationPopup(false)} className="px-3 py-1 mr-4 text-white bg-red-500 rounded hover:bg-red-700">
                         Batal
                       </button>
-                      <button onClick={handleValidation} className="px-3 py-1 text-white rounded bg-amber-500 hover:bg-amber-700">
+                      <button onClick={handleValidation} className="px-4 py-2 text-white rounded bg-[#0F6292] hover:bg-[#274e64]">
                         {validating ? (
                           <div className="flex items-center justify-center">
                             <div className="w-4 h-4 mr-2 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
@@ -208,12 +208,12 @@ function Skpi() {
 
             {showSuccessPopup && (
               <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "50vw" }}>
-                  <h3 className="underline">Sukses</h3>
+                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#333548] rounded-lg" style={{ width: "50vw" }}>
+                  <h3 className="text-gray-300 ">Sukses</h3>
                   <div className="p-5">
-                    <p>Kegiatan berhasil divalidasi!</p>
+                    <p className="text-gray-300">Kegiatan berhasil divalidasi!</p>
                     <div className="flex justify-end mt-4">
-                      <button onClick={() => setShowSuccessPopup(false)} className="px-4 py-2 text-white rounded bg-amber-500 hover:bg-amber-700">
+                      <button onClick={() => setShowSuccessPopup(false)} className="px-5 py-3 text-white rounded bg-[#0F6292] hover:bg-[#274e64]">
                         Tutup
                       </button>
                     </div>
@@ -226,16 +226,16 @@ function Skpi() {
 
         {showDetail && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="relative max-w-screen-lg p-6 mx-auto bg-white rounded-lg" style={{ width: "50vw" }}>
+            <div className="relative max-w-screen-lg p-6 mx-auto bg-[#424461] rounded-lg" style={{ width: "50vw" }}>
               <h3 className="flex items-center justify-between">
-                <span className="underline">Detail Kegiatan</span>
-                <button onClick={handleCloseDetail} className="text-gray-600 hover:text-gray-800">
+                <span className="text-gray-300 ">Detail Kegiatan</span>
+                <button onClick={handleCloseDetail} className="text-red-600 hover:text-red-500">
                   <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                   </svg>
                 </button>
               </h3>
-              <div className="p-5">
+              <div className="p-5 text-gray-300">
                 <p>Kegiatan Wajib : {detailKegiatan.mandatoryPoints}</p>
                 <p>Organisasi dan Kepemimpinan : {detailKegiatan.organizationPoints}</p>
                 <p>Penalaran dan Keilmuan: {detailKegiatan.scientificPoints}</p>
@@ -252,7 +252,7 @@ function Skpi() {
                 </div>
 
                 {/* Tombol validasi di sini */}
-                <button onClick={handleValidationConfirmation} className="px-3 py-1 mt-4 text-[14px] text-white rounded bg-amber-500 hover:bg-amber-700">
+                <button onClick={handleValidationConfirmation} className="px-3 py-3 mt-4 text-[14px] shadow-lg text-white rounded bg-[#0F6292] hover:bg-[#274e64]">
                   Validasi Kegiatan
                 </button>
               </div>

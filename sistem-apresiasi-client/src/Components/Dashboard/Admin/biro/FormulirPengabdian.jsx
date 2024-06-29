@@ -68,14 +68,14 @@ function FormulirPengabdian() {
   };
 
   return (
-    <div className="w-[1130px] h-[700px] p-6 ">
-      <h1 className="text-2xl font-semibold mb-11">Formulir Pengabdian Mahasiswa Kepada Masyarakat</h1>
-      <form onSubmit={handleSubmit} className=" space-y-14">
-        <div className="flex items-center">
-          <label htmlFor="fakultas" className="w-36">
+    <div className="max-w-[800px] bg-[#313347]  h-auto p-6">
+      <h1 className="text-lg font-semibold text-gray-300 text-start mb-11">Formulir Pengabdian Mahasiswa Kepada Masyarakat</h1>
+      <form onSubmit={handleSubmit} className=" space-y-11">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="fakultas" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Fakultas:
           </label>
-          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 ml-32 text-center border rounded-lg border-amber-500">
+          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 text-center bg-[#242535] border rounded-lg border-[#0F6292] text-gray-300">
             <option value="">Pilih Fakultas</option>
             <option value="Fakultas Mipa">Fakultas Mipa</option>
             <option value="Fakultas teknik">Fakultas teknik</option>
@@ -92,39 +92,42 @@ function FormulirPengabdian() {
             <option value="Fakultas Dokter gigi">Fakultas Kedokteran Gigi</option>
           </select>
         </div>
-        <div className="flex items-center">
-          <label htmlFor="program" className="w-39">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="program" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Program Pengabdian:
           </label>
-          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className=" border-amber-500 flex-grow p-2 border rounded-lg ml-[75px]" />
+          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className=" flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <div className="flex items-center">
-          <label htmlFor="jumlahPeserta" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="jumlahPeserta" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Jumlah Peserta:
           </label>
-          <input type="number" id="numberOfStudent" value={formData.numberOfStudent} onChange={handleInputChange} className=" border-amber-500 flex-grow ml-[129px] p-2 border rounded-lg" />
+          <input type="number" id="numberOfStudent" value={formData.numberOfStudent} onChange={handleInputChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <div className="flex items-center">
-          <label htmlFor="tahunKegiatan" className="w-39">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="tahunKegiatan" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Tahun Kegiatan:
           </label>
-          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow ml-[128px] p-2 border border-amber-500 rounded-lg" />
+          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <div className="flex items-center">
-          <label htmlFor="file" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="file" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Unggah File:
           </label>
-          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 ml-[129px] border border-amber-500 rounded-lg" />
+          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <button type="submit" className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-amber-500 font-poppins hover:transform hover:scale-110 ml-[270px] ">
-          Submit
-        </button>
+        <div className="text-center ">
+          <button type="submit" className="px-4 py-2 text-base transition-transform text-gray-300  rounded-lg w-[150px]  bg-[#0F6292]  hover:bg-[#1c2a33] hover:border-white font-poppins hover:transform hover:scale-110 ">
+            Submit
+          </button>
+        </div>
       </form>
+
       {showConfirmation && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <p className="mb-4">Apakah anda yakin Mendaftarkan data ini?</p>
-            <button onClick={handleConfirmSubmit} className="px-4 py-1 mr-2 text-white rounded-lg hover:bg-amber-700 bg-amber-500">
+          <div className="p-6 bg-[#424461] rounded-lg shadow-lg">
+            <p className="mb-4 text-gray-300">Apakah anda yakin Mendaftarkan data ini?</p>
+            <button onClick={handleConfirmSubmit} className="px-4 py-1 mr-2 text-white rounded-lg hover:bg-[#1c2a33] bg-[#0F6292]">
               Ya
             </button>
             <button onClick={() => setShowConfirmation(false)} className="px-4 py-1 bg-red-500 rounded-lg hover:bg-red-700">
@@ -136,9 +139,9 @@ function FormulirPengabdian() {
 
       {showSuccess && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="p-6 bg-white rounded-lg shadow-lg">
-            <p className="mb-4">Berhasil didaftarkan!</p>
-            <button onClick={() => setShowSuccess(false)} className="px-4 py-2 text-white rounded-lg bg-amber-500">
+          <div className="p-6 bg-[#424461] rounded-lg shadow-lg">
+            <p className="mb-4 text-gray-300">Berhasil didaftarkan!</p>
+            <button onClick={() => setShowSuccess(false)} className="px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1c2a33] bg-[#0F6292]">
               Tutup
             </button>
           </div>
