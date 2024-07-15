@@ -62,6 +62,7 @@ const Transkrip = () => {
 
         if (response.status === 200) {
           setSkpi(response.data.data);
+          console.log(response.data.data);
         }
       } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
@@ -115,13 +116,7 @@ const Transkrip = () => {
     const doc = new jsPDF();
     doc.setFontSize(12);
 
-    const ttd = await axios.get("http://localhost:5001/api/v1/ttd?role=WR", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const ttdUrl = ttd.data.data.url;
+    const ttdUrl = skpi.ttd.url;
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -209,7 +204,7 @@ const Transkrip = () => {
     doc.text("a.n. Wakil Rektor III", rightTextX, textY, { align: "right" });
     doc.text("Bidang Kemahasiswaan", rightTextX, textY + 5, { align: "right" });
     doc.addImage(ttdUrl, "PNG", signatureImageX, signatureImageY, signatureImageWidth, signatureImageHeight);
-    doc.text("Prof. Dr. Mustanir, M.Sc", rightTextX, textY + 35, { align: "right" });
+    doc.text(`${skpi.ttd.user.name}`, rightTextX, textY + 35, { align: "right" });
 
     const leftTextX = 30;
     const catatanText = "Catatan:\nPredikat SKPI S1 :\nSangat baik => 251 skp\nBaik => 151 - 250 skp\nCukup => 45 - 150 skp";
