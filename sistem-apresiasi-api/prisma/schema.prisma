@@ -21,7 +21,6 @@ model User {
   role           String
 
   activities       Activity[]
-  Recognitions     Achievement[]
   RejectedActivity RejectedActivity[]
   Skpi             Skpi[]
   Ttd              Ttd?
@@ -35,15 +34,6 @@ enum UserStatusActive {
 enum UserStatusGraduate {
   LULUS
   BELUM_LULUS
-}
-
-model Admin {
-  id      String  @id @default(cuid())
-  nip     String  @unique
-  name    String
-  faculty String?
-  major   String?
-  role    String
 }
 
 model Activity {
@@ -62,18 +52,7 @@ model Activity {
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 
-  achievements     Achievement[]
   RejectedActivity RejectedActivity[]
-}
-
-model Achievement {
-  id String @id @default(cuid())
-
-  activityId String   @unique
-  activity   Activity @relation(fields: [activityId], references: [id])
-
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
 }
 
 model Skpi {
@@ -85,6 +64,9 @@ model Skpi {
   organizationPoints Int
   otherPoints        Int
   status             String
+
+  ttdId String?
+  ttd   Ttd?    @relation(fields: [ttdId], references: [id])
 
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
@@ -99,11 +81,6 @@ model RejectedActivity {
 
   ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
-}
-
-model Authentication {
-  id    String @id @default(cuid())
-  token String
 }
 
 model AchievementIndependent {
@@ -145,5 +122,6 @@ model Ttd {
   url    String
   role   String
 
-  user User @relation(fields: [userId], references: [id])
+  user User   @relation(fields: [userId], references: [id])
+  Skpi Skpi[]
 }

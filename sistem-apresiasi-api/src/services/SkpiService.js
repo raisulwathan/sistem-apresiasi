@@ -99,6 +99,18 @@ export async function getByOwnerId(ownerId) {
         where: {
             ownerId,
         },
+        include: {
+            ttd: {
+                include: {
+                    user: {
+                        select: {
+                            npm: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+        },
     })
 
     if (!skpi) {
@@ -132,13 +144,14 @@ export async function getById(id) {
     return skpi
 }
 
-export async function processSkpi(id, status) {
+export async function processSkpi(id, status, ttdId = null) {
     const editedSkpi = await prisma.skpi.update({
         where: {
             id,
         },
         data: {
             status,
+            ttdId,
         },
     })
 

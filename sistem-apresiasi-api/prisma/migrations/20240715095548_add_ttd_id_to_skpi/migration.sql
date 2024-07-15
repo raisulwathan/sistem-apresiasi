@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Skpi" ADD COLUMN     "ttdId" TEXT;
+
+-- AddForeignKey
+ALTER TABLE "Skpi" ADD CONSTRAINT "Skpi_ttdId_fkey" FOREIGN KEY ("ttdId") REFERENCES "Ttd"("id") ON DELETE SET NULL ON UPDATE CASCADE;

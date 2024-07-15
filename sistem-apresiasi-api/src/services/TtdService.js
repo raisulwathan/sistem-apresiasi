@@ -26,10 +26,10 @@ export async function create(url, userId) {
     return ttd
 }
 
-export async function getByRole(role) {
-    const ttd = await prisma.ttd.findFirst({
+export async function getByUserId(userId) {
+    const ttd = await prisma.ttd.findUnique({
         where: {
-            role,
+            userId,
         },
     })
 

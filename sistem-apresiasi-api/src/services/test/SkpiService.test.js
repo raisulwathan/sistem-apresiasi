@@ -64,7 +64,7 @@ afterEach(() => {
 
 describe("create", () => {
     it("should verify minimum points and send email notification", async () => {
-        prisma.skpi.create.mockResolvedValue({ id: 1, ownerId: 1 })
+        prisma.skpi.create.mockResolvedValue({ skpiId: 1, ownerId: 1 })
 
         await expect(SkpiService.create(mockData)).resolves.toEqual({ skpiId: 1, ownerId: 1 })
 
@@ -192,6 +192,11 @@ describe("getByFaculty", () => {
                     faculty,
                 },
             },
+            orderBy: {
+                owner: {
+                    major: "asc",
+                },
+            },
         })
     })
 
@@ -217,6 +222,11 @@ describe("getByFaculty", () => {
             where: {
                 owner: {
                     faculty,
+                },
+            },
+            orderBy: {
+                owner: {
+                    major: "asc",
                 },
             },
         })
