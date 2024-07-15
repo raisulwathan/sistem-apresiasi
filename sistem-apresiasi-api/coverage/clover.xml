@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1717616156991" clover="3.2.0">
-  <project timestamp="1717616156991" name="All files">
-    <metrics statements="637" coveredstatements="635" conditionals="270" coveredconditionals="270" methods="120" coveredmethods="118" elements="1027" coveredelements="1023" complexity="0" loc="637" ncloc="637" packages="13" files="42" classes="42"/>
+<coverage generated="1720583515777" clover="3.2.0">
+  <project timestamp="1720583515777" name="All files">
+    <metrics statements="627" coveredstatements="627" conditionals="268" coveredconditionals="268" methods="117" coveredmethods="117" elements="1012" coveredelements="1012" complexity="0" loc="627" ncloc="627" packages="13" files="41" classes="41"/>
     <package name="controllers">
       <metrics statements="309" coveredstatements="309" conditionals="127" coveredconditionals="127" methods="43" coveredmethods="43"/>
       <file name="achievementIndependent.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\controllers\achievementIndependent.js">
@@ -371,7 +371,7 @@
       </file>
     </package>
     <package name="middleware">
-      <metrics statements="21" coveredstatements="19" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="4"/>
+      <metrics statements="12" coveredstatements="12" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
       <file name="authenticateToken.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\middleware\authenticateToken.js">
         <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="5" count="5" type="stmt"/>
@@ -390,32 +390,19 @@
         <line num="5" count="33" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
       </file>
-      <file name="uploadImage.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\middleware\uploadImage.js">
-        <metrics statements="9" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="7" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-      </file>
     </package>
     <package name="pkg">
-      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="mail.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\pkg\mail.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="3" type="stmt"/>
       </file>
       <file name="sendMail.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\pkg\sendMail.js">
-        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="14" count="2" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
       </file>
     </package>
@@ -468,53 +455,53 @@
         <metrics statements="49" coveredstatements="49" conditionals="26" coveredconditionals="26" methods="9" coveredmethods="9"/>
         <line num="7" count="3" type="stmt"/>
         <line num="16" count="3" type="stmt"/>
-        <line num="31" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="32" count="1" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="57" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="74" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="82" count="2" type="stmt"/>
-        <line num="93" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="97" count="1" type="stmt"/>
-        <line num="101" count="2" type="stmt"/>
-        <line num="116" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="117" count="1" type="stmt"/>
-        <line num="120" count="1" type="stmt"/>
-        <line num="124" count="4" type="stmt"/>
-        <line num="130" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="131" count="1" type="stmt"/>
-        <line num="134" count="3" type="stmt"/>
-        <line num="143" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="144" count="1" type="stmt"/>
-        <line num="147" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="148" count="1" type="stmt"/>
-        <line num="159" count="2" type="stmt"/>
-        <line num="166" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="167" count="1" type="stmt"/>
-        <line num="172" count="1" type="stmt"/>
+        <line num="21" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="47" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="64" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="83" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="106" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="110" count="1" type="stmt"/>
+        <line num="114" count="4" type="stmt"/>
+        <line num="120" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="124" count="3" type="stmt"/>
+        <line num="133" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="134" count="1" type="stmt"/>
+        <line num="137" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="149" count="2" type="stmt"/>
+        <line num="156" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="163" count="3" type="stmt"/>
+        <line num="165" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="166" count="3" type="stmt"/>
+        <line num="169" count="1" type="stmt"/>
         <line num="173" count="3" type="stmt"/>
-        <line num="175" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="176" count="3" type="stmt"/>
-        <line num="179" count="1" type="stmt"/>
-        <line num="183" count="3" type="stmt"/>
-        <line num="189" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="190" count="1" type="stmt"/>
-        <line num="193" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="194" count="1" type="stmt"/>
-        <line num="199" count="2" type="stmt"/>
-        <line num="204" count="2" type="stmt"/>
-        <line num="213" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="214" count="1" type="stmt"/>
+        <line num="179" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="183" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="184" count="1" type="stmt"/>
+        <line num="189" count="2" type="stmt"/>
+        <line num="194" count="2" type="stmt"/>
+        <line num="203" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="204" count="1" type="stmt"/>
       </file>
       <file name="RejectedActivityService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\RejectedActivityService.js">
         <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
@@ -535,36 +522,36 @@
         <line num="41" count="1" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
         <line num="46" count="1" type="stmt"/>
-        <line num="53" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="92" count="2" type="stmt"/>
-        <line num="96" count="2" type="stmt"/>
-        <line num="102" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="103" count="1" type="stmt"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="110" count="2" type="stmt"/>
-        <line num="126" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="127" count="1" type="stmt"/>
-        <line num="130" count="1" type="stmt"/>
-        <line num="134" count="7" type="stmt"/>
-        <line num="143" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="144" count="1" type="stmt"/>
-        <line num="147" count="6" type="cond" truecount="6" falsecount="0"/>
-        <line num="149" count="1" type="stmt"/>
-        <line num="150" count="1" type="stmt"/>
-        <line num="153" count="1" type="stmt"/>
-        <line num="154" count="1" type="stmt"/>
-        <line num="157" count="1" type="stmt"/>
-        <line num="158" count="1" type="stmt"/>
-        <line num="161" count="1" type="stmt"/>
-        <line num="162" count="1" type="stmt"/>
-        <line num="165" count="1" type="stmt"/>
-        <line num="166" count="1" type="stmt"/>
-        <line num="169" count="1" type="stmt"/>
-        <line num="174" count="2" type="stmt"/>
-        <line num="180" count="2" type="cond" truecount="4" falsecount="0"/>
-        <line num="181" count="1" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="94" count="2" type="stmt"/>
+        <line num="98" count="2" type="stmt"/>
+        <line num="104" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="112" count="2" type="stmt"/>
+        <line num="128" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="129" count="1" type="stmt"/>
+        <line num="132" count="1" type="stmt"/>
+        <line num="136" count="7" type="stmt"/>
+        <line num="145" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="146" count="1" type="stmt"/>
+        <line num="149" count="6" type="cond" truecount="6" falsecount="0"/>
+        <line num="151" count="1" type="stmt"/>
+        <line num="152" count="1" type="stmt"/>
+        <line num="155" count="1" type="stmt"/>
+        <line num="156" count="1" type="stmt"/>
+        <line num="159" count="1" type="stmt"/>
+        <line num="160" count="1" type="stmt"/>
+        <line num="163" count="1" type="stmt"/>
+        <line num="164" count="1" type="stmt"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="168" count="1" type="stmt"/>
+        <line num="171" count="1" type="stmt"/>
+        <line num="176" count="2" type="stmt"/>
+        <line num="182" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="183" count="1" type="stmt"/>
       </file>
       <file name="TtdService.js" path="C:\Users\mkhaw\Documents\Code\sistem-apresiasi\sistem-apresiasi-api\src\services\TtdService.js">
         <metrics statements="10" coveredstatements="10" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>

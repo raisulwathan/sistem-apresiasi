@@ -3,6 +3,7 @@ import { InvariantError } from "../exceptions/InvariantError.js"
 import * as ActivitiesService from "../services/ActivitiesService.js"
 import * as SkpiService from "../services/SkpiService.js"
 import * as UsersServices from "../services/UsersService.js"
+import * as TtdServices from "../services/TtdService.js"
 
 export const postSkpiController = async (req, res) => {
     const userId = req.userId
@@ -91,8 +92,9 @@ export const getSkpiByIdController = async (req, res) => {
 
 export const putStatusSkpiByIdController = async (req, res) => {
     const { id } = req.params
-    const { userRole } = req
+    const { userRole, userId } = req
     let status = String(req.query.status)
+    let ttdId = null
 
     const skpi = await SkpiService.getById(id)
 
@@ -123,6 +125,15 @@ export const putStatusSkpiByIdController = async (req, res) => {
                 if (skpi.status !== "accepted by ADMIN") {
                     throw new InvariantError("SKPI sudah divalidasi atau sudah selesai")
                 }
+
+                ttdId = await TtdServices.getByUserId(userId)
+
+                if (!ttdId) {
+                    throw new InvariantError(
+                        "TTD belum ditambahkan. Tambahkan TTD untuk menyelesaikan SKPI"
+                    )
+                }
+
                 status = "completed"
                 break
 
@@ -131,7 +142,7 @@ export const putStatusSkpiByIdController = async (req, res) => {
         }
     }
 
-    await SkpiService.processSkpi(id, status)
+    await SkpiService.processSkpi(id, status, ttdId)
 
     res.json({
         status: "success",
