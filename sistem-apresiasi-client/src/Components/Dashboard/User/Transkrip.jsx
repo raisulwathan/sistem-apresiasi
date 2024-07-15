@@ -327,13 +327,12 @@ const Transkrip = () => {
                   </button>
                 </div>
               ) : (
-                <h3 className=" text-base text-[16px] mt-4 ">SKPI Dalam Proses</h3>
+                <h3 className=" text-base text-center text-gray-300 text-[16px] mt-4 ">SKPI Dalam Proses</h3>
               )}
             </div>
           ) : (
             <div className="mt-2 ">
-              <p className="mt-2">Status</p>
-              <button onClick={handleAjukanSkpi} className="block w-full mt-2 px-4 py-2 font-normal hover:bg-[#305a73] text-[16px] text-gray-300 rounded-md bg-[#1d2638]hover:bg-purple-500">
+              <button onClick={handleAjukanSkpi} className="block w-full mt-7 px-4 py-2 font-normal  text-[16px] text-gray-300 rounded-md bg-[#1d2638] hover:bg-purple-500">
                 Ajukan SKPI
               </button>
             </div>
@@ -468,9 +467,9 @@ const Transkrip = () => {
       )}
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-            <p>Data berhasil dikirim!</p>
-            <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-white rounded-lg bg-customPurple">
+          <div className="bg-[#1d2638] w-[400px] p-8 rounded-lg text-center">
+            <p className="text-gray-300">Data berhasil dikirim!</p>
+            <button onClick={() => setShowPopup(false)} className="px-4 py-2 mt-4 text-gray-300 rounded-lg bg-customPurple">
               Tutup
             </button>
           </div>
@@ -479,8 +478,8 @@ const Transkrip = () => {
 
       {showConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-            <p>Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
+          <div className="bg-[#1d2638] w-[400px] p-8 rounded-lg text-center">
+            <p className="text-gray-300">Anda yakin ingin mengajukan SKPI? SKPI hanya dapat di ajukan satu kali</p>
             <div className="mt-4 space-x-4">
               <button onClick={confirmAjukanSkpi} className="px-4 py-2 text-white rounded-lg bg-customPurple">
                 Ya

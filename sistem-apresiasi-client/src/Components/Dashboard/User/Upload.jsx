@@ -172,11 +172,11 @@ const Upload = () => {
   };
 
   return (
-    <div className="h-screen p-6 lg:p-16 bg-[#1d2638] overflow-y-auto  ">
+    <div className="h-screen p-6 lg:p-16 bg-[#1d2638] overflow-y-auto ">
       <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Upload Kegiatan</h2>
 
       <div className="justify-between lg:flex ">
-        <div className="bg-[#1A4057] p-6 mt-12 rounded-md lg:w-[60%]  ">
+        <div className="bg-[#1A4057] p-6 mt-12 rounded-md  lg:w-[65%]  ">
           <div className="justify-around mt-11 lg:flex lg:items-center">
             <label className="block text-gray-300 lg:text-lg lg:w-1/3 font-poppins" htmlFor="category">
               Kategori :
@@ -474,9 +474,9 @@ const Upload = () => {
 
           {showPopup && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-                <p>Data berhasil dikirim!</p>
-                <button onClick={() => setShowPopup(false)} className="px-4 py-1 mt-4 text-gray-700 text-[15px] hover:text-white hover:border-white hover:bg-sky-500 border rounded-lg border-sky-500">
+              <div className="bg-[#1d2638] w-[400px] p-8 rounded-lg text-center">
+                <p className="text-gray-300">Data berhasil dikirim!</p>
+                <button onClick={() => setShowPopup(false)} className="px-4 py-1 mt-4 text-gray-300 text-[15px] hover:text-white hover:border-white hover:bg-sky-500 border rounded-lg border-sky-500">
                   Tutup
                 </button>
               </div>

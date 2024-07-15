@@ -28,7 +28,7 @@ function Dashboard() {
         });
 
         const skpiData = response.data.data.skpi;
-        setValidatedSkpiData(skpiData.filter((skpi) => skpi.status !== "pending" && skpi.status !== "accepted by OPERATOR"));
+        setValidatedSkpiData(skpiData.filter((skpi) => skpi.status === "completed"));
         setUnvalidatedSkpiData(skpiData.filter((skpi) => skpi.status === "accepted by OPERATOR"));
       } catch (error) {
         console.error("Error fetching validated SKPI data:", error);
@@ -67,7 +67,7 @@ function Dashboard() {
         <div className="lg:py-8  text-gray-300 bg-[#313347] transition-transform transform rounded-md shadow-2xl  info-box ">
           <div className="flex items-center justify-around p-3 ">
             <div className="py-4 ">
-              <h3 className="font-mono">Total SKPI Divalidasi</h3>
+              <h3 className="font-mono">Total SKPI Selesai</h3>
               <p className="font-medium mt-2 font-mono lg:text-[30px] ">{validatedSkpiData.length}</p>
             </div>
             <FiCheckCircle size={60} color="#0F6292" />
@@ -95,7 +95,7 @@ function Dashboard() {
 
       <div className="relative  flex-row items-start w-full bg-[#313347]  shadow-2xl rounded-md p-7 hidden lg:flex ">
         <div className="w-2/3 pr-6">
-          <h2 className="mb-2 font-mono text-base font-medium text-gray-300">SKPI yang sudah divalidasi</h2>
+          <h2 className="mb-2 font-mono text-base font-medium text-gray-300">SKPI yang sudah Selesai</h2>
 
           <SkpiVisual validatedSkpiData={validatedSkpiData} />
         </div>

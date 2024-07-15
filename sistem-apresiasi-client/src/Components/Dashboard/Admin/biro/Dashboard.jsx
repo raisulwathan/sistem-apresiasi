@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import * as d3 from "d3";
 import { getToken } from "../../../../utils/Config";
-import { FaCheckCircle, FaTrophy, FaClock } from "react-icons/fa";
 import SkpiVisual from "./DataVisualisation/SkpiVisual";
 import Independent from "./DataVisualisation/Independent";
 import Activity from "./DataVisualisation/Activity";
@@ -28,7 +26,7 @@ function Dashboard() {
         });
 
         const skpiData = response.data.data.skpi;
-        setValidatedSkpiData(skpiData.filter((skpi) => skpi.status !== "pending"));
+        setValidatedSkpiData(skpiData.filter((skpi) => skpi.status === "completed"));
         setUnvalidatedSkpiData(skpiData.filter((skpi) => skpi.status === "accepted by WD"));
       } catch (error) {
         console.error("Error fetching validated SKPI data:", error);
@@ -68,7 +66,7 @@ function Dashboard() {
         <div className="py-8 text-gray-300 bg-[#313347] transition-transform transform rounded-md shadow-2xl  info-box ">
           <div className="flex items-center justify-around ">
             <div className="py-4 ">
-              <h3 className="font-mono">Total SKPI Divalidasi</h3>
+              <h3 className="font-mono">Total SKPI Selesai</h3>
               <p className="font-medium mt-2 font-mono text-[30px] ">{validatedSkpiData.length}</p>
             </div>
             <FiCheckCircle size={60} color="#0F6292" />
@@ -96,7 +94,7 @@ function Dashboard() {
 
       <div className="relative flex flex-row items-start w-full bg-[#313347]  shadow-2xl rounded-md p-7">
         <div className="w-2/3 pr-6">
-          <h2 className="mb-2 font-mono text-base font-medium text-gray-300">SKPI yang sudah divalidasi</h2>
+          <h2 className="mb-2 font-mono text-base font-medium text-gray-300">SKPI yang Sudah Selesai</h2>
 
           <SkpiVisual validatedSkpiData={validatedSkpiData} />
         </div>

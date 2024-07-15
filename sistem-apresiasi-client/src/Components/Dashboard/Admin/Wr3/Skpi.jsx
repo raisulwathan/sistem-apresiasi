@@ -97,9 +97,9 @@ function Skpi() {
       setShowSignaturePad(false); // Hide the signature pad after upload
       setTtdExist(true); // Set ttdExist to true after upload
       setShowUploadConfirmation(false); // Hide the confirmation pop-up after upload
-      setShowSuccessMessage(true); // Show the success message pop-up
+      setShowSuccessUploadMessage(true); // Show the success message pop-up
       setTimeout(() => {
-        setShowSuccessMessage(false); // Hide the success message pop-up after a few seconds
+        setShowSuccessUploadMessage(false); // Hide the success message pop-up after a few seconds
       }, 2000);
       return response.data.data.fileUrl;
     } catch (error) {
@@ -196,19 +196,19 @@ function Skpi() {
         })
       );
 
+      setIsLoading(false);
       setShowSuccessMessageAll(true);
       setTimeout(() => {
         setShowSuccessMessageAll(false);
       }, 2000);
     } catch (error) {
+      setIsLoading(false);
       setShowErrorMessageAll(true);
       setErrorMessageAll(error.message);
 
       setTimeout(() => {
         setShowErrorMessageAll(false);
       }, 2000);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -397,10 +397,10 @@ function Skpi() {
       </div>
 
       {showDetail && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="relative max-w-screen-lg p-6 mx-auto bg-[#424461] rounded-lg" style={{ width: "35vw" }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative max-w-4xl w-full bg-[#2d2f45] rounded-lg shadow-lg p-6">
             <button
-              className="absolute text-2xl text-red-600 top-3 right-3 hover:text-red-800"
+              className="absolute text-3xl text-red-600 transition duration-200 top-3 right-3 hover:text-red-800"
               onClick={() => {
                 setShowDetail(false);
                 setDetailKegiatan({});
@@ -408,36 +408,64 @@ function Skpi() {
             >
               <IoMdCloseCircleOutline />
             </button>
-            <h2 className="mb-4 text-lg font-medium text-gray-300">Detail Kegiatan</h2>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Nama:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.owner.name}</p>
-            </div>
-
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Jurusan:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.owner.major}</p>
-            </div>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">NPM:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.owner.npm}</p>
-            </div>
-
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Point Mandatory:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.mandatoryPoints}</p>
-            </div>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Point Scientific:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.scientificPoints}</p>
-            </div>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Point Organization:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.organizationPoints}</p>
-            </div>
-            <div className="mb-2">
-              <p className="text-sm font-medium text-gray-300">Point Other:</p>
-              <p className="text-sm text-gray-400">{detailKegiatan.otherPoints}</p>
+            <h2 className="mb-6 text-2xl font-bold text-center text-white">Detail SKPI</h2>
+            <div className="flex justify-between">
+              <div className="w-1/2 pr-4">
+                <table className="w-full text-sm text-left text-gray-400">
+                  <thead className="text-xs text-gray-400 uppercase bg-gray-700">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        Kategori
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Point
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="bg-gray-800 border-b border-gray-700">
+                      <td className="px-6 py-4">Kegiatan Wajib</td>
+                      <td className="px-6 py-4">{detailKegiatan.mandatoryPoints}</td>
+                    </tr>
+                    <tr className="bg-gray-800 border-b border-gray-700">
+                      <td className="px-6 py-4">Organisasi dan Kepemimpinan</td>
+                      <td className="px-6 py-4">{detailKegiatan.organizationPoints}</td>
+                    </tr>
+                    <tr className="bg-gray-800 border-b border-gray-700">
+                      <td className="px-6 py-4">Penalaran dan Keilmuan</td>
+                      <td className="px-6 py-4">{detailKegiatan.scientificPoints}</td>
+                    </tr>
+                    <tr className="bg-gray-800 border-b border-gray-700">
+                      <td className="px-6 py-4">Minat dan Bakat</td>
+                      <td className="px-6 py-4">{detailKegiatan.talentPoints}</td>
+                    </tr>
+                    <tr className="bg-gray-800 border-b border-gray-700">
+                      <td className="px-6 py-4">Kepedulian Sosial</td>
+                      <td className="px-6 py-4">{detailKegiatan.charityPoints}</td>
+                    </tr>
+                    <tr className="bg-gray-800">
+                      <td className="px-6 py-4">Kegiatan Lainnya</td>
+                      <td className="px-6 py-4">{detailKegiatan.otherPoints}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="w-1/2 p-4 bg-gray-700 rounded-lg ">
+                <div className="py-2">
+                  <div>
+                    <p className="text-[14px] text-white ">Nama:</p>
+                    <p className="px-2 py-2 text-sm text-white bg-[#2d2f45] rounded-lg ">{detailKegiatan.owner.name}</p>
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-[14px] text-white">NPM:</p>
+                    <p className="px-2 py-2 text-sm text-white bg-[#2d2f45] rounded-lg">{detailKegiatan.owner.npm}</p>
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-[14px] text-white">Fakultas:</p>
+                    <p className="px-2 py-2 text-sm text-white bg-[#2d2f45] rounded-lg">{detailKegiatan.owner.faculty}</p>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="mt-6 text-center">
               <button
@@ -445,10 +473,10 @@ function Skpi() {
                   setShowDetailConfirmation(true);
                   setShowDetail(false);
                 }}
-                className={`px-4 py-2 text-sm font-medium text-gray-300  rounded-lg bg-[#0F6292] hover:bg-[#3f4481] ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`px-6 py-2 text-sm font-medium text-white bg-[#0F6292] rounded-full hover:bg-blue-700 transition duration-200 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={isLoading}
               >
-                {isLoading ? "" : "Validasi"}
+                {isLoading ? "Loading..." : "Validasi"}
               </button>
             </div>
           </div>
@@ -547,7 +575,7 @@ function Skpi() {
           </div>
         </div>
       )}
-      {showSuccessMessage && (
+      {showSuccessUploadMessage && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
           <div className="relative w-3/4 p-8 mx-auto bg-[#424461] rounded-lg shadow-lg sm:w-96">
             <p className="text-sm text-center text-gray-300">Tanda tangan berhasil diunggah!</p>

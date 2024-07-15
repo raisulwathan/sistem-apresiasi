@@ -3,9 +3,10 @@ import styles from "../../style";
 import { logoApresiasi, robot } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import SKPIPDF from "../../assets/BukuSKPI.pdf"; // Make sure this path is correct
 
 const Login = () => {
-  const [npm, setNpm] = useState(""); // State for username
+  const [npm, setNpm] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Login = () => {
   return (
     <section className={`flex md:flex-row flex-col lg:py-[171px] py-[127px] overflow-hidden h-[100%]`}>
       <div className={`flex-1 ${styles.flexStart} flex-col xl:px-0 sm:px-16 `}>
-        <div className={`py-24 lg:px-16 border-opacity-40 shadow-secondary border border-x-secondary border-y-secondary rounded-lg shadow-lg ml-5 lg:ml-48 ${styles.backgroundColor}`}>
+        <div className={`py-24 lg:px-16 border-opacity-40 shadow-secondary border border-x-secondary border-y-secondary rounded-lg shadow-lg mx-3  lg:ml-48 ${styles.backgroundColor}`}>
           <form className="lg:w-96 lg:h-96" onSubmit={handleLogin}>
             <div className="mb-4 text-center">
               <img src={logoApresiasi} alt="logo Apresiasi" className="mx-auto w-[50px] h-[50px]" />
@@ -84,12 +85,17 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="px-[140px] py-7 lg:mr-16 sm:flex">
+            <div className="px-[140px] py-7 lg:mr-16 sm:flex ">
               <button className="px-6 py-3 font-semibold text-black rounded-lg lg:ml-3 bg-secondary " type="submit">
                 Login
               </button>
             </div>
           </form>
+          <div className="flex justify-center py-3 mt-10 transition duration-300 opacity-75 hover:transform hover:scale-105">
+            <a href={SKPIPDF} download className="px-6 py-2 font-semibold text-center text-white bg-[#2a4d40] rounded-lg">
+              <p className="text-gray-300 "> Download Panduan SKPI</p>
+            </a>
+          </div>
         </div>
       </div>
 

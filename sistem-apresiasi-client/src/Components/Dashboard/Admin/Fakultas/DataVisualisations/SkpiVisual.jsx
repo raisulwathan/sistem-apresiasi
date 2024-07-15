@@ -9,7 +9,7 @@ const SkpiVisual = ({ validatedSkpiData }) => {
   useEffect(() => {
     if (validatedSkpiData.length === 0) return;
 
-    const skpiByMajor = countSkpiByMajor(validatedSkpiData);
+    const skpiByMajor = countSkpiByMajor(validatedSkpiData, "completed");
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -83,10 +83,10 @@ const SkpiVisual = ({ validatedSkpiData }) => {
       .style("font-family", "Arial, sans-serif");
   }, [validatedSkpiData]);
 
-  const countSkpiByMajor = (skpiData, status) => {
+  const countSkpiByMajor = (skpiData, status = "completed") => {
     const skpiByMajor = {};
     skpiData.forEach((skpi) => {
-      if ((!status || isStatusAccepted(skpi.status, status)) && skpi.owner && skpi.owner.major) {
+      if (isStatusAccepted(skpi.status, status) && skpi.owner && skpi.owner.major) {
         const major = skpi.owner.major.trim();
         skpiByMajor[major] = (skpiByMajor[major] || 0) + 1;
       }

@@ -10,6 +10,7 @@ const KegiatanLomba = () => {
   const [selectedYear, setSelectedYear] = useState("");
   const [years, setYears] = useState([]);
   const token = getToken();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,10 +70,11 @@ const KegiatanLomba = () => {
     setSelectedYear(event.target.value);
   };
 
+  const filteredData = data.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
   // Logic to calculate indexes of items to be displayed
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.filter((item) => selectedYear === "" || item.year === selectedYear).slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredData.filter((item) => selectedYear === "" || item.year === selectedYear).slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -90,15 +92,20 @@ const KegiatanLomba = () => {
           Exports
         </button>
 
-        <div className="mb-6 mt-7">
-          <select id="tahun" className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" value={selectedYear} onChange={handleYearChange}>
-            <option value="">Pilih Tahun</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
+        <div className="flex justify-between mb-6">
+          <div>
+            <select id="tahun" className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" value={selectedYear} onChange={handleYearChange}>
+              <option value="">Pilih Tahun</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="">
+            <input type="text" placeholder="Cari Nama kegiatan" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" />
+          </div>
         </div>
 
         {currentItems.length > 0 ? (

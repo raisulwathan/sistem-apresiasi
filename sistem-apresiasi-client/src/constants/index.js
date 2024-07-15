@@ -13,10 +13,6 @@ export const navLinks = [
     id: "syarat",
     title: "Syarat & Ketentuan",
   },
-  {
-    id: "Prestasi",
-    title: "Prestasi",
-  },
 ];
 
 export const features = [

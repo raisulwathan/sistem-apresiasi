@@ -261,12 +261,12 @@ const KegiatanMahasiswa = () => {
 
       {showModal && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="relative flex flex-col md:flex-row p-4 bg-[#424461] rounded-lg w-11/12 md:w-[800px] lg:w-[1000px] h-auto max-h-[90%] overflow-y-auto">
+          <div className="relative flex flex-col md:flex-row p-4 bg-[#424461] p-8 rounded-lg w-11/12 md:w-[800px] lg:w-[1000px] h-auto max-h-[90%] overflow-y-auto">
             <button onClick={() => setShowModal(false)} className="absolute p-1 text-red-600 rounded-md top-2 right-2 focus:outline-none focus:ring focus:border-blue-300">
               <IoIosCloseCircleOutline size={30} />
             </button>
             <div className="w-full pr-0 mb-4 md:w-1/2 md:pr-4 md:mb-0">
-              <h3 className="mb-2 text-lg text-[16px] text-gray-300">Detail Data:</h3>
+              <h3 className="mb-2 text-xl text-[16px] text-gray-300">Detail Data:</h3>
               <div>
                 <div className="mt-5">
                   <p className="text-[15px] text-gray-300 ">Kegiatan:</p>
@@ -279,7 +279,7 @@ const KegiatanMahasiswa = () => {
                 <div className="mt-5">
                   <p className="text-[15px] text-gray-300 ">Sertifikat:</p>
                   <p className="px-4 py-2 rounded-lg bg-[#313347]">
-                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className="text-[14px] text-gray-400 hover:underline">
+                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className="text-[14px] text-blue-400 hover:underline">
                       Lihat Sertifikat
                     </a>
                   </p>
@@ -295,10 +295,6 @@ const KegiatanMahasiswa = () => {
                 <div className="mt-5">
                   <p className="text-[15px] text-gray-300 ">Point:</p>
                   <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.points || "-"}</p>
-                </div>
-                <div className="mt-5">
-                  <p className="text-[15px] text-gray-300 ">Status:</p>
-                  <p className="px-4 py-2 text-[14px ] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.status || "-"}</p>
                 </div>
                 <div className="mt-5">
                   <p className="text-[15px] text-gray-300 ">Tahun:</p>

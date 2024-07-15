@@ -10,6 +10,7 @@ const KegiatanLomba = () => {
   const [itemsPerPage] = useState(5);
   const [selectedYear, setSelectedYear] = useState("");
   const [years, setYears] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,10 +70,13 @@ const KegiatanLomba = () => {
     setSelectedYear(event.target.value);
   };
 
+  // Logic to filter data based on search query
+  const filteredData = data.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
   // Logic to calculate indexes of items to be displayed
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.filter((item) => selectedYear === "" || item.year === selectedYear).slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredData.filter((item) => selectedYear === "" || item.year === selectedYear).slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -81,35 +85,40 @@ const KegiatanLomba = () => {
     <div className="h-screen p-16 bg-[#424461] overflow-y-auto">
       <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Kegiatan Lomba</h2>
 
-      <div className=" mt-9 p-10 bg-[#313347] rounded-2xl">
+      <div className="mt-9 p-10 bg-[#313347] rounded-2xl">
         <button
           type="submit"
           onClick={handleExports}
-          className="px-4 py-2 my-5 text-base  transition-transform  rounded-lg w-[150px] bg-yellow-400 hover:bg-yellow-600 font-poppins hover:transform hover:scale-105  mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="px-4 py-2 my-5 text-base transition-transform rounded-lg w-[150px] bg-yellow-400 hover:bg-yellow-600 font-poppins hover:transform hover:scale-105 mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
         >
           Exports
         </button>
 
-        <div className="mb-6 mt-7">
-          <select id="tahun" className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" value={selectedYear} onChange={handleYearChange}>
-            <option value="">Pilih Tahun</option>
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
+        <div className="flex justify-between mb-6 mt-7">
+          <div>
+            <select id="tahun" className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" value={selectedYear} onChange={handleYearChange}>
+              <option value="">Pilih Tahun</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="">
+            <input type="text" placeholder="Cari Nama kegiatan" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" />
+          </div>
         </div>
 
         {currentItems.length > 0 ? (
           <table className="min-w-full">
             <thead>
               <tr className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] ">
-                <th className="px-4 py-2 text-[15px] font-normal text-left ">Nama Kegiatan</th>
-                <th className="px-4 py-2 text-[15px] font-normal text-left ">Bidang Kegiatan</th>
-                <th className="px-4 py-2 text-[15px] font-normal text-left ">Tingkat</th>
-                <th className="px-4 py-2 text-[15px] font-normal text-left ">Tahun</th>
-                <th className="px-4 py-2 text-[15px] font-normal text-left ">Pemilik</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left">Nama Kegiatan</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left">Bidang Kegiatan</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left">Tingkat</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left">Tahun</th>
+                <th className="px-4 py-2 text-[15px] font-normal text-left">Pemilik</th>
               </tr>
             </thead>
             <tbody>

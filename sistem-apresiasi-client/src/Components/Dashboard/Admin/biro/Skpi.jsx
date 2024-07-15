@@ -156,7 +156,7 @@ function Skpi() {
 
             {showConfirmationPopup && (
               <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#424461] rounded-lg" style={{ width: "50vw" }}>
+                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#2C3E50] rounded-lg" style={{ width: "50vw" }}>
                   <h3 className="text-gray-300">Konfirmasi Validasi</h3>
                   <div className="p-5">
                     <p className="text-gray-300">Apakah Anda yakin ingin memvalidasi kegiatan ini?</p>
@@ -181,7 +181,7 @@ function Skpi() {
             )}
             {showSuccessPopup && (
               <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#333548] rounded-lg" style={{ width: "50vw" }}>
+                <div className="relative max-w-screen-lg p-6 mx-auto bg-[#2C3E50] rounded-lg" style={{ width: "50vw" }}>
                   <h3 className="text-gray-300">Sukses</h3>
                   <div className="p-5">
                     <p className="text-gray-300">Kegiatan berhasil divalidasi!</p>
@@ -198,32 +198,70 @@ function Skpi() {
         )}
 
         {showDetail && (
-          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="relative max-w-screen-lg p-6 mx-auto bg-[#424461] rounded-lg" style={{ width: "50vw" }}>
-              <h3 className="flex items-center justify-between">
-                <span className="text-gray-300">Detail Kegiatan</span>
-                <button onClick={handleCloseDetail} className="text-red-600 hover:text-red-800">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="relative w-3/4 p-6 mx-auto bg-[#2C3E50] rounded-lg shadow-lg">
+              <h3 className="flex items-center justify-between mb-4 text-lg font-semibold text-white">
+                <span>Detail Kegiatan</span>
+                <button onClick={handleCloseDetail} className="text-red-500 hover:text-red-400">
                   <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                   </svg>
                 </button>
               </h3>
-              <div className="p-5 text-gray-300">
-                <p>Kegiatan Wajib : {detailKegiatan.mandatoryPoints}</p>
-                <p>Organisasi dan Kepemimpinan : {detailKegiatan.organizationPoints}</p>
-                <p>Penalaran dan Keilmuan: {detailKegiatan.scientificPoints}</p>
-                <p>Minat dan Bakat: {detailKegiatan.talentPoints}</p>
-                <p>Kepedulian Sosial: {detailKegiatan.charityPoints}</p>
-                <p>Other Points: {detailKegiatan.otherPoints}</p>
-                <p>Status: {detailKegiatan.status}</p>
 
-                <p className="mt-4">Mahasiswa:</p>
-                <div className="pl-6">
-                  <p>Nama: {detailKegiatan.owner.name}</p>
-                  <p>NPM: {detailKegiatan.owner.npm}</p>
-                  <p>Fakultas: {detailKegiatan.owner.faculty}</p>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="p-4 bg-[#3B4B60] rounded-lg">
+                  <h4 className="mb-2 text-lg font-semibold text-white">Kegiatan</h4>
+                  <table className="w-full mt-4 text-left text-gray-300">
+                    <tbody>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Kegiatan Wajib:</td>
+                        <td className="py-1">{detailKegiatan.mandatoryPoints}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Organisasi dan Kepemimpinan:</td>
+                        <td className="py-1">{detailKegiatan.organizationPoints}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Penalaran dan Keilmuan:</td>
+                        <td className="py-1">{detailKegiatan.scientificPoints}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Minat dan Bakat:</td>
+                        <td className="py-1">{detailKegiatan.talentPoints}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Kepedulian Sosial:</td>
+                        <td className="py-1">{detailKegiatan.charityPoints}</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1 font-medium text-white">Kegiatan Lainnya:</td>
+                        <td className="py-1">{detailKegiatan.otherPoints}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
 
+                <div className="p-4 bg-[#3B4B60] rounded-lg">
+                  <h4 className="mb-2 text-lg font-semibold text-white">Mahasiswa</h4>
+                  <div className="py-2">
+                    <div>
+                      <p className="font-medium text-white ">Nama:</p>
+                      <p className="px-2 py-2 text-white bg-gray-700 rounded-lg ">{detailKegiatan.owner.name}</p>
+                    </div>
+                    <div className="mt-3">
+                      <p className="font-medium text-white">NPM:</p>
+                      <p className="px-2 py-2 text-white bg-gray-700 rounded-lg">{detailKegiatan.owner.npm}</p>
+                    </div>
+                    <div className="mt-3">
+                      <p className="font-medium text-white">Fakultas:</p>
+                      <p className="px-2 py-2 text-white bg-gray-700 rounded-lg">{detailKegiatan.owner.faculty}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end mt-6">
                 <button onClick={handleValidationConfirmation} className="px-3 py-3 mt-4 text-[14px] shadow-lg text-white rounded bg-[#0F6292] hover:bg-[#274e64]">
                   Validasi Kegiatan
                 </button>
