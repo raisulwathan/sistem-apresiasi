@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import * as d3 from "d3";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 
 const Independent = ({ token }) => {
   const [independentAchievements, setIndependentAchievements] = useState([]);
   const svgRefIndependent = useRef();
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState("");
-  const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from({ length: 5 }, (_, index) => currentYear - index);
+  const [yearOptions, setYearOptions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +22,11 @@ const Independent = ({ token }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data.data);
         if (response.status === 200) {
           setIndependentAchievements(response.data.data);
+          const years = [...new Set(response.data.data.map((achievement) => achievement.year))].sort();
+          setYearOptions(years);
         } else {
           setError("Data tidak ditemukan");
         }
@@ -91,7 +93,7 @@ const Independent = ({ token }) => {
 
     svg.selectAll("*").remove();
 
-    svg.attr("width", width).attr("height", height).style("background-color", "white");
+    svg.attr("width", width).attr("height", height).style("background-color", "#313347");
 
     svg
       .append("g")
@@ -105,10 +107,19 @@ const Independent = ({ token }) => {
       .attr("dx", "-0.5em")
       .attr("dy", "0.5em")
       .attr("transform", "rotate(-45)")
-      .style("fill", "#6b7280") // X-axis label color
+      .style("fill", "#d1d5db")
       .style("font-size", "12px");
 
-    svg.append("g").attr("class", "y-axis").attr("transform", `translate(${margin.left},0)`).transition().duration(1000).call(d3.axisLeft(yScale));
+    svg
+      .append("g")
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${margin.left},0)`)
+      .transition()
+      .duration(1000)
+      .call(d3.axisLeft(yScale))
+      .selection() // Ensure the selection is returned after the transition
+      .selectAll("text")
+      .style("fill", "#d1d5db");
 
     svg
       .append("text")
@@ -116,7 +127,7 @@ const Independent = ({ token }) => {
       .attr("transform", `translate(${width / 2}, ${height + margin.bottom / 2})`)
       .style("text-anchor", "middle")
       .style("font-style", "italic")
-      .style("fill", "#6b7280") // X-axis label color
+      .style("fill", "#d1d5db")
       .style("font-size", "14px");
 
     svg.append("path").datum(data).attr("fill", "none").attr("stroke", "#8b5cf6").attr("stroke-width", 2).attr("d", line); // Line color and width
@@ -152,7 +163,7 @@ const Independent = ({ token }) => {
       .attr("x2", width - margin.right)
       .attr("y1", (d) => yScale(d))
       .attr("y2", (d) => yScale(d))
-      .style("stroke", "#cbd5e0") // Grid line color
+      .style("stroke", "#424461")
       .style("stroke-dasharray", "2,2");
 
     svg
@@ -165,18 +176,21 @@ const Independent = ({ token }) => {
       .attr("x2", (d) => xScale(d) + xScale.bandwidth() / 2)
       .attr("y1", yScale(0))
       .attr("y2", yScale(d3.max(data, (entry) => entry.count)))
-      .style("stroke", "#cbd5e0") // Grid line color
+      .style("stroke", "#424461")
       .style("stroke-dasharray", "2,2");
   }, [independentAchievements, selectedYear]);
 
   return (
-    <div className="p-4 bg-white h-[75vh] w-full border rounded-lg shadow-lg mt-7">
+    <div className="p-4 bg-[#313347] h-[75vh] w-full  rounded-md shadow-lg mt-7">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="mb-2 text-base font-medium text-gray-700">Data Prestasi</h2>
-          <div className="h-1 mb-6 border rounded-md bg-gradient-to-r from-green-300 to-green-400 "></div>
+          <h2 className="mb-2 font-mono text-base font-medium text-gray-300">Data Prestasi</h2>
         </div>
-        <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="px-2 py-3 text-[13px] border border-amber-500 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+        <select
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+          className="px-2 py-3 text-[13px] bg-[#313347] text-gray-300  border border-[#0F6292] rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        >
           <option value="">Semua Tahun</option>
           {yearOptions.map((year) => (
             <option key={year} value={year}>

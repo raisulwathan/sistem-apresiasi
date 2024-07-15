@@ -14,6 +14,8 @@ function FormulirPengabdian() {
     uploadedFiles: [],
   });
   const token = getToken();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -50,24 +52,31 @@ function FormulirPengabdian() {
         },
       });
       console.log(response);
+      setShowSuccess(true);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmation(false);
+    await handleUpload();
   };
 
   return (
-    <div className="w-[1130px] h-[700px] p-6">
-      <h1 className="text-2xl font-semibold mb-11">Formulir Pembinaan Mental kebangsaan</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <label htmlFor="fakultas" className="w-36">
+    <div className="max-w-[800px] bg-[#313347]  h-auto p-6">
+      <h1 className="text-lg font-semibold text-gray-300 text-start mb-11">Formulir Pembinaan Mental kebangsaan</h1>
+      <form onSubmit={handleSubmit} className="space-y-11">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="fakultas" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Fakultas:
           </label>
-          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500">
+          <select id="facultyName" value={formData.facultyName} onChange={handleInputChange} className="flex-grow p-2 text-center bg-[#242535] border rounded-lg border-[#0F6292] text-gray-300">
             <option value="">Pilih Fakultas</option>
             <option value="Fakultas Mipa">Fakultas Mipa</option>
             <option value="Fakultas teknik">Fakultas teknik</option>
@@ -84,51 +93,80 @@ function FormulirPengabdian() {
             <option value="Fakultas Dokter gigi">Fakultas Kedokteran Gigi</option>
           </select>
         </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="program" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="program" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Nama Kegiatan:
           </label>
-          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
+          <input type="text" id="eventName" value={formData.eventName} onChange={handleInputChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="activityName" className="w-36">
-            Tingkat Pengakuan Jenis Kegiatan:
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="activityName" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
+            Tingkat Pengakuan :
           </label>
-          <select id="activityName" value={formData.activityName} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500">
+          <select id="activityName" value={formData.activityName} onChange={handleInputChange} className="flex-grow p-2 text-center border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg">
             <option value="">Tingkat pengakuan Jenis kegiatan</option>
             <option value="Pelatihan Kepemimpinan Mahasiswa">Pelatihan Kepemimpinan Mahasiswa</option>
             <option value="Pelatihan bela Negara">Pelatihan bela Negara/Kewiraan/Wawasan Nusantara</option>
-            <option value="Pendidikan Norma etika">Pendidikan Norma ,etika,Pembinaan Karakter dan soft skills Mahasiswa</option>
+            <option value="Pendidikan Norma etika">Pendidikan Norma ,etika,Pembinaan Karakter dan soft skills</option>
             <option value="Pendidikan atau gerakan">Pendidikan atau gerakan anti penyalahgunaan NAPZA</option>
             <option value="Pendidikan atau gerakan radikalisme">Pendidikan atau gerakan anti radikalisme </option>
             <option value="Kampanye Pencegahan">Kampanye Pencegahan kekeran seksual dan perundungan</option>
             <option value="Kampanye Kampus">Kampanye Kampus sehat dan/ atau green kampus</option>
           </select>
         </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="tingkatan" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="tingkatan" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Tingkatan:
           </label>
-          <select id="level" onChange={handleInputChange} value={formData.level} className="flex-grow p-2 border rounded-lg border-amber-500">
-            {/* Options for levels */}
+          <select id="level" onChange={handleInputChange} value={formData.level} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg">
+            <option value="Level"></option>
+            <option value="Bekerja sama dengan stakeholder diluar PT"> Bekerja sama dengan stakeholder diluar PT</option>
+            <option value="Lingkungan PT"> Lingkungan PT</option>
+            <option value="Lingkungan Fakultas">Lingkungan Fakultas</option>
+            <option value="lingkungan himpunan mahasiswa"> lingkungan himpunan mahasiswa</option>
           </select>
         </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="tahunKegiatan" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="tahunKegiatan" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Tahun Kegiatan:
           </label>
-          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
+          <input type="text" id="years" value={formData.years} onChange={handleInputChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="file" className="w-36">
+        <div className="flex flex-col mb-4 md:flex-row md:items-center">
+          <label htmlFor="file" className="mb-2 text-gray-300 md:mb-0 md:w-1/3 md:text-right md:pr-4">
             Unggah File:
           </label>
-          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 border rounded-lg border-amber-500" />
+          <input type="file" id="file" onChange={handleFileChange} className="flex-grow p-2 border bg-[#242535] border-[#0F6292] text-gray-300 text-[14px] rounded-lg" />
         </div>
-        <button type="submit" onClick={handleUpload} className="px-4 py-2 text-base transition-transform hover:text-white rounded-lg w-[150px] bg-amber-500 font-poppins hover:transform hover:scale-110">
+        <button type="submit" className="px-4 py-2 text-base transition-transform text-gray-300  rounded-lg w-[150px]  bg-[#0F6292]  hover:bg-[#1c2a33] hover:border-white font-poppins hover:transform hover:scale-110">
           Submit
         </button>
       </form>
+
+      {showConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="p-6 bg-[#424461] rounded-lg shadow-lg">
+            <p className="mb-4 text-gray-300">Apakah anda yakin Mendaftarkan data ini?</p>
+            <button onClick={handleConfirmSubmit} className="px-4 py-1 mr-2 text-white rounded-lg hover:bg-[#1c2a33] bg-[#0F6292]">
+              Ya
+            </button>
+            <button onClick={() => setShowConfirmation(false)} className="px-4 py-1 bg-red-500 rounded-lg hover:bg-red-700">
+              Tidak
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showSuccess && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="p-6 bg-[#424461] rounded-lg shadow-lg">
+            <p className="mb-4 text-gray-300">Berhasil didaftarkan!</p>
+            <button onClick={() => setShowSuccess(false)} className="px-4 py-2 text-gray-300 rounded-lg hover:bg-[#1c2a33] bg-[#0F6292]">
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

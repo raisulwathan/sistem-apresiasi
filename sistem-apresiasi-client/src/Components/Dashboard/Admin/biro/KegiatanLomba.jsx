@@ -4,10 +4,12 @@ import { getToken } from "../../../../utils/Config";
 
 const KegiatanLomba = () => {
   const [data, setData] = useState([]);
-  const token = getToken();
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [selectedYear, setSelectedYear] = useState("");
+  const [years, setYears] = useState([]);
+  const token = getToken();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +22,10 @@ const KegiatanLomba = () => {
 
         if (response.status === 200) {
           setData(response.data.data);
+
+          // Extract unique years from the data
+          const uniqueYears = Array.from(new Set(response.data.data.map((item) => item.year)));
+          setYears(uniqueYears);
         } else {
           setError("Data not found");
         }
@@ -59,30 +65,46 @@ const KegiatanLomba = () => {
     }
   };
 
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
   // Logic to calculate indexes of items to be displayed
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = data.filter((item) => selectedYear === "" || item.year === selectedYear).slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="pt-3 overflow-auto">
-      <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Lomba</h2>
+    <div className="h-screen p-16 bg-[#424461] overflow-y-auto">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Kegiatan Lomba</h2>
 
-      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
+      <div className=" mt-9 p-10 bg-[#313347] rounded-2xl">
         <button
           type="submit"
           onClick={handleExports}
-          className="px-4 py-2 my-5 text-base  transition-transform hover:text-secondary rounded-lg w-[150px] bg-yellow-400 hover:bg-yellow-200 font-poppins hover:transform hover:scale-105  mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="px-4 py-2 my-5 text-base  transition-transform  rounded-lg w-[150px] bg-yellow-400 hover:bg-yellow-600 font-poppins hover:transform hover:scale-105  mr-8 focus:outline-none focus:ring-2 focus:ring-yellow-500"
         >
           Exports
         </button>
+
+        <div className="mb-6 mt-7">
+          <select id="tahun" className="p-2 text-gray-300 border bg-[#313347] text-[14px] rounded-md border-[#0F6292]" value={selectedYear} onChange={handleYearChange}>
+            <option value="">Pilih Tahun</option>
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {currentItems.length > 0 ? (
           <table className="min-w-full">
             <thead>
-              <tr className="border border-gray-600 ">
+              <tr className="text-gray-400 border-b border-gray-600 bg-[#1c1d29]">
                 <th className="px-4 py-2 text-[15px] font-normal text-left ">Nama Kegiatan</th>
                 <th className="px-4 py-2 text-[15px] font-normal text-left ">Bidang Kegiatan</th>
                 <th className="px-4 py-2 text-[15px] font-normal text-left ">Tingkat</th>
@@ -91,8 +113,8 @@ const KegiatanLomba = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item, index) => (
-                <tr key={item.id} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+              {currentItems.map((item) => (
+                <tr key={item.id} className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] rounded-lg">
                   <td className="px-4 py-2 text-[14px]">{item.name}</td>
                   <td className="px-4 py-2 text-[14px]">{item.level_activity}</td>
                   <td className="px-4 py-2 text-[14px]">{item.participant_type}</td>
@@ -114,14 +136,18 @@ const KegiatanLomba = () => {
         )}
 
         {/* Pagination */}
-        <p className="mt-4 text-center text-[15px]">
+        <p className="mt-4 text-center text-gray-300 text-[15px]">
           Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
         </p>
         <div className="flex justify-center mt-4">
-          <button className="px-3 py-1 mr-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+          <button className="px-3 py-1 text-sm text-[13px] text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
             Previous
           </button>
-          <button className="px-3 py-1 ml-2 text-[13px] border rounded-md hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= data.length}>
+          <button
+            className="px-3 py-1 ml-5 text-[13px] text-sm text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
+            onClick={() => paginate(currentPage + 1)}
+            disabled={indexOfLastItem >= data.length}
+          >
             Next
           </button>
         </div>

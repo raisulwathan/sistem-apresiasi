@@ -5,6 +5,7 @@ import { getToken, refreshToken } from "../../../utils/Config";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Transkrip from "./Transkrip";
+import { robot } from "../../../assets";
 
 const Upload = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -171,315 +172,324 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-h-[887px] h-[878px] overflow-auto my-2 mr-[3px] lg:my-0 lg:mr-0 lg:mt-6 bg-white lg:p-14 lg:pb-3 lg:w-[98.5%] rounded-lg ">
-      <h2 className="mb-6 lg:text-[37px] text-[25px] font-medium text-gray-800  p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Upload Kegiatan</h2>
-      <div className="border bg-slate-300 rounded-md mt-10 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
-      <div className="ml-8 lg:ml-0">
-        <div className=" mt-11 lg:mt-20 lg:flex">
-          <label className="block text-lg font-poppins" htmlFor="category">
-            Kategori :
-          </label>
-          <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-56 lg:mt-0 lg:w-96 font-poppins border-sky-500" id="category" onChange={handleCategoryChange} value={selectedCategory}>
-            <option className="text-center " value="">
-              -- Pilih Kategori --
-            </option>
-            <option value="kegiatanWajib">Kegiatan Wajib</option>
-            <option value="bidangOrganisasi">Organisasi dan Kepemimpinan </option>
-            <option value="bidangKeilmuan">Penalaran dan Keilmuan</option>
-            <option value="bidangMinatBakat">Minat Bakat</option>
-            <option value="bidangBaktiSosial">Kepedulian Sosial</option>
-            <option value="bidangLainnya">Kegiatan Lainnya</option>
-          </select>
-        </div>
+    <div className="h-screen p-6 lg:p-16 bg-[#1d2638] overflow-y-auto  ">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Upload Kegiatan</h2>
 
-        <div className="lg:flex lg:mt-8">
-          <label className="block mt-4 text-lg font-poppins" htmlFor="activity">
-            Kegiatan :
-          </label>
-          <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border rounded-lg lg:ml-[218px] lg:w-96 font-poppins border-sky-500" id="activity" onChange={handleActivityChange} value={selectedActivity}>
-            <option className="text-center " value="">
-              -- Pilih Kegiatan --
-            </option>
-            {selectedCategory &&
-              kegiatanOptions[selectedCategory].map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-          </select>
-        </div>
-
-        {selectedCategory !== "kegiatanWajib" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Nama Kegiatan :
+      <div className="justify-between lg:flex ">
+        <div className="bg-[#1A4057] p-6 mt-12 rounded-md lg:w-[60%]  ">
+          <div className="justify-around mt-11 lg:flex lg:items-center">
+            <label className="block text-gray-300 lg:text-lg lg:w-1/3 font-poppins" htmlFor="category">
+              Kategori :
             </label>
-            <input type="text" id="participation" className="w-64 px-6 py-2 mt-4 lg:ml-[158px] text-sm text-center text-gray-500 border rounded-lg lg:w-96 font-poppins border-sky-500" onChange={handleName} placeholder="Nama Kegiatan" />
-          </div>
-        ) : null}
-
-        {selectedCategory === "bidangOrganisasi" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Tingkat :
-            </label>
-            {selectedActivity === "pengurus organisasi ekstrakampus" || selectedActivity === "pelatihan kempemimpinan lainnya" ? (
-              // Jika kegiatan merupakan 'pengurus organisasi ekstrakampus' atau 'pelatihan kempemimpinan lainnya'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            ) : selectedActivity === "mengikuti pelatihan kepemimpinan" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Lanjut">Lanjut</option>
-                <option value="Menengah">Menengah</option>
-                <option value="Dasar">Dasar</option>
-              </select>
-            ) : selectedActivity === "berpartisipasi dalam pemira" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-                <option value="Jurusan">Prodi/Jurusan</option>
-              </select>
-            ) : (
-              // Untuk kegiatan lainnya
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Internasional">Internasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangKeilmuan" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Tingkat :
-            </label>
-            {selectedActivity === "lomba karya ilmiah" || selectedActivity === "kegiatan karya ilmiah" || selectedActivity === "pilmapres" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Internasional">Internasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-              </select>
-            ) : selectedActivity === "menghasilkan karya ilmiah" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Internasional">Internasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-            ) : selectedActivity === "kegiatan karya populer" ? (
-              // Untuk kegiatan lainnya
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Interasional">Interasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-              </select>
-            ) : selectedActivity === "pelatihan soft skill" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Interasional">Interasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Regional</option>
-                <option value="Daerah">Daerah</option>
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangMinatBakat" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Tingkat :
-            </label>
-            {selectedActivity === "memperoleh prestasi" || selectedActivity === "mengikuti kegiatan" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Internasional">Internasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-              </select>
-            ) : selectedActivity === "pelatih" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangBaktiSosial" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Tingkat :
-            </label>
-            {selectedActivity === "pelaksanaan bakti sosial" ? (
-              // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleLevel}>
-                <option value="">-- Tingkat --</option>
-                <option value="Internasional">Internasional</option>
-                <option value="Nasional">Nasional</option>
-                <option value="Regional">Daerah / Regional</option>
-                <option value="Universitas">Universitas</option>
-                <option value="Fakultas">Fakultas</option>
-                <option value="Jurusan">Jurusan</option>
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : null}
-
-        {selectedCategory === "bidangOrganisasi" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Partisipasi :
-            </label>
-            {selectedActivity === "pengurus organisasi intrakampus" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[210px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">Pilih Partisipasi</option>
-                {participationOptionsForSelectedCategory[selectedCategory] &&
-                  participationOptionsForSelectedCategory[selectedCategory].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangKeilmuan" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Partisipasi :
-            </label>
-            {selectedActivity === "kegiatan karya ilmiah" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">-- pilih Partisipasi --</option>
-                <option value="Pembicara">Pembicara</option>
-                <option value="Moderator">Moderator</option>
-                <option value="Peserta">Peserta</option>
-              </select>
-            ) : selectedActivity === "lomba karya ilmiah" || selectedActivity === "pilmapres" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">Pilih Partisipasi</option>
-                {participationOptionsForSelectedCategory[selectedCategory] &&
-                  participationOptionsForSelectedCategory[selectedCategory].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-              </select>
-            ) : selectedActivity === "menghasilkan karya ilmiah" || selectedActivity === "kegiatan karya populer" || selectedActivity === "menghasilkan karya ilmiah yang didanai" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">-- pilih Partisipasi --</option>
-                <option value="Ketua">Ketua</option>
-                <option value="Anggota">Anggota</option>
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangMinatBakat" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Partisipasi :
-            </label>
-            {selectedActivity === "mengikuti kegiatan" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">-- Pilih Partisipasi --</option>
-                <option value="Delegasi">Delegasi</option>
-                <option value="Peserta undangan">Peserta undangan</option>
-                <option value="Peserta">Peserta</option>
-              </select>
-            ) : selectedActivity === "memperoleh prestasi" ? (
-              <select className="w-64 px-6 py-2 mt-4 text-sm text-center text-gray-500 border lg:ml-[209px] rounded-lg lg:w-96 font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
-                <option value="">Pilih Partisipasi</option>
-                {participationOptionsForSelectedCategory[selectedCategory] &&
-                  participationOptionsForSelectedCategory[selectedCategory].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-              </select>
-            ) : (
-              <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[236px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-                <option value="">Tidak Ada</option>
-              </select>
-            )}
-          </div>
-        ) : selectedCategory === "bidangBaktiSosial" ? (
-          <div className="lg:flex lg:mt-8">
-            <label className="block mt-4 text-lg font-poppins" htmlFor="participation">
-              Partisipasi :
-            </label>
-            <select className="w-64 px-6 py-2 mt-4 text-gray-500 lg:ml-[210px] lg:w-96 text-sm text-center border rounded-lg font-poppins border-sky-500" id="participation" disabled>
-              <option value="">Tidak Ada</option>
+            <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#202631] lg:mt-0 font-poppins border-sky-500" id="category" onChange={handleCategoryChange} value={selectedCategory}>
+              <option className="text-center " value="">
+                -- Pilih Kategori --
+              </option>
+              <option value="kegiatanWajib">Kegiatan Wajib</option>
+              <option value="bidangOrganisasi">Organisasi dan Kepemimpinan </option>
+              <option value="bidangKeilmuan">Penalaran dan Keilmuan</option>
+              <option value="bidangMinatBakat">Minat Bakat</option>
+              <option value="bidangBaktiSosial">Kepedulian Sosial</option>
+              <option value="bidangLainnya">Kegiatan Lainnya</option>
             </select>
           </div>
-        ) : null}
-        <div className="lg:flex lg:mt-8">
-          <label className="block mt-4 text-lg font-poppins" htmlFor="year">
-            Tahun Sertifikat :
-          </label>
-          <input className="w-64 px-6 py-2 mt-4 text-gray-500 border lg:ml-[161px] text-center text-sm lg:w-96 rounded-lg border-sky-500" type="text" id="year" placeholder="Masukkan Tahun" onChange={handleYearChange} value={selectedYear} />
-        </div>
 
-        <div className="lg:flex lg:mt-8">
-          <label className="block mt-4 text-lg font-poppins" htmlFor="file">
-            Sertifikat :
-          </label>
-          <input type="file" id="file" className="w-64 lg:ml-[226px] lg:w-96 text-sm lg:h-36 px-6 mt-4 border rounded-lg py-9 border-sky-500" onChange={handleFileChange} />
-        </div>
-
-        <div className="mt-16">
-          <button className="lg:ml-[580px] shadow-md transition-transform hover:transform hover:scale-110 bg-customPurple px-7 py-3 font-serif rounded-lg text-base text-white hover:text-white" onClick={handleUpload}>
-            Submit
-          </button>
-        </div>
-
-        {showPopup && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
-            <div className="bg-white w-[400px] p-8 rounded-lg text-center">
-              <p>Data berhasil dikirim!</p>
-              <button onClick={() => setShowPopup(false)} className="px-4 py-1 mt-4 text-gray-700 text-[15px] hover:text-white hover:border-white hover:bg-sky-500 border rounded-lg border-sky-500">
-                Tutup
-              </button>
-            </div>
+          <div className="justify-around mt-11 lg:flex lg:items-center">
+            <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="activity">
+              Kegiatan :
+            </label>
+            <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="activity" onChange={handleActivityChange} value={selectedActivity}>
+              <option className="text-center " value="">
+                -- Pilih Kegiatan --
+              </option>
+              {selectedCategory &&
+                kegiatanOptions[selectedCategory].map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+            </select>
           </div>
-        )}
+
+          {selectedCategory !== "kegiatanWajib" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Nama Kegiatan :
+              </label>
+              <input type="text" id="participation" className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" onChange={handleName} placeholder="Nama Kegiatan" />
+            </div>
+          ) : null}
+
+          {selectedCategory === "bidangOrganisasi" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Tingkat :
+              </label>
+              {selectedActivity === "pengurus organisasi ekstrakampus" || selectedActivity === "pelatihan kempemimpinan lainnya" ? (
+                // Jika kegiatan merupakan 'pengurus organisasi ekstrakampus' atau 'pelatihan kempemimpinan lainnya'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              ) : selectedActivity === "mengikuti pelatihan kepemimpinan" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Lanjut">Lanjut</option>
+                  <option value="Menengah">Menengah</option>
+                  <option value="Dasar">Dasar</option>
+                </select>
+              ) : selectedActivity === "berpartisipasi dalam pemira" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                  <option value="Jurusan">Prodi/Jurusan</option>
+                </select>
+              ) : (
+                // Untuk kegiatan lainnya
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Internasional">Internasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangKeilmuan" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Tingkat :
+              </label>
+              {selectedActivity === "lomba karya ilmiah" || selectedActivity === "kegiatan karya ilmiah" || selectedActivity === "pilmapres" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Internasional">Internasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                </select>
+              ) : selectedActivity === "menghasilkan karya ilmiah" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Internasional">Internasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              ) : selectedActivity === "kegiatan karya populer" ? (
+                // Untuk kegiatan lainnya
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Interasional">Interasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                </select>
+              ) : selectedActivity === "pelatihan soft skill" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Interasional">Interasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Regional</option>
+                  <option value="Daerah">Daerah</option>
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangMinatBakat" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Tingkat :
+              </label>
+              {selectedActivity === "memperoleh prestasi" || selectedActivity === "mengikuti kegiatan" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Internasional">Internasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                </select>
+              ) : selectedActivity === "pelatih" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangBaktiSosial" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Tingkat :
+              </label>
+              {selectedActivity === "pelaksanaan bakti sosial" ? (
+                // Jika kegiatan adalah 'mengikuti pelatihan kepemimpinan'
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleLevel}>
+                  <option value="">-- Tingkat --</option>
+                  <option value="Internasional">Internasional</option>
+                  <option value="Nasional">Nasional</option>
+                  <option value="Regional">Daerah / Regional</option>
+                  <option value="Universitas">Universitas</option>
+                  <option value="Fakultas">Fakultas</option>
+                  <option value="Jurusan">Jurusan</option>
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : null}
+
+          {selectedCategory === "bidangOrganisasi" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Partisipasi :
+              </label>
+              {selectedActivity === "pengurus organisasi intrakampus" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">Pilih Partisipasi</option>
+                  {participationOptionsForSelectedCategory[selectedCategory] &&
+                    participationOptionsForSelectedCategory[selectedCategory].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangKeilmuan" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Partisipasi :
+              </label>
+              {selectedActivity === "kegiatan karya ilmiah" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">-- pilih Partisipasi --</option>
+                  <option value="Pembicara">Pembicara</option>
+                  <option value="Moderator">Moderator</option>
+                  <option value="Peserta">Peserta</option>
+                </select>
+              ) : selectedActivity === "lomba karya ilmiah" || selectedActivity === "pilmapres" ? (
+                <select className=" lg:w-2/3 bg-[#1d2638]  px-6 py-2 mt-4 text-sm text-center text-gray-300 border lg:ml-[209px] rounded-lg font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">Pilih Partisipasi</option>
+                  {participationOptionsForSelectedCategory[selectedCategory] &&
+                    participationOptionsForSelectedCategory[selectedCategory].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                </select>
+              ) : selectedActivity === "menghasilkan karya ilmiah" || selectedActivity === "kegiatan karya populer" || selectedActivity === "menghasilkan karya ilmiah yang didanai" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">-- pilih Partisipasi --</option>
+                  <option value="Ketua">Ketua</option>
+                  <option value="Anggota">Anggota</option>
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangMinatBakat" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Partisipasi :
+              </label>
+              {selectedActivity === "mengikuti kegiatan" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">-- Pilih Partisipasi --</option>
+                  <option value="Delegasi">Delegasi</option>
+                  <option value="Peserta undangan">Peserta undangan</option>
+                  <option value="Peserta">Peserta</option>
+                </select>
+              ) : selectedActivity === "memperoleh prestasi" ? (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" onChange={handleParticipationChange}>
+                  <option value="">Pilih Partisipasi</option>
+                  {participationOptionsForSelectedCategory[selectedCategory] &&
+                    participationOptionsForSelectedCategory[selectedCategory].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                </select>
+              ) : (
+                <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                  <option value="">Tidak Ada</option>
+                </select>
+              )}
+            </div>
+          ) : selectedCategory === "bidangBaktiSosial" ? (
+            <div className="justify-around mt-11 lg:flex lg:items-center">
+              <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="participation">
+                Partisipasi :
+              </label>
+              <select className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] font-poppins border-sky-500" id="participation" disabled>
+                <option value="">Tidak Ada</option>
+              </select>
+            </div>
+          ) : null}
+          <div className="justify-around mt-11 lg:flex lg:items-center">
+            <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="year">
+              Tahun Sertifikat :
+            </label>
+            <input className="px-6 py-2 mt-4 text-sm text-center text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] border-sky-500" type="text" id="year" placeholder="Masukkan Tahun" onChange={handleYearChange} value={selectedYear} />
+          </div>
+
+          <div className="justify-around mt-11 lg:flex lg:items-center">
+            <label className="block w-1/3 mt-4 text-lg text-gray-300 font-poppins" htmlFor="file">
+              Sertifikat :
+            </label>
+            <input type="file" id="file" className="px-6 mt-4 text-sm text-gray-300 border rounded-lg lg:w-2/3 bg-[#1d2638] lg:h-36 py-9 border-sky-500" onChange={handleFileChange} />
+          </div>
+
+          <div className="mt-16 ">
+            <button className="py-3 font-serif text-base text-white transition-transform rounded-lg shadow-md hover:transform hover:scale-110 bg-[#1d2638] px-7 " onClick={handleUpload}>
+              Submit
+            </button>
+          </div>
+
+          {showPopup && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+              <div className="bg-white w-[400px] p-8 rounded-lg text-center">
+                <p>Data berhasil dikirim!</p>
+                <button onClick={() => setShowPopup(false)} className="px-4 py-1 mt-4 text-gray-700 text-[15px] hover:text-white hover:border-white hover:bg-sky-500 border rounded-lg border-sky-500">
+                  Tutup
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={`flex-1 flex ${styles.flexCenter} md:my-0 hidden lg:flex   relative`}>
+          <img src={robot} alt="billing" className=" hidden lg:block text-gray-300 w-[450px] md:hidden relative z-[5] " />
+
+          <div className="absolute z-[0] w-[40%] h-[25%] top-0 pink__gradient" />
+          <div className="absolute z-[1] w-[40%] h-[40%] rounded-full white__gradient bottom-40" />
+          <div className="absolute z-[0] w-[50%] h-[50%] right-20 bottom-20 blue__gradient" />
+        </div>
       </div>
     </div>
   );

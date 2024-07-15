@@ -146,34 +146,34 @@ const KegiatanMahasiswa = () => {
     }
   };
   return (
-    <div className="pt-3 overflow-y-auto ">
-      <h2 className="font-semibold text-gray-700 font-poppins">Kegiatan Mahasiswa</h2>
-      <div className="h-screen p-10 overflow-auto mt-9 shadow-boxShadow">
+    <div className="h-screen p-16 bg-[#424461] overflow-y-auto ">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Kegiatan Mahasiswa</h2>
+      <div className="">
         {error ? (
           <p>Terjadi kesalahan: {error}</p>
         ) : (
-          <div className="mt-2">
-            <h2 className="font-medium font-poppins">Belum Divalidasi</h2>
+          <div className="mt-12 bg-[#313347] p-10 rounded-md shadow-2xl">
+            <h2 className="font-mono font-medium text-gray-300">Belum Divalidasi</h2>
             <table className="w-full mt-4 mb-7">
-              <thead className="border">
-                <tr className="border border-gray-600 ">
-                  <th className="px-4 py-2 text-[15px] text-left font-medium  ">Kategori</th>
-                  <th className="px-4 py-2 text-[15px] text-left font-medium ">Nama Kegiatan</th>
-                  <th className="px-4 py-2 text-[15px] text-left font-medium ">Mahasiswa</th>
-                  <th className="px-4 py-2 text-[15px] text-left font-medium ">Point</th>
-                  <th className="px-4 py-2 text-[15px] text-left font-medium ">Aksi</th>
+              <thead className="">
+                <tr className="text-gray-400 border-b border-gray-600 bg-[#1c1d29]">
+                  <th className="px-4 py-2 text-[15px] text-left  font-normal  ">Kategori</th>
+                  <th className="px-4 py-2 text-[15px] text-left  font-normal ">Nama Kegiatan</th>
+                  <th className="px-4 py-2 text-[15px] text-left  font-normal ">Mahasiswa</th>
+                  <th className="px-4 py-2 text-[15px] text-left  font-normal ">Point</th>
+                  <th className="px-4 py-2 text-[15px] text-left  font-normal ">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {currentNonValidatedItems.length > 0 ? (
                   currentNonValidatedItems.map((activity, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-gray-100 border border-gray-600" : "bg-white border border-gray-600"}>
+                    <tr key={index} className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] rounded-lg">
                       <td className="px-4 py-2  text-[14px] ">{activity.activity}</td>
                       <td className="px-4 py-2  text-[14px]">{activity.fieldsActivity}</td>
                       <td className="px-4 py-2  text-[14px]">{activity.owner.name}</td>
                       <td className="px-4 py-2  text-[14px]">{activity.points}</td>
                       <td className="py-2">
-                        <button onClick={() => handleLihatDetail(activity.id)} className="px-2 text-base text-amber-500 hover:underline focus:outline-none">
+                        <button onClick={() => handleLihatDetail(activity.id)} className="px-2 py-1 text-[14px] text-gray-300 rounded bg-[#0F6292] hover:bg-[#274e64]">
                           Detail
                         </button>
                       </td>
@@ -182,23 +182,23 @@ const KegiatanMahasiswa = () => {
                 ) : (
                   <tr>
                     <td colSpan="5" className="px-4 py-2 text-center">
-                      <p className="text-base">Tidak ada data yang masuk</p>
+                      <p className="text-base text-[12px] text-gray-400">Tidak ada data yang masuk</p>
                     </td>
                   </tr>
                 )}
               </tbody>
               <tfoot>
-                <tr>
+                <tr className="mt-7">
                   <td colSpan="5" className="px-4 py-2 ">
                     <button
-                      className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-amber-500"
+                      className="px-3 py-1 text-sm text-[13px] text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
                       onClick={() => setCurrentPageNonValidated(currentPageNonValidated - 1)}
                       disabled={currentPageNonValidated === 1}
                     >
                       Previous Page
                     </button>
                     <button
-                      className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-amber-500"
+                      className="px-3 py-1 ml-5 text-[13px] text-sm text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
                       onClick={() => setCurrentPageNonValidated(currentPageNonValidated + 1)}
                       disabled={currentNonValidatedItems.length < itemsPerPage}
                     >
@@ -211,11 +211,11 @@ const KegiatanMahasiswa = () => {
           </div>
         )}
 
-        <div className="h-screen py-10 mt-9">
-          <h2 className="">Sudah Divalidasi</h2>
+        <div className="mt-12 bg-[#313347] p-10 rounded-md shadow-2xl">
+          <h2 className="font-mono font-medium text-gray-300">Sudah Divalidasi</h2>
           <table className="w-full mt-4 mb-7">
             <thead>
-              <tr className="border border-gray-600">
+              <tr className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] ">
                 <th className="px-4 py-2 text-[15px] font-medium text-left  ">Kategori</th>
                 <th className="px-4 py-2 text-[15px] font-medium text-left  ">Nama Kegiatan</th>
                 <th className="px-4 py-2 text-[15px] font-medium text-left  ">Tingkat</th>
@@ -224,7 +224,7 @@ const KegiatanMahasiswa = () => {
             </thead>
             <tbody>
               {currentValidatedItems.map((activity, index) => (
-                <tr key={index} className="border border-gray-600">
+                <tr key={index} className="text-gray-400 border-b border-gray-600 bg-[#1c1d29] rounded-lg">
                   <td className="px-4 py-2 text-[14px] ">{activity.activity}</td>
                   <td className="px-4 py-2 text-[14px] ">{activity.fieldsActivity}</td>
                   <td className="px-4 py-2 text-[14px] ">{activity.levels}</td>
@@ -234,18 +234,22 @@ const KegiatanMahasiswa = () => {
               {currentValidatedItems.length === 0 && (
                 <tr>
                   <td colSpan="4" className="px-4 py-2 text-center">
-                    <p className="text-base">Tidak ada data yang masuk</p>
+                    <p className="text-base text-[12px] text-gray-500">Tidak ada data yang masuk</p>
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
-          <div className="px-4 py-2">
-            <button className="px-3 py-1 text-sm border rounded-md cursor-pointer hover:bg-dimBlue hover:border-white border-amber-500" onClick={() => setCurrentPageValidated(currentPageValidated - 1)} disabled={currentPageValidated === 1}>
+          <div className="px-4 py-2 mt-7">
+            <button
+              className="px-3 py-1 text-sm text-[13px] text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
+              onClick={() => setCurrentPageValidated(currentPageValidated - 1)}
+              disabled={currentPageValidated === 1}
+            >
               Previous Page
             </button>
             <button
-              className="px-3 py-1 ml-5 text-sm border rounded-md cursor-pointer hover:border-white hover:bg-dimBlue border-amber-500"
+              className="px-3 py-1 ml-5 text-[13px] text-sm text-gray-300 border cursor-pointer rounded-md hover:bg-dimBlue hover:border-white border-[#0F6292]"
               onClick={() => setCurrentPageValidated(currentPageValidated + 1)}
               disabled={currentValidatedItems.length < itemsPerPage}
             >
@@ -257,97 +261,75 @@ const KegiatanMahasiswa = () => {
 
       {showModal && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="p-4 bg-white rounded-lg w-[1000px] h-[900px] relative flex">
-            <div className="w-1/2 pr-4">
-              <button onClick={() => setShowModal(false)} className="absolute p-1 text-gray-600 rounded-md top-2 right-2 hover:bg-gray-200 focus:outline-none focus:ring focus:border-blue-300">
-                <IoIosCloseCircleOutline size={30} />
-              </button>
-              <h3 className="mb-2 text-lg  text-[16px] ">Detail Data:</h3>
+          <div className="relative flex flex-col md:flex-row p-4 bg-[#424461] rounded-lg w-11/12 md:w-[800px] lg:w-[1000px] h-auto max-h-[90%] overflow-y-auto">
+            <button onClick={() => setShowModal(false)} className="absolute p-1 text-red-600 rounded-md top-2 right-2 focus:outline-none focus:ring focus:border-blue-300">
+              <IoIosCloseCircleOutline size={30} />
+            </button>
+            <div className="w-full pr-0 mb-4 md:w-1/2 md:pr-4 md:mb-0">
+              <h3 className="mb-2 text-lg text-[16px] text-gray-300">Detail Data:</h3>
               <div>
-                <div className="mt-5 ">
-                  <p>
-                    <p className=" text-[16px] ">Kegiatan :</p> <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.activity || "-"}</p>
-                  </p>
+                <div className="mt-5">
+                  <p className="text-[15px] text-gray-300 ">Kegiatan:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.activity || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Kategori Kegiatan :</p> <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.fieldsActivity || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Kategori Kegiatan:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.fieldsActivity || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className=" text-[16px] ">Sertifikat :</p>
-                  <p className="px-4 py-2 rounded-lg bg-slate-100 ">
-                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className=" text-[14px] text-amber-500 hover:underline">
+                  <p className="text-[15px] text-gray-300 ">Sertifikat:</p>
+                  <p className="px-4 py-2 rounded-lg bg-[#313347]">
+                    <a href={detailKegiatan.fileUrl} target="_blank" rel="noopener noreferrer" className="text-[14px] text-gray-400 hover:underline">
                       Lihat Sertifikat
                     </a>
                   </p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Tingkat :</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.levels || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Tingkat:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.levels || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Nama Kegiatan :</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.name || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Nama Kegiatan:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.name || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Point :</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.points || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Point:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.points || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Status:</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.status || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Status:</p>
+                  <p className="px-4 py-2 text-[14px ] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.status || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  <p className="">
-                    <p className=" text-[16px] ">Tahun:</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.years || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Tahun:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.years || "-"}</p>
                 </div>
                 <div className="mt-5">
-                  {" "}
-                  <p className="">
-                    <p className=" text-[16px] ">Harapan :</p>
-                    <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.possitions_achievements || "-"}</p>
-                  </p>
+                  <p className="text-[15px] text-gray-300 ">Harapan:</p>
+                  <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.possitions_achievements || "-"}</p>
                 </div>
               </div>
             </div>
-            <div className="w-1/2 pl-4">
-              <h3 className="mb-2   text-[16px] mt-11">Mahasiswa:</h3>
+            <div className="w-full pl-0 md:w-1/2 md:pl-4">
+              <h3 className="mb-2 text-[15px] text-gray-300  mt-4 md:mt-11">Mahasiswa:</h3>
               <div className="mt-5">
-                <p className="">
-                  <p className=" text-[16px] ">Nama :</p>
-                  <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.owner.name || "-"}</p>
-                </p>
+                <p className="text-[15px] text-gray-300 ">Nama:</p>
+                <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.owner.name || "-"}</p>
               </div>
               <div className="mt-5">
-                <p className="">
-                  <p className=" text-[16px] ">NPM :</p>
-                  <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 ">{detailKegiatan.owner.npm || "-"}</p>
-                </p>
+                <p className="text-[15px] text-gray-300 ">NPM:</p>
+                <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.owner.npm || "-"}</p>
               </div>
               <div className="mt-5">
-                <p className="">
-                  <p className=" text-[16px] ">Prodi :</p>
-                  <p className="px-4 py-2  text-[14px] rounded-lg bg-slate-100 "> {detailKegiatan.owner.major || "-"}</p>
-                </p>
+                <p className="text-[15px] text-gray-300 ">Prodi:</p>
+                <p className="px-4 py-2 text-[14px] text-gray-400 rounded-lg bg-[#313347]">{detailKegiatan.owner.major || "-"}</p>
               </div>
-
-              <div className="flex border justify-evenly mt-36 py-9 rounded-xl border-amber-500 ">
-                <h2 className="font-sans ">Lakukan Aksi Disini !!</h2>
-                <button onClick={() => handleConfirmValidation(detailKegiatan.id)} className="px-3 py-1  border rounded-md text-white text-[14px] bg-amber-500 hover:bg-amber-700   focus:outline-none">
+              <div className="flex mt-10 justify-evenly bg-[#212231] md:mt-36 py-9 rounded-xl ">
+                <h2 className="font-sans text-gray-300">Lakukan Aksi Disini !!</h2>
+                <button onClick={() => handleConfirmValidation(detailKegiatan.id)} className="px-3 py-1  rounded-md text-gray-300 text-[14px] bg-[#0F6292] hover:bg-[#274e64] focus:outline-none">
                   Validasi
                 </button>
-                <button onClick={() => handleConfirmRejection(detailKegiatan.id)} className="px-3 py-1 text-[14px] text-white  bg-red-600 rounded-md hover:bg-red-700   focus:outline-none">
+                <button onClick={() => handleConfirmRejection(detailKegiatan.id)} className="px-3 py-1 text-[14px] text-gray-300 bg-red-600 rounded-md hover:bg-red-700 focus:outline-none">
                   Tolak
                 </button>
               </div>
@@ -357,10 +339,10 @@ const KegiatanMahasiswa = () => {
       )}
       {confirmValidation && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="p-4 bg-white rounded-lg">
-            <p>Apakah Anda yakin ingin melakukan validasi kegiatan ini?</p>
+          <div className="p-4 bg-[#424461] rounded-lg">
+            <p className="text-gray-300">Apakah Anda yakin ingin melakukan validasi kegiatan ini?</p>
             <div className="flex justify-around mt-4">
-              <button onClick={() => handleValidation(selectedItemId)} className="px-3 py-1 text-white rounded-md bg-amber-500 hover:bg-amber-700">
+              <button onClick={() => handleValidation(selectedItemId)} className="px-3 py-1 text-white rounded-md bg-[#0F6292] hover:bg-[#274e64]">
                 Ya
               </button>
               <button onClick={() => setConfirmValidation(false)} className="px-3 py-1 text-white bg-red-600 rounded-md hover:bg-red-700">
@@ -373,15 +355,15 @@ const KegiatanMahasiswa = () => {
 
       {confirmRejection && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="p-4 bg-white rounded-lg">
-            <p>Apakah Anda yakin ingin menolak kegiatan ini?</p>
+          <div className="p-4 bg-[#424461] rounded-lg">
+            <p className="text-gray-300">Apakah Anda yakin ingin menolak kegiatan ini?</p>
             <div className="flex justify-around mt-4">
               <button
                 onClick={() => {
                   setConfirmRejection(false);
                   setRejectionReason("");
                 }}
-                className="px-3 py-1 text-white bg-gray-500 rounded-md"
+                className="px-3 py-1 text-white bg-[#0F6292] hover:bg-[#274e64] rounded-md"
               >
                 Tidak
               </button>
@@ -395,8 +377,8 @@ const KegiatanMahasiswa = () => {
 
       {rejectionReasonInput && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="w-1/3 p-6 bg-white rounded-lg">
-            <textarea placeholder="Alasan penolakan" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} className="w-full h-32 p-2 border border-gray-300 rounded-md" />
+          <div className="w-1/3 p-6 bg-[#424461] rounded-lg">
+            <textarea placeholder="Alasan penolakan" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} className="w-full bg-[#424461] text-gray-300 h-32 p-2 border border-gray-300 rounded-md" />
             <div className="flex justify-around mt-4">
               <button
                 onClick={() => {
@@ -407,7 +389,7 @@ const KegiatanMahasiswa = () => {
               >
                 Kirim
               </button>
-              <button onClick={() => setRejectionReasonInput(false)} className="px-3 py-1 text-white bg-gray-500 rounded-md">
+              <button onClick={() => setRejectionReasonInput(false)} className="px-3 py-1 text-gray-300 bg-gray-500 rounded-md">
                 Batal
               </button>
             </div>
@@ -417,9 +399,9 @@ const KegiatanMahasiswa = () => {
 
       {showRejectionConfirmation && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="p-4 bg-white rounded-lg">
-            <p>Kegiatan berhasil ditolak dan pesan berhasil dikirim.</p>
-            <button onClick={() => setShowRejectionConfirmation(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-lime-500">
+          <div className="p-4 bg-[#313347] rounded-lg">
+            <p className="text-gray-300">Kegiatan berhasil ditolak dan pesan berhasil dikirim.</p>
+            <button onClick={() => setShowRejectionConfirmation(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-[#0F6292] hover:bg-[#274e64]">
               Tutup
             </button>
           </div>
@@ -428,9 +410,9 @@ const KegiatanMahasiswa = () => {
 
       {validationSuccess && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="p-4 bg-white rounded-lg">
-            <p>Kegiatan berhasil divalidasi!</p>
-            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-amber-500">
+          <div className="p-4 bg-[#313347] rounded-lg">
+            <p className="text-gray-300">Kegiatan berhasil divalidasi!</p>
+            <button onClick={() => setValidationSuccess(false)} className="px-3 py-1 mt-4 text-white rounded-md bg-[#0F6292] hover:bg-[#274e64] focus:outline-none">
               Tutup
             </button>
           </div>

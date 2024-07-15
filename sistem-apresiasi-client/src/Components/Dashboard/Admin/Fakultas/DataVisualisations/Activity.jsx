@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import * as d3 from "d3";
 import axios from "axios";
 
-// Definisikan warna secara global di luar komponen
 const colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
 
 const Activity = ({ token }) => {
@@ -68,7 +67,7 @@ const Activity = ({ token }) => {
       .sort(null);
 
     const width = 350;
-    const height = 350; // Mengubah tinggi
+    const height = 350;
     const radius = Math.min(width, height) / 2;
 
     const svg = d3
@@ -107,6 +106,7 @@ const Activity = ({ token }) => {
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .style("font-size", "0px")
+      .style("fill", "white") // Set text color to white
       .transition()
       .delay(1000)
       .duration(500)
@@ -149,7 +149,7 @@ const Activity = ({ token }) => {
                 borderRadius: "8px",
               }}
             ></span>
-            <span className="legend-text text-[14px]">{data.fieldActivity}</span>
+            <span className="legend-text text-gray-300 text-[14px]">{data.fieldActivity}</span>
           </div>
         ))}
       </div>
@@ -158,10 +158,10 @@ const Activity = ({ token }) => {
 
   const renderMajorFilter = () => (
     <div className="flex justify-between w-full mb-4 major-filter">
-      <label htmlFor="major-select" className=" text-[15px] ">
+      <label htmlFor="major-select" className=" text-[15px] text-gray-300 font-mono ">
         Kegiatan Mahasiswa
       </label>
-      <select id="major-select" value={selectedMajor} onChange={(e) => setSelectedMajor(e.target.value)} className="p-2  text-[14px] border border-amber-500 rounded">
+      <select id="major-select" value={selectedMajor} onChange={(e) => setSelectedMajor(e.target.value)} className="p-2 bg-[#313347] text-gray-300  text-[14px] border border-[#0F6292] rounded">
         <option value="">semua jurusan</option>
         {majors.map((major, index) => (
           <option key={index} value={major}>
@@ -173,7 +173,7 @@ const Activity = ({ token }) => {
   );
 
   return (
-    <div className=" h-[75vh] w-[100%] bg-white rounded-lg shadow-lg p-5 border">
+    <div className=" h-[75vh] w-[100%] bg-[#313347] rounded-lg shadow-lg p-5 ">
       {error && <p>Error: {error}</p>}
       {renderMajorFilter()}
       <div id="myPieChart"></div>

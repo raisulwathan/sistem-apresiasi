@@ -50,14 +50,14 @@ const History = () => {
   const rejectedActivities = activities.filter((activity) => activity.status === "rejected");
 
   return (
-    <div className="max-h-[887px] h-[878px] overflow-auto my-2 mx-[3px]  lg:mt-6 bg-white lg:p-14 pb-3 lg:w-[98.5%] rounded-lg">
-      <h2 className="mb-6 lg:text-[40px] text-[25px] font-medium text-gray-800 w-[85px] p-2 rounded-lg ml-8 lg:font-bold mt-9 lg:mt-0 font-poppins">Riwayat</h2>
-      <div className="border bg-slate-300 rounded-md mt-10 lg:mt-20 ml-8 w-[250px]  h-1 lg:w-[600px]"></div>
-      <div className="flex flex-wrap justify-between mt-6 p-9">
-        <div className="w-full lg:w-[26%]">
-          <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-customGray">
+    <div className="h-screen p-6 lg:p-16 bg-[#1d2638] overflow-y-auto">
+      <h2 className="font-semibold text-gray-300 lg:text-[26px] font-poppins">Riwayat</h2>
+
+      <div className="flex flex-wrap justify-between p-3 mt-6 lg:p-9">
+        <div className="w-full p-7 lg:w-[26%] shadow-xl rounded-lg bg-[#1A4057]">
+          <div className="lg:flex items-center py-2 mb-4 rounded-lg px-7 bg-[#173344]">
             <img src="./src/assets/dalam_proses.png" alt="" className="w-[64px] h-[64px] mr-2" />
-            <p className="text-gray-300 text-[17px] ml-4 ">Dalam Proses</p>
+            <p className="text-gray-300 lg:text-[17px] ml-4 ">Dalam Proses</p>
           </div>
           {pendingActivities.length > 0 ? (
             <ul>
@@ -68,12 +68,12 @@ const History = () => {
               ))}
             </ul>
           ) : (
-            <p>Tidak ada data yang diproses.</p>
+            <p className="text-gray-400">Tidak ada data yang diproses.</p>
           )}
         </div>
 
-        <div className="w-full lg:w-[26%] mt-11 lg:mt-0 ">
-          <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-customGray">
+        <div className="w-full lg:w-[26%] shadow-xl rounded-lg mt-11 p-7 lg:mt-0 bg-[#1A4057] ">
+          <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-[#173344]">
             <img src="./src/assets/sudah_diterima.png" alt="" className="w-[64px] h-[64px] mr-2" />
             <p className="text-gray-300 text-[17px] ml-4 ">Diterima</p>
           </div>
@@ -86,12 +86,12 @@ const History = () => {
               ))}
             </ul>
           ) : (
-            <p>Tidak ada data yang diterima.</p>
+            <p className="text-gray-400">Tidak ada data yang diterima.</p>
           )}
         </div>
 
-        <div className="w-full lg:w-[27%] mt-11 lg:mt-0">
-          <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-customGray">
+        <div className="w-full lg:w-[27%] shadow-xl mt-11 bg-[#1A4057] p-7 rounded-lg lg:mt-0">
+          <div className="flex items-center py-2 mb-4 rounded-lg px-7 bg-[#173344]">
             <img src="./src/assets/ditolak.png" alt="" className="w-[64px] h-[64px] mr-2" />
             <p className="text-gray-300 text-[17px] ml-4">Ditolak</p>
           </div>
@@ -101,7 +101,7 @@ const History = () => {
                 <li key={activity.id} className="p-3 mb-2 text-[17px] text-gray-400 border border-gray-400 rounded-2xl">
                   <div className="flex items-center justify-between">
                     <span>{activity.activity}</span>
-                    <button onClick={() => handleLihatDetail(activity.id)} className="text-sky-600 focus:outline-none">
+                    <button onClick={() => handleLihatDetail(activity.id)} className="bg-[#1d2638] py-1 px-2 text-gray-400 rounded-lg ">
                       Detail
                     </button>
                   </div>
@@ -109,7 +109,7 @@ const History = () => {
               ))}
             </ul>
           ) : (
-            <p>Tidak ada data yang diterima.</p>
+            <p className="text-gray-400">Tidak ada data yang diterima.</p>
           )}
         </div>
       </div>
@@ -123,7 +123,7 @@ const History = () => {
             </button>
             <div>
               <h3 className="font-medium ">Alasan Ditolak:</h3>
-              <p className="text-base text-[17px] py-4 px-3 bg-customGray text-gray-400 rounded-lg mt-5">{alasanDitolak}</p>
+              <p className="text-base text-[17px] py-4 px-3 bg-[#173344] text-gray-400 rounded-lg mt-5">{alasanDitolak}</p>
             </div>
           </div>
         </div>
