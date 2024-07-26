@@ -19,13 +19,7 @@ export const getExportAchievementIndependentsController = async (req, res) => {
         throw new AuthorizationError("User doenst have right to access this resources")
     }
 
-    if (userRole === "OPERATOR") {
-        const users = await UsersService.getById(userId)
-
-        const achievementData = await AchievementIndependentService.getByFaculty(users.faculty)
-
-        const achievementDataWithoutIds = achievementData.map(({ id, ...rest }) => rest)
-
+    const createWorkbook = (data) => {
         const workbook = new ExcelJS.Workbook()
         const worksheet = workbook.addWorksheet("Data")
 
@@ -44,9 +38,22 @@ export const getExportAchievementIndependentsController = async (req, res) => {
             { header: "Berkas", key: "file_url", width: 50 },
         ]
 
-        achievementDataWithoutIds.forEach((row) => {
-            worksheet.addRow(row)
+        data.forEach((row) => {
+            row.participants = formatParticipants(row.participants)
+            worksheet.addRow(row).eachCell({ includeEmpty: true }, (cell) => {
+                cell.alignment = { wrapText: true }
+            })
         })
+
+        return workbook
+    }
+
+    if (userRole === "OPERATOR") {
+        const users = await UsersService.getById(userId)
+        const achievementData = await AchievementIndependentService.getByFaculty(users.faculty)
+        const achievementDataWithoutIds = achievementData.map(({ id, ...rest }) => rest)
+
+        const workbook = createWorkbook(achievementDataWithoutIds)
 
         res.setHeader(
             "Content-Type",
@@ -60,30 +67,9 @@ export const getExportAchievementIndependentsController = async (req, res) => {
 
     if (userRole === "ADMIN") {
         const achievementData = await AchievementIndependentService.getAll()
-
         const achievementDataWithoutIds = achievementData.map(({ id, ...rest }) => rest)
 
-        const workbook = new ExcelJS.Workbook()
-        const worksheet = workbook.addWorksheet("Data")
-
-        worksheet.columns = [
-            { header: "Nama Kegiatan", key: "name", width: 50 },
-            { header: "Tingkat Kegiatan", key: "level_activity", width: 15 },
-            { header: "Jenis Kepesertaan", key: "participant_type", width: 15 },
-            { header: "Peserta", key: "participants", width: 50 },
-            { header: "Fakultas", key: "faculty", width: 20 },
-            { header: "Program Studi", key: "major", width: 20 },
-            { header: "Capaian Prestasi", key: "achievement", width: 15 },
-            { header: "Pembimbing", key: "mentor", width: 50 },
-            { header: "Tahun", key: "year", width: 10 },
-            { header: "Tanggal Mulai", key: "start_date", width: 20 },
-            { header: "Tanggal Selesai", key: "end_date", width: 20 },
-            { header: "Berkas", key: "file_url", width: 50 },
-        ]
-
-        achievementDataWithoutIds.forEach((row) => {
-            worksheet.addRow(row)
-        })
+        const workbook = createWorkbook(achievementDataWithoutIds)
 
         res.setHeader(
             "Content-Type",
@@ -185,4 +171,8 @@ export const getExportAchievementNonCompetitionByCategoryController = async (req
         await workbook.xlsx.write(res)
         res.end()
     }
+}
+
+const formatParticipants = (participants) => {
+    return participants.map((p) => `NPM: ${p.npm}, Name: ${p.name}`).join("\n")
 }

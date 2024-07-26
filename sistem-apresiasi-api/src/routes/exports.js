@@ -1,22 +1,18 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/authenticateToken.js';
-import { tryCatch } from '../utils/index.js';
+import express from "express"
+import { authenticateToken } from "../middleware/authenticateToken.js"
+import { tryCatch } from "../utils/index.js"
 import {
-  getExportAchievementIndependentsController,
-  getExportAchievementNonCompetitionByCategoryController,
-} from '../controllers/exports.js';
+    getExportAchievementIndependentsController,
+    getExportAchievementNonCompetitionByCategoryController,
+} from "../controllers/exports.js"
 
-const router = express.Router();
+const router = express.Router()
 
+router.get("/independents", authenticateToken, tryCatch(getExportAchievementIndependentsController))
 router.get(
-  '/independents',
-  authenticateToken,
-  tryCatch(getExportAchievementIndependentsController)
-);
-router.get(
-  '/noncompetitions/:category',
-  authenticateToken,
-  tryCatch(getExportAchievementNonCompetitionByCategoryController)
-);
+    "/noncompetitions/:category",
+    authenticateToken,
+    tryCatch(getExportAchievementNonCompetitionByCategoryController)
+)
 
-export default router;
+export default router
